@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import { PageLayout } from '@lnd/ui/templates'
+import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
 
 // Observer pattern implementation for infinite scroll
 class ScrollStateManager {
@@ -97,6 +99,14 @@ export default function InfiniteScrollManager({
       const newPost = data.post
 
       const currentState = stateManager.current.getState()
+      
+      // Check if post already exists to prevent duplicates
+      const postExists = currentState.posts.some(post => post.slug === newPost.slug)
+      if (postExists) {
+        stateManager.current.updateState({ loading: false })
+        return
+      }
+
       let newPosts = [...currentState.posts]
       let newIndex = currentState.currentIndex
 
@@ -145,14 +155,39 @@ export default function InfiniteScrollManager({
       <div ref={topRef} className="h-4" />
       
       {/* Render all loaded posts */}
-      {state.posts.map((post, index) => (
-        <div key={post.slug} className="post-container">
-          <article className="prose prose-lg max-w-none">
-            <h1>{post.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </article>
-        </div>
-      ))}
+      {state.posts.map((post, index) => {
+        const frontmatter = normalizeFrontmatter({
+          title: post.frontmatter.title,
+          description: post.frontmatter.description,
+          date: post.frontmatter.date,
+          author: post.frontmatter.authorId,
+          authorId: post.frontmatter.authorId,
+          tags: post.frontmatter.tags,
+          category: post.frontmatter.category,
+          image: post.frontmatter.coverImage || post.frontmatter.image,
+          coverImage: post.frontmatter.coverImage || post.frontmatter.image,
+          draft: post.frontmatter.draft,
+          featured: post.frontmatter.featured
+        })
+
+        return (
+          <div key={`${post.slug}-${index}`} id={`post-${post.slug}`} className="mb-12">
+            <PageLayout
+              title={frontmatter.title}
+              description={frontmatter.description}
+              date={frontmatter.date}
+              author={frontmatter.author}
+              tags={frontmatter.tags}
+              category={frontmatter.category}
+              coverImage={frontmatter.coverImage}
+            >
+              <div className="prose prose-lg max-w-none">
+                <MDXRemote source={post.content} />
+              </div>
+            </PageLayout>
+          </div>
+        )
+      })}
       
       {/* Bottom trigger for loading next posts */}
       <div ref={bottomRef} className="h-4" />
