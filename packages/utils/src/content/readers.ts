@@ -146,7 +146,12 @@ export function getContentPath(): string {
 export async function getBlogPosts(): Promise<MDXFile[]> {
   const contentPath = getContentPath()
   const blogPath = join(contentPath, 'blog')
-  return readMDXDirectory(blogPath).filter(post => !post.frontmatter.draft)
+  const posts = readMDXDirectory(blogPath).filter(post => !post.frontmatter.draft)
+  
+  // Sort posts by date (newest first) to match API sorting
+  return posts.sort((a, b) => 
+    new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+  )
 }
 
 /**
