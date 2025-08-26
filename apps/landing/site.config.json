@@ -283,7 +283,13 @@
       "postsPerPage": 10,
       "enableComments": false,
       "enableTags": true,
-      "enableCategories": true
+      "enableCategories": true,
+      "lazyLoad": {
+        "enabled": true,
+        "loadNextOnScrollUp": true,
+        "preloadAdjacent": true,
+        "scrollThreshold": 0.8
+      }
     },
     "search": {
       "enabled": true,

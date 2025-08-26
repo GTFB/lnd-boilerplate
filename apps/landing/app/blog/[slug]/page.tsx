@@ -1,10 +1,11 @@
 import { PageLayout } from '@lnd/ui/templates'
-import { getBlogPost, getExpert } from '@lnd/utils/content'
+import { getBlogPost, getExpert, getBlogPosts } from '@lnd/utils/content'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'
+import InfiniteScrollManager from './InfiniteScrollManager'
 
 interface BlogPostPageProps {
   params: {
@@ -53,6 +54,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
+  // Get all posts to find neighbors
+  const allPosts = await getBlogPosts()
+  const sortedPosts = allPosts.sort((a, b) => 
+    new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+  )
+  
+  const currentIndex = sortedPosts.findIndex(p => p.slug === params.slug)
+  const previousPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null
+  const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null
+
   const author = post.frontmatter.authorId ? await getExpert(post.frontmatter.authorId) : null
   const frontmatter = normalizeFrontmatter({
     title: post.frontmatter.title,
@@ -78,9 +89,32 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       category={frontmatter.category}
       coverImage={frontmatter.coverImage}
     >
-      <div className="prose prose-lg max-w-none">
-        <MDXRemote source={post.content} />
-      </div>
+      <InfiniteScrollManager
+        initialPost={{
+          slug: post.slug,
+          title: post.frontmatter.title,
+          content: post.content,
+          frontmatter: post.frontmatter
+        }}
+        neighbors={{
+          previous: previousPost ? {
+            slug: previousPost.slug,
+            title: previousPost.frontmatter.title,
+            date: previousPost.frontmatter.date
+          } : null,
+          next: nextPost ? {
+            slug: nextPost.slug,
+            title: nextPost.frontmatter.title,
+            date: nextPost.frontmatter.date
+          } : null
+        }}
+        onUrlChange={(slug) => {
+          // Update URL without page reload
+          if (typeof window !== 'undefined') {
+            window.history.pushState(null, '', `/blog/${slug}`)
+          }
+        }}
+      />
     </PageLayout>
   )
 }
