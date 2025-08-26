@@ -86,15 +86,21 @@ export default function InfiniteScrollManager({
   }, [])
 
   const loadPost = useCallback(async (slug: string, direction: 'next' | 'previous') => {
-    if (state.loading) return
+    if (state.loading) {
+      console.log('Already loading, skipping...')
+      return
+    }
 
+    console.log(`Starting to load ${direction} post:`, slug)
     stateManager.current.updateState({ loading: true })
 
     try {
+      console.log('Fetching post from API...')
       const response = await fetch(`/api/blog/${slug}`)
       if (!response.ok) throw new Error('Failed to fetch post')
       
       const data = await response.json()
+      console.log('Post data received:', data)
       const newPost = data.post
 
       const currentState = stateManager.current.getState()
@@ -102,6 +108,7 @@ export default function InfiniteScrollManager({
       // Check if post already exists to prevent duplicates
       const postExists = currentState.posts.some(post => post.slug === newPost.slug)
       if (postExists) {
+        console.log('Post already exists, skipping...')
         stateManager.current.updateState({ loading: false })
         return
       }
@@ -119,6 +126,7 @@ export default function InfiniteScrollManager({
 
       // Update neighbors for next load
       neighborsRef.current = data.neighbors
+      console.log('Updated neighbors:', data.neighbors)
 
       stateManager.current.updateState({
         posts: newPosts,
@@ -127,6 +135,8 @@ export default function InfiniteScrollManager({
         hasPrevious: !!data.neighbors.previous,
         currentIndex: newIndex
       })
+
+      console.log('Post loaded successfully')
 
       // Update URL without page reload
       if (typeof window !== 'undefined') {
@@ -144,7 +154,10 @@ export default function InfiniteScrollManager({
       // Load next post when user scrolls to bottom
       const nextSlug = neighborsRef.current.next?.slug
       if (nextSlug) {
+        console.log('Loading next post:', nextSlug)
         loadPost(nextSlug, 'next')
+      } else {
+        console.log('No next post to load')
       }
     }
   }, [bottomInView, state.hasNext, state.loading, loadPost])
@@ -154,7 +167,10 @@ export default function InfiniteScrollManager({
       // Load previous post when user scrolls to top
       const prevSlug = neighborsRef.current.previous?.slug
       if (prevSlug) {
+        console.log('Loading previous post:', prevSlug)
         loadPost(prevSlug, 'previous')
+      } else {
+        console.log('No previous post to load')
       }
     }
   }, [topInView, state.hasPrevious, state.loading, loadPost])
@@ -224,12 +240,26 @@ export default function InfiniteScrollManager({
       })}
       
       {/* Bottom trigger for loading next posts */}
-      <div ref={bottomRef} className="h-4" />
+      <div ref={bottomRef} className="h-4">
+        {state.hasNext && !state.loading && (
+          <div className="text-center py-4 text-gray-500">
+            Scroll down to load more posts...
+          </div>
+        )}
+      </div>
       
       {/* Loading indicator */}
       {state.loading && (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <span className="ml-2">Loading post...</span>
+        </div>
+      )}
+      
+      {/* End of posts indicator */}
+      {!state.hasNext && !state.hasPrevious && state.posts.length > 1 && (
+        <div className="text-center py-8 text-gray-500">
+          You've reached the end of the blog posts
         </div>
       )}
     </div>
