@@ -108,12 +108,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             date: nextPost.frontmatter.date
           } : null
         }}
-        onUrlChange={(slug) => {
-          // Update URL without page reload
-          if (typeof window !== 'undefined') {
-            window.history.pushState(null, '', `/blog/${slug}`)
-          }
-        }}
       />
     </PageLayout>
   )

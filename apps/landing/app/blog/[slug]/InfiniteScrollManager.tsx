@@ -60,13 +60,11 @@ interface InfiniteScrollManagerProps {
     previous: { slug: string; title: string; date: string } | null
     next: { slug: string; title: string; date: string } | null
   }
-  onUrlChange: (slug: string) => void
 }
 
 export default function InfiniteScrollManager({
   initialPost,
-  neighbors,
-  onUrlChange
+  neighbors
 }: InfiniteScrollManagerProps) {
   const [state, setState] = useState<ScrollState>({
     posts: [initialPost],
@@ -119,12 +117,14 @@ export default function InfiniteScrollManager({
       })
 
       // Update URL without page reload
-      onUrlChange(slug)
+      if (typeof window !== 'undefined') {
+        window.history.pushState(null, '', `/blog/${slug}`)
+      }
     } catch (error) {
       console.error('Failed to load post:', error)
       stateManager.current.updateState({ loading: false })
     }
-  }, [state.loading, onUrlChange])
+  }, [state.loading])
 
   // Handle scroll triggers
   useEffect(() => {
