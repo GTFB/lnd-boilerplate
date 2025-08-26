@@ -78,11 +78,22 @@ export default function InfiniteScrollManager({
   const neighborsRef = useRef(initialNeighbors)
   const [topRef, topInView] = useInView({ threshold: 0.1 })
   const [bottomRef, bottomInView] = useInView({ threshold: 0.1 })
+  const [hasUserScrolled, setHasUserScrolled] = useState(false)
 
   // Subscribe to state changes
   useEffect(() => {
     const unsubscribe = stateManager.current.subscribe(setState)
     return unsubscribe
+  }, [])
+
+  // Track user scroll to prevent automatic loading
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasUserScrolled(true)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const loadPost = useCallback(async (slug: string, direction: 'next' | 'previous') => {
@@ -138,10 +149,8 @@ export default function InfiniteScrollManager({
 
       console.log('Post loaded successfully')
 
-      // Update URL without page reload
-      if (typeof window !== 'undefined') {
-        window.history.pushState(null, '', `/blog/${slug}`)
-      }
+      // Don't update URL automatically - let user navigate normally
+      // URL should only change when user explicitly navigates to a post
     } catch (error) {
       console.error('Failed to load post:', error)
       stateManager.current.updateState({ loading: false })
@@ -150,7 +159,7 @@ export default function InfiniteScrollManager({
 
   // Handle scroll triggers - only load when user scrolls
   useEffect(() => {
-    if (bottomInView && state.hasNext && !state.loading) {
+    if (bottomInView && state.hasNext && !state.loading && hasUserScrolled) {
       // Load next post when user scrolls to bottom
       const nextSlug = neighborsRef.current.next?.slug
       if (nextSlug) {
@@ -160,10 +169,10 @@ export default function InfiniteScrollManager({
         console.log('No next post to load')
       }
     }
-  }, [bottomInView, state.hasNext, state.loading, loadPost])
+  }, [bottomInView, state.hasNext, state.loading, hasUserScrolled, loadPost])
 
   useEffect(() => {
-    if (topInView && state.hasPrevious && !state.loading) {
+    if (topInView && state.hasPrevious && !state.loading && hasUserScrolled) {
       // Load previous post when user scrolls to top
       const prevSlug = neighborsRef.current.previous?.slug
       if (prevSlug) {
@@ -173,7 +182,7 @@ export default function InfiniteScrollManager({
         console.log('No previous post to load')
       }
     }
-  }, [topInView, state.hasPrevious, state.loading, loadPost])
+  }, [topInView, state.hasPrevious, state.loading, hasUserScrolled, loadPost])
 
   return (
     <div className="space-y-8">
