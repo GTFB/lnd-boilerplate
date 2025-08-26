@@ -179,8 +179,10 @@ export default function InfiniteScrollManager({
       }
 
       // Update neighbors for next load
+      console.log('Before update - current neighbors:', neighborsRef.current)
+      console.log('New neighbors from API:', data.neighbors)
       neighborsRef.current = data.neighbors
-      console.log('Updated neighbors:', data.neighbors)
+      console.log('After update - neighborsRef.current:', neighborsRef.current)
 
       stateManager.current.updateState({
         posts: newPosts,
@@ -215,9 +217,11 @@ export default function InfiniteScrollManager({
     if (bottomInView && state.hasNext && !state.loading && hasUserScrolled) {
       // Load next post when user scrolls to bottom
       const nextSlug = neighborsRef.current.next?.slug
+      console.log('Bottom scroll trigger - nextSlug:', nextSlug, 'neighborsRef.current:', neighborsRef.current)
       if (nextSlug) {
         // Check if post already exists before loading
         const postExists = state.posts.some(post => post.slug === nextSlug)
+        console.log('Post exists check:', postExists, 'for slug:', nextSlug)
         if (!postExists) {
           console.log('Loading next post:', nextSlug)
           loadPost(nextSlug, 'next')
@@ -234,9 +238,11 @@ export default function InfiniteScrollManager({
     if (topInView && state.hasPrevious && !state.loading && hasUserScrolled) {
       // Load previous post when user scrolls to top
       const prevSlug = neighborsRef.current.previous?.slug
+      console.log('Top scroll trigger - prevSlug:', prevSlug, 'neighborsRef.current:', neighborsRef.current)
       if (prevSlug) {
         // Check if post already exists before loading
         const postExists = state.posts.some(post => post.slug === prevSlug)
+        console.log('Post exists check:', postExists, 'for slug:', prevSlug)
         if (!postExists) {
           console.log('Loading previous post:', prevSlug)
           loadPost(prevSlug, 'previous')
