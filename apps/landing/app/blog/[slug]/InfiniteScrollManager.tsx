@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { MDXRemote } from 'next-mdx-remote/rsc'
 import { PageLayout } from '@lnd/ui/templates'
 import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
 
@@ -182,7 +181,7 @@ export default function InfiniteScrollManager({
               coverImage={frontmatter.coverImage}
             >
               <div className="prose prose-lg max-w-none">
-                <MDXRemote source={post.content} />
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
             </PageLayout>
           </div>
