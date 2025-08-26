@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { PageLayout } from '@lnd/ui/templates'
 import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
 
 // Observer pattern implementation for infinite scroll
@@ -65,17 +64,18 @@ interface InfiniteScrollManagerProps {
 
 export default function InfiniteScrollManager({
   initialPost,
-  neighbors
+  neighbors: initialNeighbors
 }: InfiniteScrollManagerProps) {
   const [state, setState] = useState<ScrollState>({
     posts: [initialPost],
     loading: false,
-    hasNext: !!neighbors.next,
-    hasPrevious: !!neighbors.previous,
+    hasNext: !!initialNeighbors.next,
+    hasPrevious: !!initialNeighbors.previous,
     currentIndex: 0
   })
 
   const stateManager = useRef(new ScrollStateManager())
+  const neighborsRef = useRef(initialNeighbors)
   const [topRef, topInView] = useInView({ threshold: 0.1 })
   const [bottomRef, bottomInView] = useInView({ threshold: 0.1 })
 
@@ -117,6 +117,9 @@ export default function InfiniteScrollManager({
         newIndex = 0
       }
 
+      // Update neighbors for next load
+      neighborsRef.current = data.neighbors
+
       stateManager.current.updateState({
         posts: newPosts,
         loading: false,
@@ -135,18 +138,26 @@ export default function InfiniteScrollManager({
     }
   }, [state.loading])
 
-  // Handle scroll triggers
+  // Handle scroll triggers - only load when user scrolls
   useEffect(() => {
-    if (bottomInView && state.hasNext && neighbors.next) {
-      loadPost(neighbors.next.slug, 'next')
+    if (bottomInView && state.hasNext && !state.loading) {
+      // Load next post when user scrolls to bottom
+      const nextSlug = neighborsRef.current.next?.slug
+      if (nextSlug) {
+        loadPost(nextSlug, 'next')
+      }
     }
-  }, [bottomInView, state.hasNext, neighbors.next, loadPost])
+  }, [bottomInView, state.hasNext, state.loading, loadPost])
 
   useEffect(() => {
-    if (topInView && state.hasPrevious && neighbors.previous) {
-      loadPost(neighbors.previous.slug, 'previous')
+    if (topInView && state.hasPrevious && !state.loading) {
+      // Load previous post when user scrolls to top
+      const prevSlug = neighborsRef.current.previous?.slug
+      if (prevSlug) {
+        loadPost(prevSlug, 'previous')
+      }
     }
-  }, [topInView, state.hasPrevious, neighbors.previous, loadPost])
+  }, [topInView, state.hasPrevious, state.loading, loadPost])
 
   return (
     <div className="space-y-8">
@@ -171,19 +182,43 @@ export default function InfiniteScrollManager({
 
         return (
           <div key={`${post.slug}-${index}`} id={`post-${post.slug}`} className="mb-12">
-            <PageLayout
-              title={frontmatter.title}
-              description={frontmatter.description}
-              date={frontmatter.date}
-              author={frontmatter.author}
-              tags={frontmatter.tags}
-              category={frontmatter.category}
-              coverImage={frontmatter.coverImage}
-            >
-              <div className="prose prose-lg max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            {/* Post header */}
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {frontmatter.title}
+              </h1>
+              {frontmatter.description && (
+                <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+                  {frontmatter.description}
+                </p>
+              )}
+              <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                <span>{frontmatter.date}</span>
+                {frontmatter.author && <span>by {frontmatter.author}</span>}
+                {frontmatter.category && (
+                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                    {frontmatter.category}
+                  </span>
+                )}
               </div>
-            </PageLayout>
+              {frontmatter.tags && frontmatter.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {frontmatter.tags.map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-sm"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Post content only */}
+            <div className="prose prose-lg max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            </div>
           </div>
         )
       })}
