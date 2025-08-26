@@ -190,6 +190,16 @@ export default function InfiniteScrollManager({
         currentIndex: newIndex
       })
 
+      // Force state update to ensure neighbors are properly updated
+      setState(prevState => ({
+        ...prevState,
+        posts: newPosts,
+        loading: false,
+        hasNext: !!data.neighbors.next,
+        hasPrevious: !!data.neighbors.previous,
+        currentIndex: newIndex
+      }))
+
       console.log('Post loaded successfully')
 
       // Don't update URL automatically - let user navigate normally
@@ -206,26 +216,38 @@ export default function InfiniteScrollManager({
       // Load next post when user scrolls to bottom
       const nextSlug = neighborsRef.current.next?.slug
       if (nextSlug) {
-        console.log('Loading next post:', nextSlug)
-        loadPost(nextSlug, 'next')
+        // Check if post already exists before loading
+        const postExists = state.posts.some(post => post.slug === nextSlug)
+        if (!postExists) {
+          console.log('Loading next post:', nextSlug)
+          loadPost(nextSlug, 'next')
+        } else {
+          console.log('Next post already exists, skipping:', nextSlug)
+        }
       } else {
         console.log('No next post to load')
       }
     }
-  }, [bottomInView, state.hasNext, state.loading, hasUserScrolled, loadPost])
+  }, [bottomInView, state.hasNext, state.loading, hasUserScrolled, state.posts, loadPost])
 
   useEffect(() => {
     if (topInView && state.hasPrevious && !state.loading && hasUserScrolled) {
       // Load previous post when user scrolls to top
       const prevSlug = neighborsRef.current.previous?.slug
       if (prevSlug) {
-        console.log('Loading previous post:', prevSlug)
-        loadPost(prevSlug, 'previous')
+        // Check if post already exists before loading
+        const postExists = state.posts.some(post => post.slug === prevSlug)
+        if (!postExists) {
+          console.log('Loading previous post:', prevSlug)
+          loadPost(prevSlug, 'previous')
+        } else {
+          console.log('Previous post already exists, skipping:', prevSlug)
+        }
       } else {
         console.log('No previous post to load')
       }
     }
-  }, [topInView, state.hasPrevious, state.loading, hasUserScrolled, loadPost])
+  }, [topInView, state.hasPrevious, state.loading, hasUserScrolled, state.posts, loadPost])
 
   return (
     <div className="space-y-8">
