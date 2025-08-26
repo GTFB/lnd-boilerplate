@@ -79,6 +79,7 @@ export default function InfiniteScrollManager({
   const [topRef, topInView] = useInView({ threshold: 0.1 })
   const [bottomRef, bottomInView] = useInView({ threshold: 0.1 })
   const [hasUserScrolled, setHasUserScrolled] = useState(false)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Subscribe to state changes
   useEffect(() => {
@@ -86,15 +87,57 @@ export default function InfiniteScrollManager({
     return unsubscribe
   }, [])
 
-  // Track user scroll to prevent automatic loading
+  // Track user scroll to prevent automatic loading and update URL
   useEffect(() => {
     const handleScroll = () => {
       setHasUserScrolled(true)
+      
+      // Debounce URL updates
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+      
+      scrollTimeoutRef.current = setTimeout(() => {
+        // Update URL based on which post is most visible
+        const posts = state.posts
+        if (posts.length > 0) {
+          let mostVisiblePost = posts[0]
+          let maxVisibleHeight = 0
+
+          posts.forEach(post => {
+            const element = document.getElementById(`post-${post.slug}`)
+            if (element) {
+              const rect = element.getBoundingClientRect()
+              const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+              
+              // Calculate visible height of the element
+              const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0))
+              
+              if (visibleHeight > maxVisibleHeight) {
+                maxVisibleHeight = visibleHeight
+                mostVisiblePost = post
+              }
+            }
+          })
+
+          // Update URL if it's different from current
+          const currentPath = window.location.pathname
+          const newPath = `/blog/${mostVisiblePost.slug}`
+          if (currentPath !== newPath) {
+            window.history.pushState(null, '', newPath)
+          }
+        }
+      }, 150) // 150ms debounce
     }
 
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
+  }, [state.posts])
 
   const loadPost = useCallback(async (slug: string, direction: 'next' | 'previous') => {
     if (state.loading) {
@@ -206,7 +249,7 @@ export default function InfiniteScrollManager({
         })
 
         return (
-          <div key={`${post.slug}-${index}`} id={`post-${post.slug}`} className="mb-12">
+          <div key={`post-${post.slug}-${index}`} id={`post-${post.slug}`} className="mb-12">
             {/* Post header */}
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -242,7 +285,11 @@ export default function InfiniteScrollManager({
             
             {/* Post content only */}
             <div className="prose prose-lg max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              {post.content ? (
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              ) : (
+                <p>Content not available</p>
+              )}
             </div>
           </div>
         )
