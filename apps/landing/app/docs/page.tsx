@@ -1,6 +1,7 @@
-import { DocsLayout } from '@lnd/ui/templates'
+import { PublicLayout } from '@lnd/ui/templates'
 import { SiteConfigProvider } from '@lnd/ui/providers/SiteConfigProvider'
-import { getDocsPages, getDocsMeta, docsMetaToNavigation } from '@lnd/utils/content'
+import { getDocsPages } from '@lnd/utils/content/server'
+import type { MDXFile } from '@lnd/utils/content/server'
 import { generateMetadata } from '@lnd/utils/seo/metadata'
 import Link from 'next/link'
 import type { Viewport } from 'next'
@@ -26,8 +27,6 @@ export const viewport: Viewport = {
 
 export default async function DocsIndexPage() {
   const docsPages = await getDocsPages()
-  const meta = await getDocsMeta()
-  const navigationItems = docsMetaToNavigation(meta)
   
   // Group pages by section
   const sections: Record<string, MDXFile[]> = {}
@@ -47,15 +46,20 @@ export default async function DocsIndexPage() {
   
   return (
     <SiteConfigProvider>
-      <DocsLayout
-        title="Documentation"
-        description="Complete documentation for LND Boilerplate"
-        tableOfContents={[]}
-        navigationItems={navigationItems}
-      >
+      <PublicLayout>
+        <div className="container mx-auto py-8">
+          <div className="max-w-4xl mx-auto">
+            <header className="mb-12 text-left">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 tracking-tight">
+                Documentation
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+                Complete documentation for LND Boilerplate
+              </p>
+            </header>
         <div className="prose prose-lg max-w-none">
           <h1>Documentation</h1>
-          <p>Welcome to the LND Boilerplate documentation. Here you'll find everything you need to get started and build amazing web applications.</p>
+          <p>Welcome to the LND Boilerplate documentation. Here you&apos;ll find everything you need to get started and build amazing web applications.</p>
           
           {/* Root level pages */}
           {rootPages.length > 0 && (
@@ -101,7 +105,9 @@ export default async function DocsIndexPage() {
             </div>
           ))}
         </div>
-      </DocsLayout>
+          </div>
+        </div>
+      </PublicLayout>
     </SiteConfigProvider>
   )
 }

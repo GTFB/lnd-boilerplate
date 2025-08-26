@@ -1,5 +1,5 @@
 import { PublicLayout } from '@lnd/ui/templates'
-import { getExpert } from '@lnd/utils/content'
+import { getExpert } from '@lnd/utils/content/server'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'

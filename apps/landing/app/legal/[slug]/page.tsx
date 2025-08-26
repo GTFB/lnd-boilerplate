@@ -1,5 +1,5 @@
 import { PageLayout } from '@lnd/ui/templates'
-import { getLegalPage, getLegalPages } from '@lnd/utils/content'
+import { getLegalPage, getLegalPages } from '@lnd/utils/content/server'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Viewport } from 'next'

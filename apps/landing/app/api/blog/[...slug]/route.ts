@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getBlogPost, getBlogPosts } from '@lnd/utils/content'
+import { getBlogPost, getBlogPosts } from '@lnd/utils/content/server'
 
 export async function GET(
   request: NextRequest,

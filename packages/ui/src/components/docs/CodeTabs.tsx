@@ -22,4 +22,5 @@ export function CodeTabs({ children, ...props }: CodeTabsProps) {
   )
 }
 
-export { TabsList, TabsTrigger, TabsContent }
+// Re-export tabs components with docs prefix to avoid conflicts
+export { TabsList as DocsTabsList, TabsTrigger as DocsTabsTrigger, TabsContent as DocsTabsContent }

@@ -41,7 +41,7 @@ interface ScrollState {
     slug: string
     title: string
     content: string
-    frontmatter: any
+    frontmatter: Record<string, unknown>
   }>
   loading: boolean
   hasNext: boolean
@@ -54,7 +54,7 @@ interface InfiniteScrollManagerProps {
     slug: string
     title: string
     content: string
-    frontmatter: any
+    frontmatter: Record<string, unknown>
   }
   neighbors: {
     previous: { slug: string; title: string; date: string } | null
@@ -167,7 +167,7 @@ export default function InfiniteScrollManager({
         return
       }
 
-      let newPosts = [...currentState.posts]
+      const newPosts = [...currentState.posts]
       let newIndex = currentState.currentIndex
 
       if (direction === 'next') {
@@ -343,7 +343,7 @@ export default function InfiniteScrollManager({
       {/* End of posts indicator */}
       {!state.hasNext && !state.hasPrevious && state.posts.length > 1 && (
         <div className="text-center py-8 text-gray-500">
-          You've reached the end of the blog posts
+          You&apos;ve reached the end of the blog posts
         </div>
       )}
     </div>

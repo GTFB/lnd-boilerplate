@@ -1,9 +1,9 @@
-import { DocsLayout } from '@lnd/ui/templates'
+import { PublicLayout } from '@lnd/ui/templates'
 import { SiteConfigProvider } from '@lnd/ui/providers/SiteConfigProvider'
-import { getDocsPage, getDocsMeta, docsMetaToNavigation } from '@lnd/utils/content'
+import { getDocsPage, getDocsMeta, docsMetaToNavigation } from '@lnd/utils/content/server'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { HeadingWithLink, CodeBlock, InlineCode, EnhancedLink } from '@lnd/ui'
+import { HeadingWithLink, CodeBlock, InlineCode, EnhancedLink, TocUpdater } from '@lnd/ui'
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -15,7 +15,7 @@ interface DocsPageProps {
 
 // Generate static params for all docs pages
 export async function generateStaticParams() {
-  const { getDocsPages } = await import('@lnd/utils/content')
+  const { getDocsPages } = await import('@lnd/utils/content/server')
   const pages = await getDocsPages()
   
   return pages.map((page) => ({
@@ -67,6 +67,12 @@ function generateHeadingId(title: string): string {
 
 export default async function DocsPage({ params }: DocsPageProps) {
   const slug = params.slug.join('/')
+  
+  // Skip search-results page as it's handled separately
+  if (slug === 'search-results') {
+    notFound()
+  }
+  
   const page = await getDocsPage(slug)
   
   if (!page) {
@@ -90,13 +96,11 @@ export default async function DocsPage({ params }: DocsPageProps) {
 
   return (
     <SiteConfigProvider>
-      <DocsLayout
-        title={page.frontmatter.title}
-        description={page.frontmatter.description}
-        tableOfContents={toc}
-        navigationItems={navigationItems}
-      >
-        <div className="prose prose-lg max-w-none">
+      <PublicLayout>
+        <TocUpdater tableOfContents={toc} />
+        <div className="container mx-auto py-4 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="prose prose-lg max-w-none">
           <MDXRemote 
             source={page.content}
             components={{
@@ -137,11 +141,22 @@ export default async function DocsPage({ params }: DocsPageProps) {
               },
               a: ({ children, href, ...props }) => {
                 return <EnhancedLink href={href} {...props}>{children}</EnhancedLink>
+              },
+              input: ({ type, checked, ...props }) => {
+                if (type === 'checkbox') {
+                  return <input type="checkbox" checked={checked} readOnly {...props} />
+                }
+                return <input type={type} {...props} />
+              },
+              img: ({ src, alt, ...props }) => {
+                return <img src={src} alt={alt} className="rounded-lg shadow-sm max-w-full h-auto mb-6" {...props} />
               }
             }}
           />
         </div>
-      </DocsLayout>
+          </div>
+        </div>
+      </PublicLayout>
     </SiteConfigProvider>
   )
 }

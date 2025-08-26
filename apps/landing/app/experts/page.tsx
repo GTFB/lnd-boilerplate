@@ -1,6 +1,6 @@
 import { CollectionLayout } from '@lnd/ui/templates'
 import { ProductList } from '@lnd/ui/components/ecommerce'
-import { getExperts } from '@lnd/utils/content'
+import { getExperts } from '@lnd/utils/content/server'
 import { generateMetadata } from '@lnd/utils/seo/metadata'
 import type { Viewport } from 'next'
 

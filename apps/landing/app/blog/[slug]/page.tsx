@@ -1,8 +1,8 @@
 import { PageLayout } from '@lnd/ui/templates'
-import { getBlogPost, getExpert, getBlogPosts } from '@lnd/utils/content'
+import { getBlogPost, getExpert, getBlogPosts } from '@lnd/utils/content/server'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
-import { MDXRemote } from 'next-mdx-remote/rsc'
+// import { MDXRemote } from 'next-mdx-remote/rsc' // Unused for now
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import InfiniteScrollManager from './InfiniteScrollManager'

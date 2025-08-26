@@ -1,6 +1,6 @@
 import { CollectionLayout } from '@lnd/ui/templates'
 import { ProductList } from '@lnd/ui/components/ecommerce'
-import { getBlogPosts } from '@lnd/utils/content'
+import { getBlogPosts } from '@lnd/utils/content/server'
 import { generateMetadata } from '@lnd/utils/seo/metadata'
 import { normalizeFrontmatter } from '@lnd/utils/content/frontmatter'
 import type { Viewport } from 'next'
@@ -29,7 +29,7 @@ export default async function BlogPage() {
   
   // Transform MDX files to ProductList format
   const normalizedPosts = blogPosts.map(post => {
-    const normalized = normalizeFrontmatter({
+    return normalizeFrontmatter({
       title: post.frontmatter.title,
       description: post.frontmatter.description,
       date: post.frontmatter.date,

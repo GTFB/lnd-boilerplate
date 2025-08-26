@@ -5,7 +5,7 @@ import type { Viewport } from 'next'
 // Generate SEO metadata for the contact page
 export const metadata = generateMetadata({
   title: 'Contact Us - LND Boilerplate',
-  description: 'Get in touch with our team. We\'d love to hear from you and help with your project.',
+  description: 'Get in touch with our team. We&apos;d love to hear from you and help with your project.',
   keywords: ['contact', 'support', 'help', 'inquiry'],
   type: 'website',
   url: 'https://lnd-boilerplate.com/contact'
@@ -31,7 +31,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-xl text-gray-600">
-              Get in touch with our team. We'd love to hear from you and help with your project.
+              Get in touch with our team. We&apos;d love to hear from you and help with your project.
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export default function ContactPage() {
                     id="subject"
                     name="subject"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="What's this about?"
+                    placeholder="What&apos;s this about?"
                   />
                 </div>
                 

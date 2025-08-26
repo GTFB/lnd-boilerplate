@@ -1,5 +1,5 @@
 import { PublicLayout } from '@lnd/ui/templates'
-import { getLegalPages } from '@lnd/utils/content'
+import { getLegalPages } from '@lnd/utils/content/server'
 import { generateMetadata } from '@lnd/utils/seo/metadata'
 import Link from 'next/link'
 import type { Viewport } from 'next'

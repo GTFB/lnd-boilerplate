@@ -2,21 +2,27 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { cn } from '../../lib/utils'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { SearchModal } from '../ui/SearchModal'
 import { useSearchDocuments } from '../../hooks/useSearchDocuments'
 import { useSiteConfig } from '../../providers/SiteConfigProvider'
+import { useSidebar } from '../../contexts/SidebarContext'
 
 export interface HeaderProps {
   className?: string
 }
 
 export function Header({ className }: HeaderProps) {
+  const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { documents: searchDocuments, isLoading: isSearchLoading, error: searchError } = useSearchDocuments()
   const { config: siteConfig } = useSiteConfig()
+  
+  // Get search state from sidebar context for docs pages
+  const sidebarContext = pathname.startsWith('/docs') ? useSidebar() : null
 
   // Navigation items from site.config.json (simple menu)
   const navigationItems = (() => {
@@ -84,6 +90,8 @@ export function Header({ className }: HeaderProps) {
                 </Link>
               ))}
             </nav>
+
+
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">

@@ -25,7 +25,7 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex flex-col gap-2 p-4 pt-0 pl-0 text-sm relative h-full">
+    <div className="flex flex-col gap-2 p-4 pt-0 pl-4 text-sm relative h-full">
       {/* Поиск */}
       {searchComponent && (
         <div className="sticky top-0 z-20 bg-background pb-2">
@@ -33,21 +33,19 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
         </div>
       )}
       
-      <h3 className="text-muted-foreground bg-background sticky top-0 h-6 text-xs font-semibold uppercase tracking-wider z-20 pl-2">
-        DOCUMENTATION
-      </h3>
+
 
       {/* Градиент внизу для плавного перехода */}
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-10"></div>
       
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-8">
-        <div className="pl-2">
-          {tree.children.map((item) => {
+        <div className="space-y-4 -mt-2">
+          {tree.children.map((item, index) => {
             if (item.type === "folder" && item.children) {
               return (
-                <div key={item.$id} className="space-y-1">
+                <div key={item.$id} className="space-y-0">
                   {/* Заголовок раздела */}
-                  <div className="px-3 py-2 text-sm font-medium text-foreground">
+                  <div className="px-1 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {item.name}
                   </div>
                   {/* Подразделы */}
@@ -57,11 +55,11 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
                         <Link
                           key={child.url}
                           href={child.url}
-                          className={`
-                            block px-3 py-2 text-sm rounded-md transition-colors text-left ml-4
+                                                                      className={`
+                            block px-3 py-2 text-sm transition-colors mt-0
                             ${child.url === pathname 
                               ? 'bg-accent text-accent-foreground' 
-                              : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                              : 'text-muted-foreground hover:text-foreground'
                             }
                           `}
                         >
@@ -78,10 +76,10 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
                   key={item.url}
                   href={item.url || '#'}
                   className={`
-                    block px-3 py-2 text-sm rounded-md transition-colors text-left
+                    block px-3 py-2 text-sm transition-colors
                     ${item.url === pathname 
                       ? 'bg-accent text-accent-foreground' 
-                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
                     }
                   `}
                 >

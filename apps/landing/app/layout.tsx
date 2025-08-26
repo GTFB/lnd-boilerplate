@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Inter_Tight } from 'next/font/google'
 import '../styles/globals.css'
+import { SidebarProvider, ThemeProvider } from '@lnd/ui/contexts'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -27,7 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${interTight.variable}`}>
       <body className="font-sans antialiased">
-        {children}
+        <ThemeProvider>
+          <SidebarProvider>
+            {children}
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
