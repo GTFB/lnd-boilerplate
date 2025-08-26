@@ -12,10 +12,10 @@ interface TableOfContentsProps {
 }
 
 /**
- * TableOfContents - RTL-ready table of contents component
+ * TableOfContents - Next.js style table of contents component
  * 
  * Features:
- * - RTL support using logical CSS properties
+ * - Next.js inspired design with clean typography
  * - Hierarchical structure with proper indentation
  * - Active section highlighting
  * - Smooth scrolling to sections
@@ -40,10 +40,12 @@ export function TableOfContents({ toc, currentSection }: TableOfContentsProps) {
           onClick={() => handleClick(item.id)}
           data-active={currentSection === item.id}
           className={`
-            block w-full text-start text-sm transition-colors py-1
-            text-muted-foreground hover:text-foreground
-            data-[active=true]:font-medium data-[active=true]:text-primary
-            ${item.level === 1 ? 'font-medium' : item.level === 2 ? 'ps-3' : 'ps-6'}
+            block w-full text-start text-sm transition-colors duration-150 py-1
+            text-gray-600 hover:text-gray-900
+            data-[active=true]:text-blue-600 data-[active=true]:font-medium
+            dark:text-gray-400 dark:hover:text-gray-100
+            dark:data-[active=true]:text-blue-400
+            ${item.level === 1 ? 'font-medium' : item.level === 2 ? 'ml-3' : item.level === 3 ? 'ml-6' : 'ml-9'}
           `}
         >
           {item.title}

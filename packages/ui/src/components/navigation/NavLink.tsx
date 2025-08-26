@@ -10,11 +10,11 @@ interface NavLinkProps {
 }
 
 /**
- * NavLink - RTL-ready navigation link component
+ * NavLink - Next.js style navigation link component
  * 
  * Features:
- * - RTL support using logical CSS properties
- * - Active state indicator with animated border
+ * - Next.js inspired design with proper active states
+ * - Clean typography and spacing
  * - Nested item support with proper indentation
  * - Smooth transitions and hover effects
  */
@@ -30,22 +30,15 @@ export function NavLink({
       href={href}
       data-active={active}
       className={`
-        relative flex items-center py-2 font-sans text-sm transition-colors
-        text-muted-foreground hover:text-foreground
-        data-[active=true]:font-medium data-[active=true]:text-primary
-        ${nested ? 'ps-6' : 'ps-4'}
+        relative flex items-center px-3 py-2 text-sm transition-colors duration-150
+        text-gray-600 hover:text-gray-900
+        data-[active=true]:text-blue-600 data-[active=true]:font-medium
+        dark:text-gray-400 dark:hover:text-gray-100
+        dark:data-[active=true]:text-blue-400
+        ${nested ? 'ml-4' : ''}
         ${className}
       `}
     >
-      <span 
-        className="
-          absolute top-0 h-full w-px bg-border
-          start-0
-          transition-all duration-200
-          data-[active=true]:w-0.5 data-[active=true]:bg-primary
-        "
-        data-active={active}
-      />
       {children}
     </Link>
   )

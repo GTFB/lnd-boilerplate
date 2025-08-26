@@ -61,15 +61,15 @@ export default async function DocsIndexPage() {
           {rootPages.length > 0 && (
             <>
               <h2>Getting Started</h2>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2">
                 {rootPages.map((page) => (
-                  <div key={page.slug} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <h3 className="text-lg font-semibold mb-2">
-                      <Link href={`/docs/${page.slug}`} className="text-blue-600 hover:text-blue-800">
+                  <div key={page.slug} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600">
+                    <h3 className="text-lg font-semibold mb-3">
+                      <Link href={`/docs/${page.slug}`} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
                         {page.frontmatter.title || page.slug}
                       </Link>
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                       {page.frontmatter.description || 'No description available'}
                     </p>
                   </div>
@@ -80,17 +80,19 @@ export default async function DocsIndexPage() {
           
           {/* Section pages */}
           {Object.entries(sections).map(([sectionName, pages]) => (
-            <div key={sectionName}>
-              <h2 className="capitalize">{sectionName.replace('-', ' ')}</h2>
-              <div className="grid gap-4 md:grid-cols-2">
+            <div key={sectionName} className="mt-12">
+              <h2 className="capitalize text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6 tracking-tight">
+                {sectionName.replace('-', ' ')}
+              </h2>
+              <div className="grid gap-6 md:grid-cols-2">
                 {pages.map((page) => (
-                  <div key={page.slug} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <h3 className="text-lg font-semibold mb-2">
-                      <Link href={`/docs/${page.slug}`} className="text-blue-600 hover:text-blue-800">
+                  <div key={page.slug} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600">
+                    <h3 className="text-lg font-semibold mb-3">
+                      <Link href={`/docs/${page.slug}`} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
                         {page.frontmatter.title || page.slug.split('/').pop()}
                       </Link>
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                       {page.frontmatter.description || 'No description available'}
                     </p>
                   </div>

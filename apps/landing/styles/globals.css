@@ -25,29 +25,53 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --code: 0 0% 98%;
+    --code-foreground: 240 5.9% 10%;
+    --code-highlight: 0 0% 96%;
+    --code-number: 240 3.8% 46.1%;
   }
 
   /* --- Темная тема (Dark Theme) --- */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 9%;
+    --sidebar-accent: 0 0% 14.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 14.9%;
+    --sidebar-ring: 0 0% 83.1%;
+    --code: 0 0% 3.9%;
+    --code-foreground: 0 0% 98%;
+    --code-highlight: 0 0% 14.9%;
+    --code-number: 0 0% 63.9%;
   }
 }
 
@@ -78,8 +102,54 @@
 
 @layer components {
   .prose {
+    /* Reset default prose styles */
     h1, h2, h3, h4, h5, h6 {
       @apply font-heading;
+    }
+    
+    /* Next.js style typography - clean and minimal */
+    p {
+      @apply text-gray-700 dark:text-gray-300 leading-7 mb-4;
+    }
+    
+    /* Lists */
+    ul, ol {
+      @apply mb-6 space-y-2;
+    }
+    
+    li {
+      @apply text-gray-700 dark:text-gray-300 leading-7;
+    }
+    
+    /* Blockquotes */
+    blockquote {
+      @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400 my-6;
+    }
+    
+    /* Tables */
+    table {
+      @apply w-full border-collapse border border-gray-200 dark:border-gray-700 mb-6 rounded-lg overflow-hidden;
+    }
+    
+    th, td {
+      @apply border border-gray-200 dark:border-gray-700 px-4 py-3 text-left;
+    }
+    
+    th {
+      @apply bg-gray-50 dark:bg-gray-800 font-semibold text-gray-900 dark:text-gray-100;
+    }
+    
+    td {
+      @apply text-gray-700 dark:text-gray-300;
+    }
+    
+    /* Strong and emphasis */
+    strong {
+      @apply font-semibold text-gray-900 dark:text-gray-100;
+    }
+    
+    em {
+      @apply italic;
     }
   }
 }
@@ -98,4 +168,74 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+/* Shiki syntax highlighting styles */
+.shiki {
+  @apply bg-muted text-foreground rounded-lg p-4 overflow-x-auto !important;
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.shiki pre {
+  @apply bg-transparent p-0 m-0 overflow-visible !important;
+  background-color: transparent !important;
+}
+
+.shiki code {
+  @apply text-sm font-mono leading-relaxed !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Force override Shiki's default colors */
+.shiki .line {
+  @apply text-foreground !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.shiki .line .highlighted {
+  @apply bg-accent/20 !important;
+  background-color: hsl(var(--accent) / 0.2) !important;
+}
+
+/* Override all Shiki background colors */
+.shiki,
+.shiki *,
+.shiki pre,
+.shiki code,
+.shiki .line,
+.shiki .line * {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Dark theme adjustments for Shiki */
+.dark .shiki,
+.dark .shiki *,
+.dark .shiki pre,
+.dark .shiki code,
+.dark .shiki .line,
+.dark .shiki .line * {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Light theme adjustments for Shiki */
+.light .shiki,
+.light .shiki *,
+.light .shiki pre,
+.light .shiki code,
+.light .shiki .line,
+.light .shiki .line * {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }

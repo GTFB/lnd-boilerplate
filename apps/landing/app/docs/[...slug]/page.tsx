@@ -3,6 +3,7 @@ import { SiteConfigProvider } from '@lnd/ui/providers/SiteConfigProvider'
 import { getDocsPage, getDocsMeta, docsMetaToNavigation } from '@lnd/utils/content'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import { HeadingWithLink, CodeBlock, InlineCode, EnhancedLink } from '@lnd/ui'
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -53,6 +54,17 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
+// Функция для генерации ID из заголовка
+function generateHeadingId(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '') // Удаляем дефисы в начале и конце
+    .trim()
+}
+
 export default async function DocsPage({ params }: DocsPageProps) {
   const slug = params.slug.join('/')
   const page = await getDocsPage(slug)
@@ -71,12 +83,7 @@ export default async function DocsPage({ params }: DocsPageProps) {
     .map(line => {
       const level = line.match(/^#+/)![0].length
       const title = line.replace(/^#+\s*/, '')
-      const id = title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim()
+      const id = generateHeadingId(title)
       
       return { id, title, level }
     })
@@ -94,28 +101,42 @@ export default async function DocsPage({ params }: DocsPageProps) {
             source={page.content}
             components={{
               h1: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h1 id={id} {...props}>{children}</h1>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={1} {...props}>{children}</HeadingWithLink>
               },
               h2: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h2 id={id} {...props}>{children}</h2>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={2} {...props}>{children}</HeadingWithLink>
               },
               h3: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h3 id={id} {...props}>{children}</h3>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={3} {...props}>{children}</HeadingWithLink>
               },
               h4: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h4 id={id} {...props}>{children}</h4>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={4} {...props}>{children}</HeadingWithLink>
               },
               h5: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h5 id={id} {...props}>{children}</h5>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={5} {...props}>{children}</HeadingWithLink>
               },
               h6: ({ children, ...props }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
-                return <h6 id={id} {...props}>{children}</h6>
+                const id = generateHeadingId(children?.toString() || '')
+                return <HeadingWithLink id={id} level={6} {...props}>{children}</HeadingWithLink>
+              },
+              code: ({ children, className, ...props }) => {
+                const isInline = !className
+                if (isInline) {
+                  return <InlineCode {...props}>{children}</InlineCode>
+                }
+                // Для блочного кода не рендерим здесь, это сделает pre
+                return <code className={className} {...props}>{children}</code>
+              },
+              pre: ({ children, ...props }) => {
+                return <CodeBlock {...props}>{children}</CodeBlock>
+              },
+              a: ({ children, href, ...props }) => {
+                return <EnhancedLink href={href} {...props}>{children}</EnhancedLink>
               }
             }}
           />
