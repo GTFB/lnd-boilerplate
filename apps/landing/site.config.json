@@ -19,7 +19,7 @@
     "title": "LND Boilerplate - Modern Web Platform",
     "description": "A modern, performant web platform built with Next.js, TypeScript, and Tailwind CSS",
     "keywords": ["nextjs", "typescript", "tailwind", "boilerplate", "web platform"],
-    "ogImage": "/og-image.png",
+    "ogImage": null,
     "twitterCard": "summary_large_image",
     "twitterHandle": "@gtfb_dev",
     "robots": {
