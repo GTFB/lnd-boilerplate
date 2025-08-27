@@ -126,29 +126,32 @@ export function DocsTOC({
       {/* Градиент внизу для плавного перехода */}
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-10"></div>
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-8">
-        {toc.map((item) => (
-          <a
-            key={item.url}
-            href={item.url}
-            onClick={(e) => {
-              e.preventDefault()
-              const element = document.getElementById(item.url.replace('#', ''))
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }
-            }}
-            className={cn(
-              "block text-[0.8rem] no-underline transition-colors cursor-pointer text-left relative pl-4 h-7 border-l border-muted-foreground/20 flex items-center",
-              "text-muted-foreground hover:text-foreground",
-              "data-[active=true]:text-foreground data-[active=true]:font-medium data-[active=true]:border-foreground",
-              "data-[depth=3]:pl-8 data-[depth=4]:pl-12"
-            )}
-            data-active={item.url === `#${activeHeading}`}
-            data-depth={item.depth}
-          >
-            {item.title}
-          </a>
-        ))}
+        {toc.map((item) => {
+          const elementId = item.url.replace('#', '')
+          const isActive = elementId === activeHeading
+          
+          return (
+            <a
+              key={item.url}
+              href={item.url}
+              onClick={(e) => {
+                e.preventDefault()
+                const element = document.getElementById(elementId)
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+              }}
+              className={cn(
+                "block text-[0.8rem] no-underline transition-colors cursor-pointer text-left relative h-7 border-l border-muted-foreground/20 flex items-center",
+                "text-muted-foreground hover:text-foreground",
+                isActive && "text-foreground font-semibold border-foreground",
+                item.depth === 1 ? "pl-4" : item.depth === 2 ? "pl-8" : "pl-12"
+              )}
+            >
+              {item.title}
+            </a>
+          )
+        })}
       </div>
     </div>
   )

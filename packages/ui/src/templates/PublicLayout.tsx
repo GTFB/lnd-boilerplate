@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { Header } from '../components/navigation'
 import { Footer } from '../components/navigation'
-import { SidebarProvider as UISidebarProvider } from '../components/ui/sidebar'
+import { UISidebarProvider } from '../components/ui/index'
 import { DocsSidebar } from '../components/docs'
 import { useSidebar } from '../contexts/SidebarContext'
 
@@ -176,7 +176,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
       $id: item.href,
       name: item.title,
       type: 'folder' as const,
-      children: item.children?.map(child => ({
+      children: item.children?.map((child: { href: string; title: string }) => ({
         $id: child.href,
         name: child.title,
         type: 'page' as const,
@@ -300,12 +300,13 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
 
     return (
       <div className={`hidden xl:block transition-all duration-300 ${isTocOpen ? 'opacity-100 w-full' : 'opacity-0 w-0 overflow-hidden'}`}>
-        <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hide bg-sidebar-background pl-4 pr-2">
-          <div className="space-y-2 pt-4">
-            <h3 className="text-sm font-semibold text-muted-foreground mb-4">On this page</h3>
-            <nav className="space-y-1">
+        <div className="sticky top-8 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hide bg-sidebar-background pl-4 pr-2">
+          <div className="space-y-2 pt-0">
+            <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
+            <nav className="">
               {tocData.map((item, index) => {
-                const isActive = activeTocId === item.id
+                const elementId = item.url.replace('#', '')
+                const isActive = activeTocId === elementId
                 
                 return (
                   <a
@@ -313,7 +314,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
                     href={item.url}
                     onClick={(e) => {
                       e.preventDefault()
-                      const element = document.getElementById(item.id)
+                      const element = document.getElementById(elementId)
                       if (element) {
                         element.scrollIntoView({ behavior: 'smooth', block: 'start' })
                       }
@@ -365,43 +366,52 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
           </button>
         )}
         
-        <UISidebarProvider>
-          <div className="flex flex-1 relative">
-            {/* Sidebar */}
-            <div className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden bg-sidebar-background`}>
-              <div className={`fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hide bg-sidebar-background pt-8 transition-transform duration-300 ${
-                isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-              }`}>
-                <DocsSidebar 
-                  tree={sidebarTree} 
-                  searchComponent={searchComponent}
-                />
-                {/* Gradient at bottom */}
-                <div className="sticky bottom-0 h-8 bg-gradient-to-t from-sidebar-background to-transparent pointer-events-none" />
-              </div>
-            </div>
-            
-            {/* Main Content */}
-            <main className="flex-1 overflow-auto">
-              <div className="container mx-auto">
-                <div className={`grid gap-8 transition-all duration-300 ${
-                  isTocOpen 
-                    ? 'grid-cols-1 lg:grid-cols-[1fr_280px]'
-                    : 'grid-cols-1'
-                }`}>
-                  
-                  <div className="py-8 w-full" style={{ paddingLeft: '1rem', paddingRight: '1.5rem' }}>
-                    {renderBreadcrumbs()}
-                    {children}
-                  </div>
-
-                  {renderTableOfContents()}
-
+        {/* Main content area with proper spacing */}
+        <div className="flex-1 container mx-auto px-2 lg:px-4 py-8">
+          <UISidebarProvider>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Sidebar Column - Left */}
+              <aside className="lg:col-span-3">
+                <div className="sticky top-24 w-full max-w-80 max-h-[400px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
+                  <DocsSidebar 
+                    tree={sidebarTree} 
+                    searchComponent={searchComponent}
+                  />
+                  {/* Horizontal gradient overlay at right */}
+                  <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-sidebar-background via-sidebar-background/90 to-transparent pointer-events-none" />
+                  {/* Gradient at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-sidebar-background via-sidebar-background/90 to-transparent pointer-events-none" />
                 </div>
-              </div>
-            </main>
-          </div>
-        </UISidebarProvider>
+              </aside>
+              
+              {/* Main Content Column - Center */}
+              <main className={`px-4 ${!isTocOpen ? 'lg:col-span-9' : 'lg:col-span-7'}`}>
+                {renderBreadcrumbs()}
+                {children}
+              </main>
+
+              {/* TOC Column - Right */}
+              <aside className={`${isTocOpen ? 'lg:col-span-2' : 'hidden'}`}>
+                {isTocOpen && (
+                  <div className="sticky top-24 h-fit flex flex-col">
+                    {/* TOC Content with scrollable area */}
+                    <div className="max-w-80 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide pb-6 relative">
+                      <div className="whitespace-nowrap">
+                        {renderTableOfContents()}
+                      </div>
+                      {/* Horizontal gradient overlay at right */}
+                      <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/90 to-transparent pointer-events-none" />
+                    </div>
+                    {/* Gradient overlay at bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+                  </div>
+                )}
+              </aside>
+
+            </div>
+          </UISidebarProvider>
+        </div>
         <Footer />
       </div>
     )

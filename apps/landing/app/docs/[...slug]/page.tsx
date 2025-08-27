@@ -98,7 +98,7 @@ export default async function DocsPage({ params }: DocsPageProps) {
     <SiteConfigProvider>
       <PublicLayout>
         <TocUpdater tableOfContents={toc} />
-        <div className="container mx-auto py-4 px-4">
+        <div className="container mx-auto p-0">
           <div className="max-w-4xl mx-auto">
             <div className="prose prose-lg max-w-none">
           <MDXRemote 

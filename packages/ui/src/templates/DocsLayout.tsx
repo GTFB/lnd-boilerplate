@@ -102,7 +102,7 @@ export const DocsLayout: React.FC<DocsLayoutProps> = ({
 
     return (
       <div className={`hidden xl:block transition-all duration-300 ${isTocOpen ? 'opacity-100 w-full' : 'opacity-0 w-0 overflow-hidden'}`}>
-        <div className="sticky top-24 h-[calc(100vh-14rem)] px-4 w-full">
+        <div className="sticky top-8 h-[calc(100vh-8rem)] px-4 w-full">
           <DocsTOC toc={tocData} variant="list" />
         </div>
       </div>

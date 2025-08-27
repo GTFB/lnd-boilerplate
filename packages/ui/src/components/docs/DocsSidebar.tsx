@@ -25,7 +25,7 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex flex-col gap-2 p-4 pt-0 pl-4 text-sm relative h-full">
+    <div className="flex flex-col gap-2 p-4 pt-0 pl-0 text-sm relative h-full">
       {/* Поиск */}
       {searchComponent && (
         <div className="sticky top-0 z-20 bg-background pb-2">
