@@ -7,6 +7,7 @@ import { Footer } from '../components/navigation'
 import { UISidebarProvider } from '../components/ui/index'
 import { DocsSidebar } from '../components/docs'
 import { useSidebar } from '../contexts/SidebarContext'
+import { PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
 
 interface PublicLayoutProps {
   children: React.ReactNode
@@ -88,16 +89,11 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
         {/* Sidebar toggle button - only show when sidebar is closed */}
         {!isSidebarOpen && (
           <button
-            onClick={() => {
-              console.log('3 dots clicked, showing sidebar')
-              setIsSidebarOpen(true)
-            }}
+            onClick={() => setIsSidebarOpen(true)}
             className="text-muted-foreground hover:text-foreground transition-colors"
             title="Show sidebar"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <PanelLeftOpen className="w-4 h-4" />
           </button>
         )}
         
@@ -204,20 +200,31 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => {
-            console.log('X clicked, hiding sidebar')
-            setSearchQuery('')
-            setSearchResults([])
-            setIsSidebarOpen(false)
-          }}
-          className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
-          title="Clear search and hide sidebar"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        {/* Show sidebar toggle button when search is empty, show clear button when search has text */}
+        {!searchQuery ? (
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            title={isSidebarOpen ? "Hide sidebar" : "Show sidebar"}
+          >
+            {isSidebarOpen ? (
+              <PanelLeftClose className="w-4 h-4" />
+            ) : (
+              <PanelLeftOpen className="w-4 h-4" />
+            )}
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setSearchQuery('')
+              setSearchResults([])
+            }}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            title="Clear search"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
       </div>
       
       {/* Search Results */}
@@ -372,29 +379,40 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
               {/* Sidebar Column - Left */}
-              <aside className="lg:col-span-3">
-                <div className="sticky top-24 w-full max-w-80 max-h-[400px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
-                  <DocsSidebar 
-                    tree={sidebarTree} 
-                    searchComponent={searchComponent}
-                  />
-                  {/* Horizontal gradient overlay at right */}
-                  <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-sidebar-background via-sidebar-background/90 to-transparent pointer-events-none" />
-                  {/* Gradient at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-sidebar-background via-sidebar-background/90 to-transparent pointer-events-none" />
+              <aside className={`${isSidebarOpen ? 'lg:col-span-3' : 'hidden'} transition-all duration-300 ease-in-out`}>
+                <div className="sticky top-20 w-full max-w-80 h-fit flex flex-col">
+                  {/* Sidebar Content with scrollable area */}
+                  <div className="max-h-[300px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
+                    <DocsSidebar 
+                      tree={sidebarTree} 
+                      searchComponent={searchComponent}
+                    />
+                    {/* Horizontal gradient overlay at right */}
+                    <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/95 to-transparent pointer-events-none z-10" />
+                  </div>
+                  {/* Gradient overlay at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none z-10" />
                 </div>
               </aside>
               
               {/* Main Content Column - Center */}
-              <main className={`px-4 ${!isTocOpen ? 'lg:col-span-9' : 'lg:col-span-7'}`}>
+              <main className={`transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:col-span-10 pl-0 ml-0' : !isTocOpen ? 'px-4 lg:col-span-9' : 'px-4 lg:col-span-7'}`}>
                 {renderBreadcrumbs()}
-                {children}
+                <div 
+                  className="[&>*]:!max-w-none [&>*]:!mx-0 [&_.max-w-4xl]:!max-w-none [&_.mx-auto]:!mx-0"
+                  style={{
+                    '--tw-max-w': 'none',
+                    '--tw-mx': '0'
+                  } as React.CSSProperties}
+                >
+                  {children}
+                </div>
               </main>
 
               {/* TOC Column - Right */}
               <aside className={`${isTocOpen ? 'lg:col-span-2' : 'hidden'}`}>
                 {isTocOpen && (
-                  <div className="sticky top-24 h-fit flex flex-col">
+                  <div className="sticky top-20 h-fit flex flex-col">
                     {/* TOC Content with scrollable area */}
                     <div className="max-w-80 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide pb-6 relative">
                       <div className="whitespace-nowrap">

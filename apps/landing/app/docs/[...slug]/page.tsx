@@ -140,6 +140,9 @@ export default async function DocsPage({ params }: DocsPageProps) {
                 return <CodeBlock {...props}>{children}</CodeBlock>
               },
               a: ({ children, href, ...props }) => {
+                if (!href) {
+                  return <span className="text-muted-foreground">{children}</span>
+                }
                 return <EnhancedLink href={href} {...props}>{children}</EnhancedLink>
               },
               input: ({ type, checked, ...props }) => {
