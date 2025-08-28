@@ -1,8 +1,13 @@
-// Templates exports
-export * from './PublicLayout'
-export * from './PageLayout'
-export * from './CollectionLayout'
-export * from './FullPageLayout'
-export * from './ContentLayout'
-export * from './ApplicationLayout'
-export * from './DocsLayout'
+// Base Layout
+export { BaseLayout } from './base/BaseLayout'
+export type { BaseLayoutProps } from './base/BaseLayout'
+
+// Layout Templates
+export * from './layouts'
+
+// Layout Renderer
+export { LayoutRenderer } from './LayoutRenderer'
+export type { LayoutRendererProps } from './LayoutRenderer'
+
+// Hooks
+export * from './hooks'

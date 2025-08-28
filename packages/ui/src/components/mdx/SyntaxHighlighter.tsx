@@ -12,10 +12,7 @@ interface SyntaxHighlighterProps {
 export async function SyntaxHighlighter({ code, language = 'text', className = '' }: SyntaxHighlighterProps) {
   const html = await codeToHtml(code, {
     lang: language,
-    theme: {
-      light: 'github-light',
-      dark: 'github-dark'
-    },
+    theme: 'github-light',
     defaultColor: false,
     transformers: [
       {
@@ -57,10 +54,7 @@ export function SyntaxHighlighterClient({ code, language = 'text', className = '
       try {
         const result = await codeToHtml(code, {
           lang: language,
-          theme: {
-            light: 'github-light',
-            dark: 'github-light'
-          },
+          theme: 'github-light',
           defaultColor: false,
           transformers: [
             {

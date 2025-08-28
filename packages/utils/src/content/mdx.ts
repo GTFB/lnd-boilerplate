@@ -306,3 +306,24 @@ export function validateMDXFrontmatter(frontmatter: any): MDXFrontmatter {
     ...frontmatter
   }
 }
+
+// Export aliases for backward compatibility
+export const parseMDX = readMDXFile
+export const parseMDXFiles = readMDXDirectory
+export const extractFrontmatter = (filePath: string) => readMDXFile(filePath).frontmatter
+export const generateExcerpt = (content: string, maxLength: number = 150) => {
+  const plainText = content.replace(/[#*`]/g, '').replace(/\n/g, ' ')
+  return plainText.length > maxLength ? plainText.substring(0, maxLength) + '...' : plainText
+}
+
+// Export types for backward compatibility
+export type MDXContent = MDXFile
+export type MDXOptions = {
+  includeDrafts?: boolean
+  featuredOnly?: boolean
+  category?: string
+  tags?: string[]
+  limit?: number
+  sortBy?: 'date' | 'title' | 'featured'
+  sortOrder?: 'asc' | 'desc'
+}

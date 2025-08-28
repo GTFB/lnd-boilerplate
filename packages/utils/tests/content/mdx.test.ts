@@ -120,34 +120,26 @@ This is the content.`
         author: 'John Doe',
         date: '2024-01-01'
       }
-      const requiredFields = ['title', 'author']
 
-      const result = validateMDXFrontmatter(data, requiredFields)
+      const result = validateMDXFrontmatter(data)
 
-      expect(result.isValid).toBe(true)
-      expect(result.missingFields).toEqual([])
+      expect(result.title).toBe('Test Article')
+      expect(result.author).toBe('John Doe')
+      expect(result.date).toBe('2024-01-01')
     })
 
     it('should detect missing required fields', () => {
       const data = {
         title: 'Test Article'
       }
-      const requiredFields = ['title', 'author', 'date']
 
-      const result = validateMDXFrontmatter(data, requiredFields)
-
-      expect(result.isValid).toBe(false)
-      expect(result.missingFields).toEqual(['author', 'date'])
+      expect(() => validateMDXFrontmatter(data)).toThrow('Missing required frontmatter fields: author')
     })
 
     it('should handle empty data object', () => {
       const data = {}
-      const requiredFields = ['title', 'author']
 
-      const result = validateMDXFrontmatter(data, requiredFields)
-
-      expect(result.isValid).toBe(false)
-      expect(result.missingFields).toEqual(['title', 'author'])
+      expect(() => validateMDXFrontmatter(data)).toThrow('Missing required frontmatter fields: title')
     })
 
     it('should handle empty required fields array', () => {
@@ -155,12 +147,11 @@ This is the content.`
         title: 'Test Article',
         author: 'John Doe'
       }
-      const requiredFields: string[] = []
 
-      const result = validateMDXFrontmatter(data, requiredFields)
+      const result = validateMDXFrontmatter(data)
 
-      expect(result.isValid).toBe(true)
-      expect(result.missingFields).toEqual([])
+      expect(result.title).toBe('Test Article')
+      expect(result.author).toBe('John Doe')
     })
 
     it('should handle falsy values as missing', () => {
@@ -170,12 +161,13 @@ This is the content.`
         date: null,
         tags: undefined
       }
-      const requiredFields = ['title', 'author', 'date', 'tags']
 
-      const result = validateMDXFrontmatter(data, requiredFields)
+      const result = validateMDXFrontmatter(data)
 
-      expect(result.isValid).toBe(false)
-      expect(result.missingFields).toEqual(['author', 'date', 'tags'])
+      expect(result.title).toBe('Test Article')
+      expect(result.author).toBe('')
+      expect(result.date).toBe(null)
+      expect(result.tags).toEqual([])
     })
   })
 

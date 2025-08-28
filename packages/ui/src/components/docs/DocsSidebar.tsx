@@ -33,8 +33,6 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
         </div>
       )}
       
-
-
       {/* Градиент внизу для плавного перехода */}
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-10"></div>
       
@@ -45,18 +43,18 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
               return (
                 <div key={item.$id} className="space-y-0">
                   {/* Заголовок раздела */}
-                  <div className="px-1 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <div className="px-1 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors duration-200">
                     {item.name}
                   </div>
                   {/* Подразделы */}
-                  {item.children.map((child) => {
+                  {item.children.map((child, childIndex) => {
                     return (
                       child.type === "page" && (
                         <Link
-                          key={child.url}
+                          key={`${item.$id}-${childIndex}`}
                           href={child.url}
-                                                                      className={`
-                            block px-3 py-2 text-sm transition-colors mt-0
+                          className={`
+                            block px-3 py-2 text-sm transition-all duration-200 mt-0 transform hover:translate-x-1
                             ${child.url === pathname 
                               ? 'bg-accent text-accent-foreground' 
                               : 'text-muted-foreground hover:text-foreground'
@@ -73,10 +71,10 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
             } else if (item.type === "page") {
               return (
                 <Link
-                  key={item.url}
+                  key={item.$id}
                   href={item.url || '#'}
                   className={`
-                    block px-3 py-2 text-sm transition-colors
+                    block px-3 py-2 text-sm transition-all duration-200 transform hover:translate-x-1
                     ${item.url === pathname 
                       ? 'bg-accent text-accent-foreground' 
                       : 'text-muted-foreground hover:text-foreground'

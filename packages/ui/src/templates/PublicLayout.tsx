@@ -87,15 +87,19 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     return (
       <div className="flex items-center gap-4 mb-4">
         {/* Sidebar toggle button - only show when sidebar is closed */}
-        {!isSidebarOpen && (
+        <div className={`transition-all duration-300 ease-in-out ${
+          !isSidebarOpen 
+            ? 'opacity-100 translate-x-0' 
+            : 'opacity-0 -translate-x-4 pointer-events-none'
+        }`}>
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-md hover:bg-accent"
             title="Show sidebar"
           >
             <PanelLeftOpen className="w-4 h-4" />
           </button>
-        )}
+        </div>
         
         <nav className="flex items-center gap-2 text-sm text-gray-500">
           <a href="/" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Home</a>
@@ -204,7 +208,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
         {!searchQuery ? (
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors p-2 rounded-md hover:bg-accent"
             title={isSidebarOpen ? "Hide sidebar" : "Show sidebar"}
           >
             {isSidebarOpen ? (
@@ -219,7 +223,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
               setSearchQuery('')
               setSearchResults([])
             }}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors p-2 rounded-md hover:bg-accent"
             title="Clear search"
           >
             <X className="w-4 h-4" />
@@ -228,28 +232,32 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
       </div>
       
       {/* Search Results */}
-      {searchQuery && (
-        <div className="max-h-64 overflow-y-auto">
-          {isSearching ? (
-            <div className="text-sm text-muted-foreground p-2">Searching...</div>
-          ) : searchResults.length > 0 ? (
-            <div className="space-y-1">
-              <div className="text-xs font-semibold text-muted-foreground px-2 py-1">Search Results</div>
-              {searchResults.map((result, index) => (
-                <a
-                  key={index}
-                  href={result.url}
-                  className="block px-2 py-1 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
-                >
-                  {result.title}
-                </a>
-              ))}
-            </div>
-          ) : (
-            <div className="text-sm text-muted-foreground p-2">No results found</div>
-          )}
-        </div>
-      )}
+      <div className={`max-h-64 overflow-y-auto transition-all duration-300 ease-in-out ${
+        searchQuery ? 'opacity-100 max-h-64' : 'opacity-0 max-h-0 overflow-hidden'
+      }`}>
+        {searchQuery && (
+          <>
+            {isSearching ? (
+              <div className="text-sm text-muted-foreground p-2">Searching...</div>
+            ) : searchResults.length > 0 ? (
+              <div className="space-y-1">
+                <div className="text-xs font-semibold text-muted-foreground px-2 py-1">Search Results</div>
+                {searchResults.map((result, index) => (
+                  <a
+                    key={index}
+                    href={result.url}
+                    className="block px-2 py-1 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
+                  >
+                    {result.title}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground p-2">No results found</div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 
@@ -257,21 +265,21 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
   const [activeTocId, setActiveTocId] = useState<string | null>(null)
   
   useEffect(() => {
-    if (!shouldShowSidebar || tableOfContents.length === 0) return
+    if (!shouldShowSidebar) return
 
     const updateActiveItem = () => {
       const scrollPosition = window.scrollY + 100 // Offset for header
       
-      // Find all headings on the page
-      const headings = tableOfContents
-        .map(item => document.getElementById(item.id))
-        .filter(Boolean)
-        .sort((a, b) => a!.offsetTop - b!.offsetTop)
+      // Find all headings on the page dynamically
+      const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+        .filter(heading => heading.id)
+        .map(heading => heading as HTMLElement)
+        .sort((a, b) => a.offsetTop - b.offsetTop)
       
       // Find active heading
       let current = null
       for (const heading of headings) {
-        if (heading && heading.offsetTop <= scrollPosition) {
+        if (heading.offsetTop <= scrollPosition) {
           current = heading.id
         } else {
           break
@@ -294,144 +302,140 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [shouldShowSidebar, tableOfContents])
+  }, [shouldShowSidebar])
 
   const renderTableOfContents = () => {
-    if (!shouldShowSidebar || tableOfContents.length === 0) return null
+    // Dynamically get headings from the page instead of relying on context
+    const headings = typeof document !== 'undefined' 
+      ? Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+          .filter(heading => heading.id) // Only headings with IDs
+          .map(heading => ({
+            title: heading.textContent || '',
+            url: `#${heading.id}`,
+            depth: parseInt(heading.tagName.charAt(1)) // h1=1, h2=2, etc.
+          }))
+      : []
+    
+    if (headings.length === 0) {
+      return null
+    }
 
-    const tocData = tableOfContents.map(item => ({
-      title: item.title,
-      url: `#${item.id}`,
-      depth: item.level
-    }))
-
-    return (
-      <div className={`hidden xl:block transition-all duration-300 ${isTocOpen ? 'opacity-100 w-full' : 'opacity-0 w-0 overflow-hidden'}`}>
-        <div className="sticky top-8 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hide bg-sidebar-background pl-4 pr-2">
-          <div className="space-y-2 pt-0">
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
-            <nav className="">
-              {tocData.map((item, index) => {
-                const elementId = item.url.replace('#', '')
-                const isActive = activeTocId === elementId
-                
-                return (
-                  <a
-                    key={index}
-                    href={item.url}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      const element = document.getElementById(elementId)
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                      }
-                    }}
-                    className={`block text-[0.8rem] no-underline transition-colors cursor-pointer text-left relative pl-4 h-7 border-l border-muted-foreground/20 flex items-center ${
-                      isActive 
-                        ? 'text-foreground font-medium border-foreground' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    } ${
-                      item.depth === 1 ? '' : item.depth === 2 ? 'pl-8' : 'pl-12'
-                    }`}
-                  >
-                    {item.title}
-                  </a>
-                )
-              })}
-            </nav>
-          </div>
-          {/* Gradient at bottom */}
-          <div className="sticky bottom-0 h-8 bg-gradient-to-t from-sidebar-background to-transparent pointer-events-none" />
-        </div>
-      </div>
-    )
+                                       return (
+         <div className="space-y-2 pt-0">
+           <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
+           <nav>
+             {headings.map((item, index) => {
+               const elementId = item.url.replace('#', '')
+               const isActive = activeTocId === elementId
+               
+               return (
+                 <a
+                   key={index}
+                   href={item.url}
+                   onClick={(e) => {
+                     e.preventDefault()
+                     const element = document.getElementById(elementId)
+                     if (element) {
+                       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                     }
+                   }}
+                   className={`block text-[0.8rem] no-underline transition-all duration-200 cursor-pointer text-left relative h-7 border-l border-muted-foreground/20 flex items-center whitespace-nowrap ${
+                     isActive 
+                       ? 'text-foreground font-medium border-black' 
+                       : 'text-muted-foreground hover:text-foreground'
+                   } ${
+                     item.depth === 1 ? 'pl-4 hover:pl-6' : item.depth === 2 ? 'pl-6 hover:pl-8' : 'pl-8 hover:pl-10'
+                   }`}
+                 >
+                   {item.title}
+                 </a>
+               )
+             })}
+           </nav>
+         </div>
+       )
   }
 
   if (shouldShowSidebar) {
     return (
-      <div className="min-h-screen flex flex-col">
+                        <div className="min-h-screen flex flex-col">
         {/* Reading progress bar */}
-        <div className="fixed top-0 start-0 w-full h-1 bg-muted z-50">
+        <div className="fixed bottom-0 start-0 w-full h-1 bg-muted z-50">
           <div 
-            className="h-full bg-primary transition-all duration-150 ease-out"
+            className="h-full bg-primary transition-all duration-300 ease-out rounded-r-full"
             style={{ width: `${readingProgress}%` }}
           />
         </div>
         
         <Header />
         
-        {/* TOC toggle button - only show when TOC is hidden */}
-        {tableOfContents.length > 0 && !isTocOpen && (
-          <button
-            onClick={() => setIsTocOpen(true)}
-            className="fixed top-20 end-4 z-40 p-2 bg-background border border-border rounded-md shadow-md hover:bg-accent"
-            title="Show TOC"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        )}
-        
-        {/* Main content area with proper spacing */}
-        <div className="flex-1 container mx-auto px-2 lg:px-4 py-8">
-          <UISidebarProvider>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Sidebar Column - Left */}
-              <aside className={`${isSidebarOpen ? 'lg:col-span-3' : 'hidden'} transition-all duration-300 ease-in-out`}>
-                <div className="sticky top-20 w-full max-w-80 h-fit flex flex-col">
-                  {/* Sidebar Content with scrollable area */}
-                  <div className="max-h-[300px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
-                    <DocsSidebar 
-                      tree={sidebarTree} 
-                      searchComponent={searchComponent}
-                    />
-                    {/* Horizontal gradient overlay at right */}
-                    <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/95 to-transparent pointer-events-none z-10" />
-                  </div>
-                  {/* Gradient overlay at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none z-10" />
-                </div>
-              </aside>
-              
-              {/* Main Content Column - Center */}
-              <main className={`transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:col-span-10 pl-0 ml-0' : !isTocOpen ? 'px-4 lg:col-span-9' : 'px-4 lg:col-span-7'}`}>
-                {renderBreadcrumbs()}
-                <div 
-                  className="[&>*]:!max-w-none [&>*]:!mx-0 [&_.max-w-4xl]:!max-w-none [&_.mx-auto]:!mx-0"
-                  style={{
-                    '--tw-max-w': 'none',
-                    '--tw-mx': '0'
-                  } as React.CSSProperties}
-                >
-                  {children}
-                </div>
-              </main>
 
-              {/* TOC Column - Right */}
-              <aside className={`${isTocOpen ? 'lg:col-span-2' : 'hidden'}`}>
-                {isTocOpen && (
-                  <div className="sticky top-20 h-fit flex flex-col">
-                    {/* TOC Content with scrollable area */}
-                    <div className="max-w-80 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide pb-6 relative">
-                      <div className="whitespace-nowrap">
-                        {renderTableOfContents()}
-                      </div>
+        
+         {/* Main content area with proper spacing */}
+         <div className="flex-1 container mx-auto px-2 lg:px-4 py-8">
+           <UISidebarProvider>
+             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+               
+                               {/* Sidebar Column - Left */}
+                <aside className={`${
+                  isSidebarOpen 
+                    ? 'lg:col-span-3' 
+                    : 'lg:col-span-0 overflow-hidden'
+                } transition-all duration-300 ease-in-out`}>
+                  <div className="sticky top-24 w-full max-w-80 h-fit flex flex-col">
+                    {/* Sidebar Content with scrollable area */}
+                    <div className="max-h-[300px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
+                      <DocsSidebar 
+                        tree={sidebarTree} 
+                        searchComponent={searchComponent}
+                      />
                       {/* Horizontal gradient overlay at right */}
-                      <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/90 to-transparent pointer-events-none" />
+                      <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/95 to-transparent pointer-events-none z-10" />
                     </div>
                     {/* Gradient overlay at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none z-10" />
                   </div>
-                )}
-              </aside>
+                </aside>
+               
+                               {/* Main Content Column - Center */}
+                <main className={`transition-all duration-300 ease-in-out ${
+                  !isSidebarOpen 
+                    ? 'lg:col-span-12 pl-0 ml-0 pr-80' 
+                    : 'px-4 lg:col-span-9 xl:col-span-9 2xl:col-span-9 pr-80'
+                }`}>
+                  {renderBreadcrumbs()}
+                  <div 
+                    className="[&>*]:!max-w-none [&>*]:!mx-0 [&_.max-w-4xl]:!max-w-none [&_.mx-auto]:!mx-0"
+                    style={{
+                      '--tw-max-w': 'none',
+                      '--tw-mx': '0'
+                    } as React.CSSProperties}
+                  >
+                    {children}
+                  </div>
+                </main>
 
-            </div>
-          </UISidebarProvider>
-        </div>
-        <Footer />
-      </div>
+
+
+             </div>
+           </UISidebarProvider>
+           
+           {/* TOC - Fixed position outside grid, independent of sidebar */}
+           <aside className="hidden xl:block fixed right-4 top-24 w-80 z-40">
+             <div className="sticky top-24 h-fit flex flex-col">
+               {/* TOC Content with scrollable area */}
+               <div className="w-full max-w-80 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide pb-6 relative bg-sidebar-background rounded-lg">
+                 {renderTableOfContents()}
+                 {/* Horizontal gradient overlay at right */}
+                 <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none" />
+               </div>
+               {/* Gradient overlay at bottom */}
+               <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+             </div>
+           </aside>
+         </div>
+         <Footer />
+       </div>
     )
   }
 

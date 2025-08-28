@@ -1,9 +1,19 @@
 // Components exports
 export * from './marketing'
 export * from './ecommerce'
-export * from './navigation'
 export * from './mdx'
-export * from './docs'
+
+// Header Components
+export * from './header'
+
+// Sidebar Components
+export * from './sidebar'
+
+// Content Components
+export * from './content'
+
+// Footer Components
+export * from './footer'
 
 // Export UI components with specific names to avoid conflicts
 export { 
@@ -21,9 +31,5 @@ export {
   SidebarMenuSub as UISidebarMenuSub,
   SidebarMenuSubButton as UISidebarMenuSubButton,
   SidebarMenuSubItem as UISidebarMenuSubItem,
-  SidebarProvider as UISidebarProvider,
-  SidebarRail as UISidebarRail,
-  SidebarSeparator as UISidebarSeparator,
-  SidebarTrigger as UISidebarTrigger,
-  useSidebar as useUISidebar
-} from './ui/sidebar'
+  SidebarProvider as UISidebarProvider
+} from './ui'

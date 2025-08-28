@@ -1,14 +1,8 @@
 'use client'
 
+import React from 'react'
 import { cn } from '../../lib/utils'
-
-export interface NavigationItem {
-  id: string
-  title: string
-  href: string
-  excerpt?: string
-  image?: string
-}
+import { NavigationItem } from '../../types/navigation'
 
 export interface PreviousNextProps {
   previous?: NavigationItem

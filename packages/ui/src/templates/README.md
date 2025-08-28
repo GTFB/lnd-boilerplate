@@ -1,222 +1,225 @@
-# Layout Templates Architecture
+# Layout System
 
-## Overview
+Гибкая, компонентная система макетов для веб-приложений, поддерживающая множественные дизайн-системы и адаптивное поведение.
 
-This package provides a comprehensive set of layout templates designed to support both **Content-Driven** and **Application-Driven** page architectures in Next.js applications.
+## Обзор
 
-## Architecture Principles
+Система макетов построена на основе четырех основных шаблонов:
 
-### Content-Driven Pages
-- **Purpose**: Static content, SEO-optimized, fast loading
-- **Use Cases**: Blog posts, documentation, marketing pages, landing pages
-- **Characteristics**: Minimal JavaScript, server-side rendering, content-first approach
+1. **Single Column** - Простой одноколоночный макет для лендингов
+2. **Sidebar Left** - Макет с левым сайдбаром для блогов
+3. **Sidebar Right** - Макет с правым сайдбаром для связанного контента
+4. **Sidebar Both** - Полный макет документации с двумя сайдбарами
 
-### Application-Driven Pages  
-- **Purpose**: Dynamic functionality, interactivity, state management
-- **Use Cases**: Dashboards, forms, interactive components, data-driven interfaces
-- **Characteristics**: Client-side interactivity, dynamic content loading, state management
+## Архитектура
 
-## Available Templates
+### BaseLayout
+Базовый абстрактный класс, предоставляющий общую структуру и логику для всех макетов.
 
-### 1. PublicLayout
-**Base template for all public pages**
-- Provides common structure (header, footer)
-- Used as foundation for other layouts
-- Minimal styling, maximum flexibility
+### LayoutRenderer
+Компонент для динамического рендеринга макетов на основе конфигурации.
 
-### 2. ContentLayout
-**Optimized for content-driven pages**
+### useLayout Hook
+Хук для управления конфигурацией макетов и получения текущих настроек.
+
+## Использование
+
+### Базовое использование
+
 ```tsx
-import { ContentLayout } from '@lnd/ui/templates'
+import { LayoutRenderer } from '@your-org/ui'
 
-export default function BlogPost() {
+function MyPage() {
   return (
-    <ContentLayout 
-      title="My Blog Post"
-      description="A great article about web development"
-    >
-      <p>Your content here...</p>
-    </ContentLayout>
+    <LayoutRenderer layout="sidebar-both" pageType="documentation">
+      <YourContent />
+    </LayoutRenderer>
   )
 }
 ```
 
-**Features:**
-- SEO-optimized structure
-- Prose styling for readable content
-- Fast loading with minimal JavaScript
-- Static generation friendly
+### С кастомными пропсами
 
-### 3. ApplicationLayout
-**Optimized for application-driven pages**
 ```tsx
-import { ApplicationLayout } from '@lnd/ui/templates'
+<LayoutRenderer 
+  layout="sidebar-left" 
+  pageType="blogPost"
+  sidebarTitle="Navigation"
+  showFooter={false}
+>
+  <YourContent />
+</LayoutRenderer>
+```
 
-export default function Dashboard() {
+### Программное переключение макетов
+
+```tsx
+import { useState } from 'react'
+import { LayoutName } from '@your-org/ui'
+
+function LayoutSwitcher() {
+  const [currentLayout, setCurrentLayout] = useState<LayoutName>('single-column')
+  
   return (
-    <ApplicationLayout 
-      title="Dashboard"
-      description="Manage your account and settings"
-    >
-      <InteractiveComponent />
-    </ApplicationLayout>
+    <LayoutRenderer layout={currentLayout}>
+      <YourContent />
+      <button onClick={() => setCurrentLayout('sidebar-both')}>
+        Switch to Documentation Layout
+      </button>
+    </LayoutRenderer>
   )
 }
 ```
 
-**Features:**
-- Client-side interactivity support
-- State management ready
-- Dynamic content loading
-- Interactive component support
+## Конфигурация
 
-### 4. CollectionLayout
-**For listing and collection pages**
+Система использует централизованную конфигурацию через `site.config.json`:
+
+```json
+{
+  "layouts": {
+    "default": "sidebar-both",
+    "available": ["single-column", "sidebar-left", "sidebar-right", "sidebar-both"],
+    "breakpoints": {
+      "mobile": "1024px",
+      "tablet": "1280px",
+      "desktop": "1281px+"
+    }
+  },
+  "pageTypes": {
+    "documentation": {
+      "template": "sidebar-both",
+      "components": {
+        "header": "mainHeader",
+        "leftSidebar": "docsNavigation",
+        "rightSidebar": "tableOfContents",
+        "content": "mdxContent",
+        "footer": "mainFooter"
+      }
+    }
+  }
+}
+```
+
+## Адаптивность
+
+Все макеты автоматически адаптируются к различным размерам экрана:
+
+- **< 1024px**: Сайдбары складываются в колонку
+- **< 1280px**: Правый сайдбар скрывается (для sidebar-both)
+- **1280px+**: Полный макет с сайдбарами
+
+## Дизайн-системы
+
+Система поддерживает множественные дизайн-системы (Lora, Alisa), которые можно переключать динамически:
+
 ```tsx
-import { CollectionLayout } from '@lnd/ui/templates'
+import { useDesignSystem } from '@your-org/ui'
 
-export default function BlogList() {
+function DesignSystemSwitcher() {
+  const { switchSystem } = useDesignSystem()
+  
   return (
-    <CollectionLayout 
-      title="Blog Posts"
-      description="Latest articles and tutorials"
-    >
-      <BlogPostList />
-    </CollectionLayout>
+    <div>
+      <button onClick={() => switchSystem('lora')}>Lora</button>
+      <button onClick={() => switchSystem('alisa')}>Alisa</button>
+    </div>
   )
 }
 ```
 
-### 5. DocsLayout
-**Optimized for documentation pages**
+## Компоненты
+
+Все макеты используют:
+- **Lucide React** иконки (без SVG)
+- **Shadcn/ui** компоненты
+- **Tailwind CSS** для стилизации
+- **TypeScript** для типизации
+
+## Кастомизация
+
+### Создание нового макета
+
 ```tsx
-import { DocsLayout } from '@lnd/ui/templates'
+import { BaseLayout, BaseLayoutProps } from './base/BaseLayout'
 
-export default function DocumentationPage() {
-  const tableOfContents = [
-    { id: 'introduction', title: 'Introduction', level: 1 },
-    { id: 'getting-started', title: 'Getting Started', level: 2 }
-  ]
-
+export const CustomLayout: React.FC<BaseLayoutProps> = ({ children, ...props }) => {
   return (
-    <DocsLayout 
-      title="API Documentation"
-      description="Complete API reference guide"
-      tableOfContents={tableOfContents}
-    >
-      <div className="prose prose-lg">
-        <h2 id="introduction">Introduction</h2>
-        <p>Your documentation content here...</p>
-      </div>
-    </DocsLayout>
+    <BaseLayout layout="custom" {...props}>
+      {/* Ваша кастомная структура */}
+      {children}
+    </BaseLayout>
   )
 }
 ```
 
-**Features:**
-- Configurable navigation sidebar
-- Built-in search functionality
-- Breadcrumb navigation
-- Reading progress indicator
-- Table of contents
-- Mobile-responsive design
-- All features configurable through site.config.json
+### Расширение существующего макета
 
-## Usage Guidelines
-
-### When to Use ContentLayout
-- ✅ Blog posts and articles
-- ✅ Documentation pages
-- ✅ Marketing and landing pages
-- ✅ Static content pages
-- ✅ SEO-critical pages
-
-### When to Use ApplicationLayout
-- ✅ User dashboards
-- ✅ Forms and interactive components
-- ✅ Data visualization pages
-- ✅ Real-time content
-- ✅ Stateful applications
-
-### When to Use CollectionLayout
-- ✅ Blog post listings
-- ✅ Product catalogs
-- ✅ Search results
-- ✅ Category pages
-- ✅ Archive pages
-
-### When to Use DocsLayout
-- ✅ API documentation
-- ✅ User guides and tutorials
-- ✅ Technical specifications
-- ✅ Knowledge bases
-- ✅ Developer documentation
-- ✅ Help centers
-
-## Migration Guide
-
-### From Generic Layouts to Specialized Layouts
-
-**Before:**
 ```tsx
-// All pages used the same layout
+import { SidebarLeftLayout, SidebarLeftLayoutProps } from './layouts'
+
+export const ExtendedSidebarLayout: React.FC<SidebarLeftLayoutProps> = (props) => {
+  return (
+    <SidebarLeftLayout
+      {...props}
+      sidebarContent={<CustomSidebarContent />}
+      showFooter={false}
+    />
+  )
+}
+```
+
+## Демо
+
+Запустите демо-страницу для интерактивного изучения всех макетов:
+
+```tsx
+import { LayoutDemo } from '@your-org/ui'
+
+function App() {
+  return <LayoutDemo />
+}
+```
+
+## Миграция
+
+Для миграции с существующих макетов:
+
+1. Замените `PublicLayout` на `LayoutRenderer`
+2. Укажите соответствующий `layout` и `pageType`
+3. Перенесите контент в `children`
+4. Обновите импорты
+
+```tsx
+// Было
+import { PublicLayout } from './templates'
+
+// Стало
+import { LayoutRenderer } from '@your-org/ui'
+
+// Было
 <PublicLayout>
-  <div className="container mx-auto px-4 py-8">
-    <h1>{title}</h1>
-    <div>{content}</div>
-  </div>
+  <Content />
 </PublicLayout>
+
+// Стало
+<LayoutRenderer layout="sidebar-both" pageType="documentation">
+  <Content />
+</LayoutRenderer>
 ```
 
-**After:**
-```tsx
-// Content-driven page
-<ContentLayout title={title} description={description}>
-  {content}
-</ContentLayout>
+## Производительность
 
-// Application-driven page  
-<ApplicationLayout title={title} description={description}>
-  {interactiveContent}
-</ApplicationLayout>
+- Ленивая загрузка макетов
+- Мемоизация конфигурации
+- Оптимизированные CSS-переменные
+- Минимальный JavaScript бандл
 
-// Documentation page
-<DocsLayout title={title} description={description} tableOfContents={toc}>
-  {documentationContent}
-</DocsLayout>
-```
+## Поддержка
 
-## Performance Considerations
-
-### ContentLayout
-- Optimized for static generation
-- Minimal JavaScript bundle
-- Fast First Contentful Paint (FCP)
-- SEO-friendly structure
-
-### ApplicationLayout
-- Supports code splitting
-- Client-side hydration ready
-- State management integration
-- Interactive component support
-
-### DocsLayout
-- Configurable through site.config.json
-- Lazy loading of navigation items
-- Efficient search indexing
-- Mobile-optimized interactions
-
-## Best Practices
-
-1. **Choose the right layout** based on page type and requirements
-2. **Use ContentLayout** for static, SEO-critical content
-3. **Use ApplicationLayout** for dynamic, interactive features
-4. **Use DocsLayout** for comprehensive documentation with navigation
-5. **Configure features** through site.config.json for DocsLayout
-6. **Keep layouts focused** on their specific use cases
-7. **Test performance** with each layout type
-8. **Document layout choices** in your project
-
-## Examples
-
-See the `/examples` directory for complete implementation examples of each layout type.
+Система поддерживает:
+- Next.js 14+
+- React 18+
+- TypeScript 5+
+- Tailwind CSS 3+
+- Все современные браузеры

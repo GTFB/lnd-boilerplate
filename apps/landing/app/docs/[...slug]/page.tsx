@@ -1,11 +1,12 @@
 import { PublicLayout } from '@lnd/ui/templates'
 import { SiteConfigProvider } from '@lnd/ui/providers/SiteConfigProvider'
-import { getDocsPage, getDocsMeta, docsMetaToNavigation } from '@lnd/utils/content/server'
+import { getDocsPage } from '@lnd/utils/content/server'
 import { generateMetadata as generateSEOMetadata } from '@lnd/utils/seo/metadata'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { HeadingWithLink, CodeBlock, InlineCode, EnhancedLink, TocUpdater } from '@lnd/ui'
 import type { Viewport } from 'next'
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 
 interface DocsPageProps {
   params: {
@@ -79,9 +80,6 @@ export default async function DocsPage({ params }: DocsPageProps) {
     notFound()
   }
 
-  const meta = await getDocsMeta()
-  const navigationItems = docsMetaToNavigation(meta)
-  
   // Generate table of contents from content
   const toc = page.content
     .split('\n')
@@ -151,8 +149,9 @@ export default async function DocsPage({ params }: DocsPageProps) {
                 }
                 return <input type={type} {...props} />
               },
-              img: ({ src, alt, ...props }) => {
-                return <img src={src} alt={alt} className="rounded-lg shadow-sm max-w-full h-auto mb-6" {...props} />
+              img: ({ src, alt }) => {
+                if (!src) return null
+                return <Image src={src} alt={alt || ''} className="rounded-lg shadow-sm max-w-full h-auto mb-6" width={800} height={600} />
               }
             }}
           />

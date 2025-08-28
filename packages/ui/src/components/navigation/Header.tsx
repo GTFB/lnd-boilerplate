@@ -26,8 +26,20 @@ export function Header({ className }: HeaderProps) {
 
   // Navigation items from site.config.json (simple menu)
   const navigationItems = (() => {
-    const blogPath = siteConfig?.getFeatureConfig('blog')?.path ?? '/blog'
-    const docsPath = siteConfig?.getFeatureConfig('documentation')?.path ?? '/docs'
+    if (!siteConfig) {
+      // Fallback navigation items when siteConfig is not loaded yet
+      return [
+        { name: 'Home', href: '/' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Docs', href: '/docs' },
+        { name: 'Experts', href: '/experts' },
+        { name: 'Legal', href: '/legal' },
+        { name: 'Contacts', href: '/contact' }
+      ]
+    }
+    
+    const blogPath = siteConfig.getFeatureConfig('blog')?.path ?? '/blog'
+    const docsPath = siteConfig.getFeatureConfig('documentation')?.path ?? '/docs'
     return [
       { name: 'Home', href: '/' },
       { name: 'Blog', href: blogPath },
@@ -36,7 +48,7 @@ export function Header({ className }: HeaderProps) {
       { name: 'Legal', href: '/legal' },
       { name: 'Contacts', href: '/contact' }
     ]
-  })()
+  })() || []
 
   // Log search loading state for debugging
   useEffect(() => {
@@ -80,7 +92,7 @@ export function Header({ className }: HeaderProps) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              {navigationItems.map((item) => (
+              {navigationItems?.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -135,7 +147,7 @@ export function Header({ className }: HeaderProps) {
           {isMobileMenuOpen && (
             <div className="md:hidden border-t border-border/40">
               <nav className="py-4 space-y-2">
-                {navigationItems.map((item) => (
+                {navigationItems?.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}

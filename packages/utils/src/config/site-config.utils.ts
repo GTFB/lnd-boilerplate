@@ -239,12 +239,12 @@ export class SiteConfigManager {
         base: deploymentConfig.base,
       },
       'build.environment': deploymentConfig.environment,
-      redirects: deploymentConfig.redirects.map(r => ({
+      redirects: deploymentConfig.redirects.map((r: any) => ({
         from: r.from,
         to: r.to,
         status: r.status,
       })),
-      headers: deploymentConfig.headers.map(h => ({
+      headers: deploymentConfig.headers.map((h: any) => ({
         for: h.for,
         values: h.values,
       })),

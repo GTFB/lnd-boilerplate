@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: ExpertPageProps) {
     title: `${expert.name} - ${expert.title} - LND Boilerplate`,
     description: expert.bio,
     keywords: expert.expertise,
-    type: 'profile',
+    type: 'article',
     url: `https://lnd-boilerplate.com/experts/${params.id}`
   }, {
     siteName: 'LND Boilerplate',
