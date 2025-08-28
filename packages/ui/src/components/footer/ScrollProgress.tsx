@@ -196,14 +196,20 @@ export const ScrollProgress: React.FC<ScrollProgressProps> = ({
         </div>
       )}
 
-      {/* Scroll Buttons */}
+      {/* Scroll Buttons with smooth visibility */}
       {showScrollButtons && (
-        <div className="absolute right-4 top-4 space-y-2">
+        <div className={`absolute right-4 top-4 space-y-2 transition-all duration-300 ease-out transform ${
+          scrollProgress > 10 
+            ? 'opacity-100 translate-x-0 scale-100' 
+            : 'opacity-0 translate-x-4 scale-95 pointer-events-none'
+        }`}>
           <Button
             variant="secondary"
             size="sm"
             onClick={scrollToTop}
-            className="h-8 w-8 p-0 shadow-lg"
+            className={`h-8 w-8 p-0 shadow-lg transition-all duration-300 ease-out hover:scale-110 hover:shadow-xl ${
+              scrollProgress > 10 ? 'delay-0' : 'delay-100'
+            }`}
             title="Scroll to top"
           >
             <ChevronUp className="h-4 w-4" />
@@ -213,7 +219,9 @@ export const ScrollProgress: React.FC<ScrollProgressProps> = ({
             variant="secondary"
             size="sm"
             onClick={scrollUp}
-            className="h-8 w-8 p-0 shadow-lg"
+            className={`h-8 w-8 p-0 shadow-lg transition-all duration-300 ease-out hover:scale-110 hover:shadow-xl ${
+              scrollProgress > 10 ? 'delay-75' : 'delay-150'
+            }`}
             title="Scroll up"
           >
             <ChevronUp className="h-4 w-4" />
@@ -223,7 +231,9 @@ export const ScrollProgress: React.FC<ScrollProgressProps> = ({
             variant="secondary"
             size="sm"
             onClick={scrollDown}
-            className="h-8 w-8 p-0 shadow-lg"
+            className={`h-8 w-8 p-0 shadow-lg transition-all duration-300 ease-out hover:scale-110 hover:shadow-xl ${
+              scrollProgress > 10 ? 'delay-150' : 'delay-200'
+            }`}
             title="Scroll down"
           >
             <ChevronDown className="h-4 w-4" />
@@ -233,7 +243,9 @@ export const ScrollProgress: React.FC<ScrollProgressProps> = ({
             variant="secondary"
             size="sm"
             onClick={scrollToBottom}
-            className="h-8 w-8 p-0 shadow-lg"
+            className={`h-8 w-8 p-0 shadow-lg transition-all duration-300 ease-out hover:scale-110 hover:shadow-xl ${
+              scrollProgress > 10 ? 'delay-200' : 'delay-300'
+            }`}
             title="Scroll to bottom"
           >
             <ChevronDown className="h-4 w-4" />

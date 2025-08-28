@@ -1,30 +1,11 @@
+"use client"
+
 import { CollectionLayout } from '@lnd/ui/templates'
 import { ProductList } from '@lnd/ui/components/ecommerce'
-import { getExperts } from '@lnd/utils/content/server'
-import { generateMetadata } from '@lnd/utils/seo/metadata'
-import type { Viewport } from 'next'
 
-// Generate SEO metadata for the experts page
-export const metadata = generateMetadata({
-  title: 'Our Experts - LND Boilerplate',
-  description: 'Meet our team of experienced developers, designers, and architects who built LND Boilerplate.',
-  keywords: ['experts', 'team', 'developers', 'designers', 'architects'],
-  type: 'website',
-  url: 'https://lnd-boilerplate.com/experts'
-}, {
-  siteName: 'LND Boilerplate',
-  siteUrl: 'https://lnd-boilerplate.com'
-})
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
-
-export default async function ExpertsPage() {
-  const experts = await getExperts()
+export default function ExpertsPage() {
+  // Mock data for now since we can't use server functions in client components
+  const experts: any[] = []
   
   // Transform expert data to ProductList format
   const normalizedExperts = experts.map(expert => ({

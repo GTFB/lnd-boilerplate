@@ -94,3 +94,6 @@ export interface SiteConfig {
 export type DesignSystemName = 'lora' | 'alisa'
 export type LayoutName = 'single-column' | 'sidebar-left' | 'sidebar-right' | 'sidebar-both'
 export type PageTypeName = 'documentation' | 'blogPost' | 'landingPage'
+
+// Re-export design system types
+export type { DesignSystemName } from './design-systems'

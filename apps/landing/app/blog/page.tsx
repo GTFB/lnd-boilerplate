@@ -1,31 +1,11 @@
+"use client"
+
 import { CollectionLayout } from '@lnd/ui/templates'
 import { ProductList } from '@lnd/ui/components/ecommerce'
-import { getBlogPosts } from '@lnd/utils/content/server'
-import { generateMetadata } from '@lnd/utils/seo/metadata'
 
-import type { Viewport } from 'next'
-
-// Generate SEO metadata for the blog page
-export const metadata = generateMetadata({
-  title: 'Blog - LND Boilerplate',
-  description: 'Latest articles, tutorials, and insights about web development and the LND Boilerplate.',
-  keywords: ['blog', 'web development', 'tutorials', 'insights', 'LND Boilerplate'],
-  type: 'website',
-  url: 'https://lnd-boilerplate.com/blog'
-}, {
-  siteName: 'LND Boilerplate',
-  siteUrl: 'https://lnd-boilerplate.com'
-})
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
-
-export default async function BlogPage() {
-  const blogPosts = await getBlogPosts()
+export default function BlogPage() {
+  // Mock data for now since we can't use server functions in client components
+  const blogPosts: any[] = []
   
   // Transform MDX files to ProductList format
   const normalizedPosts = blogPosts.map(post => ({

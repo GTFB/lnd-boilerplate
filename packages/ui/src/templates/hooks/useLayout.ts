@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useMemo } from 'react'
 import { ConfigManager } from '../../config'
 import { LayoutName, PageTypeName } from '../../types'

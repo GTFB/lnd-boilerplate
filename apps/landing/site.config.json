@@ -16,7 +16,7 @@
     "timezone": "UTC"
   },
   "global": {
-    "maxWidth": "xl",
+    "maxWidth": "1480px",
     "primaryColor": "#1a365d",
     "secondaryColor": "#2d3748",
     "accentColor": "#3182ce"

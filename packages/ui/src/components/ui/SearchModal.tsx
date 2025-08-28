@@ -1,29 +1,44 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { cn } from '../../lib/utils'
-import { simpleSearch, type SearchDocument } from '@lnd/utils/search/client'
+import React, { useState, useEffect, useRef } from 'react'
+import { Button } from './button'
+import { Input } from './input'
 
 export interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
-  documents: SearchDocument[]
-  isLoading?: boolean
 }
 
-export function SearchModal({ isOpen, onClose, documents, isLoading = false }: SearchModalProps) {
+export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<ReturnType<typeof simpleSearch>>([])
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [results, setResults] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [shouldRender, setShouldRender] = useState(false)
+  const [isAnimated, setIsAnimated] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const modalRef = useRef<HTMLDivElement>(null)
 
+  // Handle delayed rendering for smooth animations
   useEffect(() => {
     if (isOpen) {
-      inputRef.current?.focus()
-      setQuery('')
-      setResults([])
-      setSelectedIndex(0)
+      setShouldRender(true)
+      // Запускаем анимацию через микротаск для правильного рендера
+      const timer = setTimeout(() => setIsAnimated(true), 10)
+      return () => clearTimeout(timer)
+    } else {
+      setIsAnimated(false)
+      // Delay hiding to allow close animation
+      const timer = setTimeout(() => setShouldRender(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      // Delay focus to allow animation to start
+      const timer = setTimeout(() => {
+        inputRef.current?.focus()
+      }, 300)
+      return () => clearTimeout(timer)
     }
   }, [isOpen])
 
@@ -34,179 +49,171 @@ export function SearchModal({ isOpen, onClose, documents, isLoading = false }: S
       }
     }
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return
-
-      switch (e.key) {
-        case 'ArrowDown':
-          e.preventDefault()
-          setSelectedIndex(prev => Math.min(prev + 1, results.length - 1))
-          break
-        case 'ArrowUp':
-          e.preventDefault()
-          setSelectedIndex(prev => Math.max(prev - 1, 0))
-          break
-        case 'Enter':
-          e.preventDefault()
-          if (results[selectedIndex]) {
-            window.location.href = results[selectedIndex].document.url || '/'
-            onClose()
-          }
-          break
-      }
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.classList.add('modal-open')
+    } else {
+      document.body.classList.remove('modal-open')
     }
-
-    document.addEventListener('keydown', handleEscape)
-    document.addEventListener('keydown', handleKeyDown)
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
-      document.removeEventListener('keydown', handleKeyDown)
+      document.body.classList.remove('modal-open')
     }
-  }, [isOpen, onClose, results, selectedIndex])
+  }, [isOpen, onClose])
 
-  useEffect(() => {
-    if (query.trim()) {
-      console.log('Searching for:', query)
-      console.log('Available documents:', documents)
-      const searchResults = simpleSearch(documents, query, { limit: 10, highlight: true })
-      console.log('Search results:', searchResults)
-      setResults(searchResults)
-      setSelectedIndex(0)
-    } else {
+  const handleSearch = async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
       setResults([])
+      return
     }
-  }, [query, documents])
 
-  const handleResultClick = (result: typeof results[0]) => {
-    if (result.document.url) {
-      window.location.href = result.document.url
-    }
+    setIsLoading(true)
+    
+    // Mock search results - replace with actual search implementation
+    setTimeout(() => {
+      const mockResults = [
+        { id: 1, title: 'Getting Started', url: '/docs/getting-started', type: 'Documentation', excerpt: 'Quick start guide for LND Boilerplate...' },
+        { id: 2, title: 'Installation Guide', url: '/docs/installation', type: 'Documentation', excerpt: 'Step-by-step installation instructions...' },
+        { id: 3, title: 'Configuration', url: '/docs/configuration', type: 'Documentation', excerpt: 'Configure your project settings...' },
+        { id: 4, title: 'Blog Post Example', url: '/blog/example', type: 'Blog', excerpt: 'An example blog post about web development...' }
+      ].filter(result => 
+        result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        result.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      
+      setResults(mockResults)
+      setIsLoading(false)
+    }, 300)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    handleSearch(query)
+  }
+
+  const handleResultClick = (result: any) => {
+    // Navigate to result
+    window.location.href = result.url
     onClose()
   }
 
-  if (!isOpen) return null
+  if (!shouldRender) return null
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex min-h-screen items-start justify-center p-4">
-        {/* Backdrop */}
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
-          onClick={onClose}
-        />
-
-        {/* Modal */}
-        <div
-          ref={modalRef}
-          className="relative w-full max-w-2xl bg-background border border-border rounded-lg shadow-xl"
+    <div className="search-modal">
+      {/* Overlay with backdrop blur and animation */}
+      <div 
+        className={`fixed inset-0 bg-background/20 backdrop-blur-md z-50 transition-all ease-out ${
+          isAnimated ? 'opacity-100 duration-500' : 'opacity-0 duration-300'
+        }`}
+        onClick={onClose}
+      />
+      
+      {/* Modal with smooth animations */}
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4" onClick={onClose}>
+        <div 
+          className={`bg-background rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden transition-all ease-out transform ${
+            isAnimated 
+              ? 'opacity-100 scale-100 translate-y-0 duration-500 delay-100' 
+              : 'opacity-0 scale-90 -translate-y-8 duration-300'
+          }`}
+          onClick={(e) => e.stopPropagation()}
         >
-          {/* Search Input */}
-          <div className="p-4 border-b border-border">
-            <div className="relative">
-              <svg
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-lg font-semibold">Search</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="p-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Search the site... (Ctrl+K)"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 text-lg border-0 focus:ring-0 focus:outline-none bg-transparent text-foreground placeholder-muted-foreground"
-              />
-              {query && (
-                <button
-                  onClick={() => setQuery('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-accent rounded"
-                >
-                  <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
+            </Button>
           </div>
 
-          {/* Search Results */}
-          <div className="max-h-96 overflow-y-auto">
-            {query && results.length > 0 ? (
-              <div className="p-2">
-                {results.map((result, index) => (
-                  <div
-                    key={result.id}
-                    onClick={() => handleResultClick(result)}
-                    className={cn(
-                      'p-3 rounded-lg cursor-pointer transition-colors',
-                      'hover:bg-accent',
-                      index === selectedIndex && 'bg-accent'
-                    )}
-                  >
-                    <div className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 mt-1">
-                        <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-foreground mb-1">
-                          {result.document.title}
-                        </h4>
-                        {result.document.excerpt && (
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {result.document.excerpt}
-                          </p>
-                        )}
-                        {result.document.url && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {result.document.url}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : isLoading ? (
-              <div className="p-8 text-center text-muted-foreground">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-lg font-medium">Loading content...</p>
-                <p className="text-sm">Indexing MDX files for search</p>
-              </div>
-            ) : query ? (
-              <div className="p-8 text-center text-muted-foreground">
-                <svg className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
-                </svg>
-                <p className="text-lg font-medium">No results found</p>
-                <p className="text-sm">Try adjusting your search terms</p>
-              </div>
-            ) : (
-              <div className="p-8 text-center text-muted-foreground">
-                <svg className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* Search Input */}
+          <div className="p-4 border-b">
+            <form onSubmit={handleSubmit}>
+              <div className="relative">
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="Search documentation, blog posts, and more..."
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value)
+                    handleSearch(e.target.value)
+                  }}
+                  className="w-full pl-10"
+                />
+                <svg 
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <p className="text-lg font-medium">Search the site</p>
-                <p className="text-sm">Type to start searching through {documents.length} documents...</p>
+              </div>
+            </form>
+          </div>
+
+          {/* Results */}
+          <div className="flex-1 overflow-y-auto max-h-96">
+            {isLoading ? (
+              <div className="p-4 text-center text-muted-foreground">
+                <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                Searching...
+              </div>
+            ) : results.length > 0 ? (
+              <div className="divide-y">
+                {results.map((result) => (
+                  <button
+                    key={result.id}
+                    onClick={() => handleResultClick(result)}
+                    className="w-full text-left p-4 hover:bg-accent transition-colors"
+                  >
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          {result.type}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-foreground truncate">
+                          {result.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                          {result.excerpt}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {result.url}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : query ? (
+              <div className="p-4 text-center text-muted-foreground">
+                No results found for "{query}"
+              </div>
+            ) : (
+              <div className="p-4 text-center text-muted-foreground">
+                Start typing to search...
               </div>
             )}
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border text-xs text-muted-foreground">
-            <div className="flex justify-between items-center">
-              <span>Use ↑↓ to navigate, Enter to select, Esc to close</span>
-              <span>Ctrl+K to open</span>
+          <div className="p-4 border-t bg-muted/50">
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Press Esc to close</span>
+              <span>Use ↑↓ to navigate, Enter to select</span>
             </div>
           </div>
         </div>

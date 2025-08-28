@@ -1,25 +1,6 @@
+"use client"
+
 import { PublicLayout } from '@lnd/ui/templates'
-import { generateMetadata } from '@lnd/utils/seo/metadata'
-import type { Viewport } from 'next'
-
-// Generate SEO metadata for the contact page
-export const metadata = generateMetadata({
-  title: 'Contact Us - LND Boilerplate',
-  description: 'Get in touch with our team. We&apos;d love to hear from you and help with your project.',
-  keywords: ['contact', 'support', 'help', 'inquiry'],
-  type: 'website',
-  url: 'https://lnd-boilerplate.com/contact'
-}, {
-  siteName: 'LND Boilerplate',
-  siteUrl: 'https://lnd-boilerplate.com'
-})
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
 
 export default function ContactPage() {
   return (

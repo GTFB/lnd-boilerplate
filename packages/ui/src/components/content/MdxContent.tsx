@@ -24,50 +24,50 @@ export interface MdxContentProps {
 // Компоненты для MDX
 const MdxComponents = {
   // Заголовки
-  h1: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h1: ({ children, id, className, ...props }: any) => (
     <h1 
       className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 mt-8 first:mt-0" 
-      {...props}
+      id={id}
     >
       {children}
     </h1>
   ),
-  h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h2: ({ children, id, className, ...props }: any) => (
     <h2 
       className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mt-8 mb-4" 
-      {...props}
+      id={id}
     >
       {children}
     </h2>
   ),
-  h3: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h3: ({ children, id, className, ...props }: any) => (
     <h3 
       className="scroll-m-20 text-2xl font-semibold tracking-tight mt-6 mb-4" 
-      {...props}
+      id={id}
     >
       {children}
     </h3>
   ),
-  h4: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h4: ({ children, id, className, ...props }: any) => (
     <h4 
       className="scroll-m-20 text-xl font-semibold tracking-tight mt-4 mb-3" 
-      {...props}
+      id={id}
     >
       {children}
     </h4>
   ),
-  h5: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h5: ({ children, id, className, ...props }: any) => (
     <h5 
       className="scroll-m-20 text-lg font-semibold tracking-tight mt-4 mb-2" 
-      {...props}
+      id={id}
     >
       {children}
     </h5>
   ),
-  h6: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  h6: ({ children, id, className, ...props }: any) => (
     <h6 
       className="scroll-m-20 text-base font-semibold tracking-tight mt-4 mb-2" 
-      {...props}
+      id={id}
     >
       {children}
     </h6>
@@ -291,7 +291,7 @@ export const MdxContent: React.FC<MdxContentProps> = ({
   const { currentSystem } = useDesignSystem()
 
   return (
-    <div className={`prose prose-gray dark:prose-invert max-w-none ${className}`}>
+    <div className={`max-w-none w-full ${className}`} style={{ width: '100%', maxWidth: 'none' }}>
       {/* Прогресс бар */}
       {showProgressBar && (
         <div className="fixed top-0 left-0 w-full h-1 bg-muted z-50">
@@ -304,7 +304,7 @@ export const MdxContent: React.FC<MdxContentProps> = ({
       )}
 
       {/* Основной контент */}
-      <div className="mdx-content">
+      <div className="mdx-content w-full" style={{ width: '100%', maxWidth: 'none' }}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
             return React.cloneElement(child, {

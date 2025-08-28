@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { Header } from '../components/navigation'
-import { Footer } from '../components/navigation'
-import { UISidebarProvider } from '../components/ui/index'
+import { Header } from '../components/layout/Header'
+import { Footer } from '../components/layout/Footer'
+
 import { DocsSidebar } from '../components/docs'
 import { useSidebar } from '../contexts/SidebarContext'
 import { PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
@@ -17,6 +17,9 @@ interface PublicLayoutProps {
 const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
   const pathname = usePathname()
   const [readingProgress, setReadingProgress] = useState(0)
+  
+  // FORCE RENDER DEBUG
+  console.log('🔥 PublicLayout RENDERED with pathname:', pathname)
   const {
     isSidebarOpen,
     setIsSidebarOpen,
@@ -34,6 +37,16 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
 
   // Check if current page should show sidebar
   const shouldShowSidebar = pathname.startsWith('/docs')
+  
+  // Debug log
+  console.log('PublicLayout Debug:', { 
+    pathname, 
+    shouldShowSidebar, 
+    navigationItemsLength: navigationItems.length,
+    tableOfContentsLength: tableOfContents.length,
+    navigationItems: navigationItems.slice(0, 2), // Show first 2 items
+    tableOfContents: tableOfContents.slice(0, 3) // Show first 3 headings
+  })
 
   // Real-time search on input change
   useEffect(() => {
@@ -305,60 +318,72 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
   }, [shouldShowSidebar])
 
   const renderTableOfContents = () => {
-    // Dynamically get headings from the page instead of relying on context
-    const headings = typeof document !== 'undefined' 
-      ? Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
-          .filter(heading => heading.id) // Only headings with IDs
-          .map(heading => ({
-            title: heading.textContent || '',
-            url: `#${heading.id}`,
-            depth: parseInt(heading.tagName.charAt(1)) // h1=1, h2=2, etc.
-          }))
-      : []
-    
+    // Use TOC from context (set by TocUpdater) or fallback to DOM scanning
+    const headings = tableOfContents.length > 0
+      ? tableOfContents.map(h => ({
+          title: h.title,
+          url: `#${h.id}`,
+          depth: h.level
+        }))
+      : (typeof document !== 'undefined'
+          ? Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+              .filter(heading => heading.id) // Only headings with IDs
+              .map(heading => ({
+                title: heading.textContent || '',
+                url: `#${heading.id}`,
+                depth: parseInt(heading.tagName.charAt(1)) // h1=1, h2=2, etc.
+              }))
+          : [])
+
     if (headings.length === 0) {
-      return null
+      return (
+        <div className="space-y-2 pt-0">
+          <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
+          <p className="text-xs text-muted-foreground">No headings found</p>
+        </div>
+      )
     }
 
-                                       return (
-         <div className="space-y-2 pt-0">
-           <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
-           <nav>
-             {headings.map((item, index) => {
-               const elementId = item.url.replace('#', '')
-               const isActive = activeTocId === elementId
-               
-               return (
-                 <a
-                   key={index}
-                   href={item.url}
-                   onClick={(e) => {
-                     e.preventDefault()
-                     const element = document.getElementById(elementId)
-                     if (element) {
-                       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                     }
-                   }}
-                   className={`block text-[0.8rem] no-underline transition-all duration-200 cursor-pointer text-left relative h-7 border-l border-muted-foreground/20 flex items-center whitespace-nowrap ${
-                     isActive 
-                       ? 'text-foreground font-medium border-black' 
-                       : 'text-muted-foreground hover:text-foreground'
-                   } ${
-                     item.depth === 1 ? 'pl-4 hover:pl-6' : item.depth === 2 ? 'pl-6 hover:pl-8' : 'pl-8 hover:pl-10'
-                   }`}
-                 >
-                   {item.title}
-                 </a>
-               )
-             })}
-           </nav>
-         </div>
-       )
+    return (
+      <div className="space-y-2 pt-0">
+        <h3 className="text-sm font-semibold text-muted-foreground mb-2">On this page</h3>
+        <nav>
+          {headings.map((item, index) => {
+            const elementId = item.url.replace('#', '')
+            const isActive = activeTocId === elementId
+
+            return (
+              <a
+                key={index}
+                href={item.url}
+                onClick={(e) => {
+                  e.preventDefault()
+                  const element = document.getElementById(elementId)
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className={`block text-[0.8rem] no-underline transition-all duration-200 cursor-pointer text-left relative h-7 border-l border-muted-foreground/20 flex items-center whitespace-nowrap ${
+                  isActive
+                    ? 'text-foreground font-medium border-black'
+                    : 'text-muted-foreground hover:text-foreground'
+                } ${
+                  item.depth === 1 ? 'pl-4 hover:pl-6' : item.depth === 2 ? 'pl-6 hover:pl-8' : 'pl-8 hover:pl-10'
+                }`}
+              >
+                {item.title}
+              </a>
+            )
+          })}
+        </nav>
+      </div>
+    )
   }
 
-  if (shouldShowSidebar) {
+    // Always force show sidebar for debugging
+    if (true) {
     return (
-                        <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col">
         {/* Reading progress bar */}
         <div className="fixed bottom-0 start-0 w-full h-1 bg-muted z-50">
           <div 
@@ -369,73 +394,68 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
         
         <Header />
         
-
-        
-         {/* Main content area with proper spacing */}
-         <div className="flex-1 container mx-auto px-2 lg:px-4 py-8">
-           <UISidebarProvider>
-             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-               
-                               {/* Sidebar Column - Left */}
-                <aside className={`${
-                  isSidebarOpen 
-                    ? 'lg:col-span-3' 
-                    : 'lg:col-span-0 overflow-hidden'
-                } transition-all duration-300 ease-in-out`}>
-                  <div className="sticky top-24 w-full max-w-80 h-fit flex flex-col">
-                    {/* Sidebar Content with scrollable area */}
-                    <div className="max-h-[300px] lg:max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide bg-sidebar-background rounded-lg pb-4 pl-0 relative">
+        {/* Main content area - Fixed container with 3-column grid */}
+        <div className="flex-1">
+          <div className="mx-auto max-w-1480 px-5 py-5">
+            <div className="grid grid-cols-12 gap-5">
+              
+              {/* Left Sidebar - Column 1-3 */}
+              <aside className="col-span-3" style={{backgroundColor: 'red', minHeight: '200px'}}>
+                <div className="sticky top-24 bg-white rounded-lg p-4 shadow-sm">
+                  <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+                    {navigationItems.length > 0 ? (
                       <DocsSidebar 
                         tree={sidebarTree} 
                         searchComponent={searchComponent}
                       />
-                      {/* Horizontal gradient overlay at right */}
-                      <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-white via-white/95 to-transparent pointer-events-none z-10" />
-                    </div>
-                    {/* Gradient overlay at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none z-10" />
+                    ) : (
+                      <div>
+                        <h3 className="font-semibold text-sm text-gray-900 mb-4">Documentation</h3>
+                        <div className="space-y-2">
+                          <a href="/docs/introduction" className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">Introduction</a>
+                          <a href="/docs/installation" className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">Installation</a>
+                          <a href="/docs/getting-started/quick-start" className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">Quick Start</a>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </aside>
-               
-                               {/* Main Content Column - Center */}
-                <main className={`transition-all duration-300 ease-in-out ${
-                  !isSidebarOpen 
-                    ? 'lg:col-span-12 pl-0 ml-0 pr-80' 
-                    : 'px-4 lg:col-span-9 xl:col-span-9 2xl:col-span-9 pr-80'
-                }`}>
+                </div>
+              </aside>
+              
+              {/* Main Content - Column 4-9 */}
+              <main className="col-span-6">
+                <div className="bg-white rounded-lg p-6 shadow-sm">
                   {renderBreadcrumbs()}
-                  <div 
-                    className="[&>*]:!max-w-none [&>*]:!mx-0 [&_.max-w-4xl]:!max-w-none [&_.mx-auto]:!mx-0"
-                    style={{
-                      '--tw-max-w': 'none',
-                      '--tw-mx': '0'
-                    } as React.CSSProperties}
-                  >
+                  <div className="prose prose-lg max-w-none">
                     {children}
                   </div>
-                </main>
-
-
-
-             </div>
-           </UISidebarProvider>
-           
-           {/* TOC - Fixed position outside grid, independent of sidebar */}
-           <aside className="hidden xl:block fixed right-4 top-24 w-80 z-40">
-             <div className="sticky top-24 h-fit flex flex-col">
-               {/* TOC Content with scrollable area */}
-               <div className="w-full max-w-80 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide pb-6 relative bg-sidebar-background rounded-lg">
-                 {renderTableOfContents()}
-                 {/* Horizontal gradient overlay at right */}
-                 <div className="absolute top-0 right-0 w-16 h-full bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none" />
-               </div>
-               {/* Gradient overlay at bottom */}
-               <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
-             </div>
-           </aside>
-         </div>
-         <Footer />
-       </div>
+                </div>
+              </main>
+              
+              {/* Right Sidebar (TOC) - Column 10-12 */}
+              <aside className="col-span-3" style={{backgroundColor: 'blue', minHeight: '200px'}}>
+                <div className="sticky top-24 bg-white rounded-lg p-4 shadow-sm">
+                  <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+                    {tableOfContents.length > 0 ? (
+                      renderTableOfContents()
+                    ) : (
+                      <div>
+                        <h3 className="font-semibold text-sm text-gray-900 mb-4">On this page</h3>
+                        <div className="space-y-2">
+                          <div className="text-xs text-gray-500">Table of contents will appear here</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </aside>
+              
+            </div>
+          </div>
+        </div>
+        
+        <Footer />
+      </div>
     )
   }
 

@@ -2,6 +2,539 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Предотвращаем горизонтальное переполнение */
+html, body {
+  overflow-x: auto; /* ИСПРАВЛЕНО: не блокируем sticky */
+  max-width: 100vw;
+}
+
+/* Глобальные sticky правила - должны быть в начале */
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+@media (min-width: 1024px) {
+  .left-sidebar > div:first-child,
+  .right-sidebar > div:first-child {
+    position: sticky !important;
+    top: 6rem !important;
+    z-index: 10 !important;
+  }
+}
+
+/* Контент тоже не должен переполняться - но без влияния на siblings */
+.content > * {
+  overflow-x: hidden !important;
+  min-width: 0 !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Убеждаемся что все элементы не выходят за viewport */
+*,
+*::before,
+*::after {
+  max-width: 100%;
+}
+
+/* Sidebar control styles like in template */
+#show-sidebar-btn { 
+  display: none; 
+}
+
+/* Default 3-column layout точно как в HTML шаблоне */
+.grid-container {
+  display: grid !important;
+  grid-template-columns: 280px 1fr 240px !important;
+  grid-template-areas: "left-sidebar content right-sidebar" !important;
+  gap: 0 1.25rem !important;
+  transition: grid-template-columns 0.4s ease-in-out !important;
+}
+
+.left-sidebar {
+  grid-area: left-sidebar !important;
+  transition: opacity 0.4s, transform 0.4s !important;
+}
+
+.content {
+  grid-area: content !important;
+  margin-left: -20px !important; /* компенсируем px-5 слева */
+  margin-right: -20px !important; /* компенсируем px-5 справа */
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  transition: margin-left 0.4s ease-in-out !important;
+}
+
+.right-sidebar {
+  grid-area: right-sidebar !important;
+  transition: all 0.4s ease-in-out !important;
+}
+
+/* Hidden sidebar: возвращаем как в макете */
+.grid-container.sidebar-hidden {
+  grid-template-columns: 0 1fr 240px !important;
+  gap: 0 0 !important;
+}
+
+.grid-container.sidebar-hidden .left-sidebar { 
+  opacity: 0 !important;
+  transform: translateX(-20px) !important;
+  pointer-events: none !important;
+}
+
+.grid-container.sidebar-hidden #show-sidebar-btn { 
+  display: inline-block !important; 
+}
+
+.grid-container.sidebar-hidden .content { 
+  margin-left: -20px !important; /* компенсируем px-5 слева */
+  margin-right: -20px !important; /* компенсируем px-5 справа */
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Hide scrollbars */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Предотвращаем переполнение в компонентах - НЕ на самих сайдбарах (ломает sticky) */
+.left-sidebar > *, .right-sidebar > * {
+  overflow-x: auto !important; /* ИСПРАВЛЕНО: не блокируем sticky */
+  min-width: 0 !important;
+}
+
+/* TOC и sidebar текст с обрезкой */
+.left-sidebar a, .right-sidebar a {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+}
+
+/* НЕ добавляем overflow на grid-container - это ломает sticky! */
+
+/* Исправляем sticky позиционирование */
+.sticky {
+  position: sticky !important;
+}
+
+/* КЛЮЧЕВЫЕ ИСПРАВЛЕНИЯ для sticky */
+/* Убираем overflow: hidden с всех родительских контейнеров */
+.min-h-screen, 
+.min-h-full,
+.h-screen,
+.h-full,
+html,
+body {
+  overflow: visible !important;
+  contain: none !important;
+  height: auto !important;
+}
+
+/* Обеспечиваем что grid-container не блокирует sticky */
+.grid-container {
+  min-height: 100vh !important;
+  contain: none !important;
+  overflow: visible !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Обеспечиваем что flex контейнеры не блокируют sticky */
+.flex,
+.flex-1,
+.flex-col,
+.flex-row {
+  overflow: visible !important;
+  contain: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Убираем все что может блокировать sticky, НО сохраняем offcanvas */
+*:not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]) {
+  contain: none !important;
+}
+
+/* Исключаем только нужные элементы из глобального сброса */
+*:not(.sticky):not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]):not([class*="transform"]):not([class*="transition"]):not([class*="bg-primary"]):not([class*="h-full"]):not(.scroll-progress-container):not(.scroll-progress-bar):not([class*="scroll-progress"]) {
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Обеспечиваем достаточную высоту контента для срабатывания sticky */
+.content {
+  min-height: 120vh !important; /* Уменьшаем до разумной высоты */
+}
+
+/* Обеспечиваем работу ScrollProgress Bar */
+[class*="fixed bottom-0 left-0"],
+.fixed.bottom-0.left-0.w-full,
+.fixed.bottom-0 {
+  position: fixed !important;
+  z-index: 60 !important;
+  transform: none !important;
+  contain: none !important;
+  filter: none !important;
+}
+
+/* ScrollProgress элементы - НЕ блокируем их анимации */
+.scroll-progress-container,
+.scroll-progress-bar,
+[class*="scroll-progress"] {
+  transform: none !important;
+  contain: none !important;
+  filter: none !important;
+  position: fixed !important;
+  z-index: 60 !important;
+}
+
+/* ScrollProgress внутренний элемент */
+[class*="h-full bg-primary"],
+[class*="bg-primary transition-all"],
+[style*="width:"] {
+  transform: none !important;
+  transition: width 0.3s ease-out !important;
+  contain: none !important;
+  filter: none !important;
+}
+
+/* Тестовый элемент удален - sticky работает! */
+
+/* Фиксим сайдбары для sticky */
+.left-sidebar, .right-sidebar {
+  overflow: visible !important;
+  contain: none !important;
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
+/* ПРИНУДИТЕЛЬНО делаем элементы sticky */
+.left-sidebar > div, .right-sidebar > div {
+  position: sticky !important;
+  top: 6rem !important;
+  z-index: 10 !important;
+}
+
+/* Header принудительно sticky - МАКСИМАЛЬНО СПЕЦИФИЧНО */
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Все возможные селекторы для header */
+.sticky.top-0,
+nav.sticky,
+header.sticky,
+[data-sticky],
+.header-sticky {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Специфичные селекторы для сайдбаров */
+.left-sidebar .sticky,
+.right-sidebar .sticky,
+aside .sticky,
+.left-sidebar > .sticky,
+.right-sidebar > .sticky {
+  position: sticky !important;
+  top: 6rem !important;
+  z-index: 10 !important;
+}
+
+/* Offcanvas анимации и стили */
+.offcanvas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  background: hsl(var(--background));
+  border-left: 1px solid hsl(var(--border));
+  z-index: 2000;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -4px 0 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.offcanvas-content {
+  padding: 1.5rem;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* Добавляем flex направление к новому offcanvas-menu */
+.offcanvas-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Активные состояния с улучшенными анимациями */
+.offcanvas-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.offcanvas-menu.is-open {
+  transform: translateX(0);
+}
+
+/* Старые стили удалены - используем новые выше */
+
+/* Блокировка скролла body при открытом офканвасе */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Блокировка скролла для модалов (без blur) */
+body.modal-open {
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+/* Улучшение отступов для контента */
+.content-header {
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.content-header .breadcrumbs {
+  line-height: 16px; /* Совпадает с высотой иконки */
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.content h1, .content h2 {
+  margin-top: 0 !important;
+}
+
+.content .prose h1:first-child, 
+.content .prose h2:first-child,
+.content h1:first-child,
+.content h2:first-child {
+  margin-top: 0 !important;
+}
+
+/* Desktop: скрываем mobile иконки и восстанавливаем sticky */
+@media (min-width: 1024px) {
+  .mobile-show {
+    display: none !important;
+  }
+  
+  .mobile-hide {
+    display: inline-block !important;
+  }
+  
+  /* Принудительно восстанавливаем sticky на десктопе */
+  header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+  }
+  
+  .left-sidebar > div,
+  .right-sidebar > div,
+  .left-sidebar .sticky,
+  .right-sidebar .sticky {
+    position: sticky !important;
+    top: 6rem !important;
+    z-index: 10 !important;
+  }
+}
+
+/* Responsive breakpoints based on site.config.json */
+/* tablet: 1280px - скрываем правый сайдбар, остается 2 колонки */
+@media (max-width: 1280px) {
+  .grid-container {
+    grid-template-columns: 280px 1fr !important;
+    grid-template-areas: "left-sidebar content" !important;
+    transition: grid-template-columns 0.4s ease-in-out !important;
+  }
+  
+  .grid-container.sidebar-hidden {
+    grid-template-columns: 0 1fr !important;
+    gap: 0 !important;
+  }
+  
+  .grid-container.sidebar-hidden .left-sidebar {
+    opacity: 0 !important;
+    transform: translateX(-20px) !important;
+    pointer-events: none !important;
+  }
+  
+  .right-sidebar {
+    display: none !important;
+  }
+  
+  /* Контент занимает всю доступную ширину + компенсация паддинга */
+  .content {
+    grid-area: content !important;
+    margin-left: -20px !important; /* компенсируем px-5 слева */
+    margin-right: -20px !important; /* компенсируем px-5 справа */
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .grid-container.sidebar-hidden .content {
+    margin-left: -20px !important; /* компенсируем px-5 слева */
+    margin-right: -20px !important; /* компенсируем px-5 справа */
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* mobile: 1023px - перестройка в 1 колонку, сайдбары переносятся */
+@media (max-width: 1023px) {
+  .grid-container {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: 
+      "content" 
+      "left-sidebar" 
+      "right-sidebar" !important;
+    gap: 1rem 0 !important;
+  }
+  
+  .left-sidebar {
+    order: 2 !important;
+    max-height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s ease-out, padding 0.4s ease-out !important;
+    overflow: visible !important; /* ИСПРАВЛЕНО: не блокируем sticky */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .left-sidebar.mobile-expanded {
+    max-height: 500px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  /* Отключаем sticky только на мобиле - только внутри сайдбаров */
+  .left-sidebar > div,
+  .right-sidebar > div,
+  .left-sidebar .sticky,
+  .right-sidebar .sticky {
+    position: static !important;
+  }
+  
+  /* НО header должен оставаться sticky даже на мобиле */
+  header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+  }
+  
+
+  
+
+  
+  .content, .right-sidebar {
+    margin-left: -20px !important; /* компенсируем родительский px-5 */
+    margin-right: -20px !important; /* компенсируем родительский px-5 */
+    padding-left: 20px !important; /* кастомные отступы 20px */
+    padding-right: 20px !important; /* кастомные отступы 20px */
+  }
+  
+  .right-sidebar {
+    display: block !important;
+    grid-area: auto !important;
+    order: 3;
+  }
+  
+  /* Перемещаем иконку бургера вправо на мобиле */
+  .content-header {
+    flex-direction: row-reverse !important;
+  }
+  
+  .content-header .breadcrumbs {
+    text-align: left !important;
+  }
+  
+  /* Скрываем desktop иконки на мобиле */
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .mobile-show {
+    display: inline-block !important;
+  }
+
+  .grid-container.sidebar-hidden {
+    grid-template-areas: "content" !important;
+    grid-template-columns: 1fr !important;
+    gap: var(--gap, 20px) !important;
+  }
+  
+  .grid-container.sidebar-hidden .left-sidebar {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+  }
+  
+  .grid-container.sidebar-hidden .content {
+    margin-left: 0 !important; /* убираем отрицательные margins на мобильных */
+    margin-right: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+
+
+
+
 /* Import custom animations - temporarily disabled */
 /* @import '../../../packages/ui/src/styles/animations.css'; */
 
@@ -106,6 +639,9 @@
 @layer components {
   .prose {
     /* Reset default prose styles */
+    width: 100% !important;
+    max-width: none !important;
+    
     h1, h2, h3, h4, h5, h6 {
       @apply font-heading;
     }
@@ -310,6 +846,27 @@
     .callout-tip {
       @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-green-500 bg-green-50 dark:bg-green-950/20;
     }
+  }
+  
+  /* Принудительно переопределяем все prose размеры */
+  .prose, .prose-lg, .prose-xl {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  
+  /* Переопределяем возможные Tailwind prose стили */
+  .prose-lg {
+    max-width: none !important;
+  }
+  
+  /* MDX контент должен занимать полную ширину */
+  .mdx-content {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  
+  .mdx-content > * {
+    max-width: none !important;
   }
 }
 

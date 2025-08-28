@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDesignSystem } from '../../design-systems'
 import { LayoutName, PageTypeName } from '../../types'
+import { Header } from '../../components/layout/Header'
+import { Footer } from '../../components/layout/Footer'
 
 export interface BaseLayoutProps {
   layout: LayoutName
@@ -46,6 +48,7 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
   const { currentSystem } = useDesignSystem()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const previousThemeClassRef = useRef<string | null>(null)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -59,9 +62,24 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
   }, [])
 
   useEffect(() => {
-    // Apply design system to document
+    // Apply design system theme class without overwriting other classes (e.g., fonts)
     if (typeof document !== 'undefined') {
-      document.documentElement.className = `${currentSystem}-theme`
+      const docEl = document.documentElement
+      const nextThemeClass = `${currentSystem}-theme`
+
+      // Remove previous theme class if present
+      const prev = previousThemeClassRef.current
+      if (prev && prev !== nextThemeClass) {
+        docEl.classList.remove(prev)
+      }
+
+      // Add next theme class if not already on element
+      if (!docEl.classList.contains(nextThemeClass)) {
+        docEl.classList.add(nextThemeClass)
+      }
+
+      // Save current theme class for cleanup on change
+      previousThemeClassRef.current = nextThemeClass
     }
   }, [currentSystem])
 
@@ -83,31 +101,7 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
   return (
     <div className={getLayoutClasses()}>
       {/* Header */}
-      {showHeader && (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                  className="lg:hidden p-2 rounded-md hover:bg-accent"
-                >
-                  <span className="sr-only">Toggle sidebar</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </button>
-                <h1 className="text-xl font-bold">LND Boilerplate</h1>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-muted-foreground">
-                  Design System: {currentSystem}
-                </span>
-              </div>
-            </div>
-          </div>
-        </header>
-      )}
+      {showHeader && <Header />}
 
       {/* Main Content */}
       <main className="flex flex-1">
@@ -142,15 +136,7 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
       </main>
 
       {/* Footer */}
-      {showFooter && (
-        <footer className="border-t bg-background">
-          <div className="container mx-auto px-4 py-6">
-            <div className="text-center text-sm text-muted-foreground">
-              © 2024 LND Boilerplate. All rights reserved.
-            </div>
-          </div>
-        </footer>
-      )}
+      {showFooter && <Footer />}
     </div>
   )
 }

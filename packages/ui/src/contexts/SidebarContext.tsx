@@ -48,7 +48,25 @@ export function SidebarProvider({ children }: SidebarProviderProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [isSearching, setIsSearching] = useState(false)
-  const [navigationItems, setNavigationItems] = useState<any[]>([])
+  const [navigationItems, setNavigationItems] = useState<any[]>([
+    {
+      title: 'DOCUMENTATION',
+      href: '/docs',
+      children: [
+        { title: 'Introduction', href: '/docs/introduction' },
+        { title: 'Installation', href: '/docs/installation' },
+        { title: 'Architecture', href: '/docs/architecture' }
+      ]
+    },
+    {
+      title: 'GETTING STARTED',
+      href: '/docs/getting-started',
+      children: [
+        { title: 'Quick Start', href: '/docs/getting-started/quick-start' },
+        { title: 'First Steps', href: '/docs/getting-started/first-steps' }
+      ]
+    }
+  ])
   const [isTocOpen, setIsTocOpen] = useState(true)
   const [tableOfContents, setTableOfContents] = useState<Array<{
     id: string
@@ -65,16 +83,15 @@ export function SidebarProvider({ children }: SidebarProviderProps) {
 
     const loadNavigation = async () => {
       try {
-        const { getDocsNavigation, docsNavigationToLayout, defaultDocsNavigation } = await import('@lnd/utils/content')
+        const { getDocsNavigation, docsNavigationToLayout } = await import('@lnd/utils/content')
         const navigationConfig = await getDocsNavigation()
         const layoutNavigation = docsNavigationToLayout(navigationConfig)
-        setNavigationItems(layoutNavigation)
+        
+        // Merge with existing fallback navigation instead of replacing
+        setNavigationItems(prev => layoutNavigation.length > 0 ? layoutNavigation : prev)
       } catch (error) {
         console.warn('Failed to load navigation:', error)
-        // Use default navigation as fallback
-        const { docsNavigationToLayout, defaultDocsNavigation } = await import('@lnd/utils/content')
-        const layoutNavigation = docsNavigationToLayout(defaultDocsNavigation)
-        setNavigationItems(layoutNavigation)
+        // Keep existing fallback navigation - don't override
       }
     }
     

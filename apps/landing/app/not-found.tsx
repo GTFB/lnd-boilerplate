@@ -1,3 +1,5 @@
+"use client"
+
 import { PublicLayout } from '@lnd/ui/templates'
 import Link from 'next/link'
 

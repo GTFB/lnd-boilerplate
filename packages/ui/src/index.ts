@@ -4,6 +4,9 @@ export * from './templates'
 export * from './design-systems'
 export * from './config'
 export * from './examples'
+// export * from './contexts' // removed to avoid conflicting exports
+export * from './providers'
+export * from './lib'
 
 // Export specific components to avoid conflicts
 export { 
@@ -20,6 +23,5 @@ export {
   SidebarMenuItem as UISidebarMenuItem,
   SidebarMenuSub as UISidebarMenuSub,
   SidebarMenuSubButton as UISidebarMenuSubButton,
-  SidebarMenuSubItem as UISidebarMenuSubItem,
-  SidebarProvider as UISidebarProvider
+  SidebarMenuSubItem as UISidebarMenuSubItem
 } from './components/ui'

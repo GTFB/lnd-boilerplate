@@ -28,6 +28,12 @@ help:
 	@echo ""
 	@echo "For detailed dev-agent commands, run: make dev-help"
 
+# Start app dev server (apps/landing)
+.PHONY: dev
+dev:
+	@echo "🚀 Starting Next.js dev server (apps/landing)"
+	@bun run --cwd apps/landing dev
+
 # Dev Agent Proxy Commands
 dev-help:
 	@cd dev && make help

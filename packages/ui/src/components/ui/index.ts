@@ -16,6 +16,7 @@ export * from './tabs'
 export * from './textarea'
 export * from './ThemeToggle'
 export * from './tooltip'
+export * from './LanguageSelector'
 
 // Export sidebar components with UI prefix to avoid conflicts
 export { 

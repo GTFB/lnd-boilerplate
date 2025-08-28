@@ -15,6 +15,9 @@ export * from './content'
 // Footer Components
 export * from './footer'
 
+// Layout Components
+export * from './layout'
+
 // Export UI components with specific names to avoid conflicts
 export { 
   Sidebar as UISidebar,
@@ -31,5 +34,9 @@ export {
   SidebarMenuSub as UISidebarMenuSub,
   SidebarMenuSubButton as UISidebarMenuSubButton,
   SidebarMenuSubItem as UISidebarMenuSubItem,
-  SidebarProvider as UISidebarProvider
+  Button as UIButton,
+  Input as UIInput
 } from './ui'
+
+// Export all UI components
+export * from './ui'

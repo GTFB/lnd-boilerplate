@@ -1,28 +1,9 @@
+"use client"
+
 import { Hero } from '@lnd/ui/components/marketing'
 import { FeatureGrid } from '@lnd/ui/components/marketing'
 import { PricingTable } from '@lnd/ui/components/marketing'
 import { PublicLayout } from '@lnd/ui/templates/PublicLayout'
-import { generateMetadata } from '@lnd/utils/seo/metadata'
-import type { Viewport } from 'next'
-
-// Generate SEO metadata for the home page
-export const metadata = generateMetadata({
-  title: 'LND Boilerplate - Build Modern Landing Pages Faster',
-  description: 'A comprehensive landing page boilerplate with monorepo architecture, built with Next.js, TypeScript, and Tailwind CSS. Start building beautiful, performant websites in minutes.',
-  keywords: ['landing page', 'boilerplate', 'Next.js', 'TypeScript', 'Tailwind CSS', 'monorepo'],
-  type: 'website',
-  url: 'https://lnd-boilerplate.com'
-}, {
-  siteName: 'LND Boilerplate',
-  siteUrl: 'https://lnd-boilerplate.com'
-})
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
 
 export default function HomePage() {
   const features = [

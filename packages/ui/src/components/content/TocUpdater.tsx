@@ -1,63 +1,79 @@
+'use client'
+
 import React, { useEffect, useRef } from 'react'
 import { TableOfContentsItem } from '../../types/navigation'
+import { useSidebar } from '../../contexts/SidebarContext'
 
 export interface TocUpdaterProps {
-  headings: Array<{
+  headings?: Array<{
     id: string
     title: string
     level: number
   }>
-  onUpdate?: (items: TableOfContentsItem[]) => void
   className?: string
 }
 
 export const TocUpdater: React.FC<TocUpdaterProps> = ({
-  headings,
-  onUpdate,
+  headings = [],
   className = ''
 }) => {
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const { setTableOfContents } = useSidebar()
 
   useEffect(() => {
-    if (!headings.length) return
+    console.log('TocUpdater mounted with headings:', headings)
+    
+    if (!headings || !headings.length) {
+      // Fallback: try to extract headings from DOM after a short delay
+      setTimeout(() => {
+        const domHeadings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+          .filter(heading => heading.id)
+          .map(heading => ({
+            id: heading.id,
+            title: heading.textContent || '',
+            level: parseInt(heading.tagName.charAt(1))
+          }))
 
-    // Convert headings to TOC items
-    const tocItems: TableOfContentsItem[] = headings.map(h => ({
-      title: h.title,
-      href: `#${h.id}`,
-      level: h.level
-    }))
-
-    // Notify parent component
-    if (onUpdate) {
-      onUpdate(tocItems)
+        if (domHeadings.length > 0) {
+          setTableOfContents(domHeadings)
+        }
+      }, 100)
+      return
     }
 
-    // Set up intersection observer for active heading tracking
-    const options = {
-      rootMargin: '-20% 0px -80% 0px',
-      threshold: 0
-    }
+    // Ensure DOM headings have ids corresponding to provided headings
+    headings.forEach(h => {
+      const selector = `h${h.level}`
+      const nodes = Array.from(document.querySelectorAll(selector)) as HTMLElement[]
+      // find first heading with matching text that has no id
+      const node = nodes.find(n => (n.textContent || '').trim() === h.title.trim())
+      if (node && !node.id) {
+        node.id = h.id
+      }
+    })
+
+    // Push into global sidebar context so TOC panel can render
+    setTableOfContents(
+      headings.map(h => ({ id: h.id, title: h.title, level: h.level }))
+    )
+
+    const options = { rootMargin: '-20% 0px -80% 0px', threshold: 0 }
 
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Update active heading in TOC
-          const id = entry.target.id
+          const id = (entry.target as HTMLElement).id
           const tocLink = document.querySelector(`[href="#${id}"]`)
           if (tocLink) {
-            // Remove active class from all links
             document.querySelectorAll('[data-toc-link]').forEach(link => {
               link.classList.remove('text-primary', 'font-medium')
             })
-            // Add active class to current link
             tocLink.classList.add('text-primary', 'font-medium')
           }
         }
       })
     }, options)
 
-    // Observe all headings
     headings.forEach(({ id }) => {
       const element = document.getElementById(id)
       if (element && observerRef.current) {
@@ -65,13 +81,8 @@ export const TocUpdater: React.FC<TocUpdaterProps> = ({
       }
     })
 
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [headings, onUpdate])
+    return () => observerRef.current?.disconnect()
+  }, [headings, setTableOfContents])
 
-  // This component doesn't render anything visible
   return null
 }
