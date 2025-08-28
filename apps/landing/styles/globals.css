@@ -43,7 +43,7 @@ header {
 
 /* Sidebar control styles like in template */
 #show-sidebar-btn { 
-  display: none; 
+  display: inline-flex !important; 
 }
 
 /* Default 3-column layout точно как в HTML шаблоне */
@@ -174,7 +174,7 @@ body {
 
 /* Обеспечиваем достаточную высоту контента для срабатывания sticky */
 .content {
-  min-height: 120vh !important; /* Уменьшаем до разумной высоты */
+  min-height: auto !important; /* Естественная высота контента */
 }
 
 /* Обеспечиваем работу ScrollProgress Bar */

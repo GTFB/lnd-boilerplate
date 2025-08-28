@@ -6,7 +6,7 @@ import { Header } from '../../components/layout/Header'
 import { Footer } from '../../components/layout/Footer'
 import { DocsSidebar } from '../../components/docs'
 import { useSidebar } from '../../contexts/SidebarContext'
-import { PanelLeftOpen, ChevronDown } from 'lucide-react'
+import { PanelTopOpen, ChevronDown } from 'lucide-react'
 
 export interface PublicLayoutProps {
   children: React.ReactNode
@@ -201,7 +201,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
         
         {/* Main content area - Fixed container with 3-column grid */}
         <div className="flex-1">
-          <div className="mx-auto max-w-1480 px-5" style={{ paddingTop: '22px', paddingBottom: '22px' }}>
+          <div className="mx-auto max-w-1480 px-5">
             <div 
               id="grid-container"
               className="grid-container transition-all duration-400"
@@ -237,10 +237,10 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
                   <div className="content-header flex items-center gap-4 mb-6">
                     <button
                       id="show-sidebar-btn"
-                      className="flex-shrink-0 w-4 h-4 flex items-center justify-center"
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
                       title="Open Menu"
                     >
-                      <PanelLeftOpen size={16} className="mobile-hide" />
+                      <PanelTopOpen size={16} className="mobile-hide" />
                       <ChevronDown size={16} className="mobile-show" />
                     </button>
                     <div className="breadcrumbs flex-1 flex items-center">
