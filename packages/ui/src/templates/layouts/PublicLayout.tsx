@@ -37,6 +37,23 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
   // Check if current page should show sidebar
   const shouldShowSidebar = pathname.startsWith('/docs')
   
+  // Check if this is home page and should use single column layout
+  const isHomePage = pathname === '/'
+  const shouldUseSingleColumn = isHomePage || pathname === '/home'
+  
+  // Force single column for home page
+  if (isHomePage) {
+    console.log('Forcing single column layout for home page')
+  }
+  
+  // DEBUG: Log layout decisions
+  console.log('PublicLayout layout decision:', {
+    pathname,
+    isHomePage,
+    shouldUseSingleColumn,
+    shouldShowSidebar
+  })
+  
   // Log sidebar status
   if (navigationItems.length === 0) {
     console.log('Navigation items not loaded yet for:', pathname)
@@ -193,8 +210,8 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     }
   }, [])
 
-  // Always render with docs grid (управляем через CSS классы как в шаблоне)
-  if (true) {
+  // Render docs grid layout only for docs pages
+  if (shouldShowSidebar) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -282,6 +299,21 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     )
   }
 
+  // Single column layout for home page
+  if (shouldUseSingleColumn) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1">
+          <div className="mx-auto max-w-[1480px] px-4 py-8">
+            {children}
+          </div>
+        </main>
+        <Footer showScrollProgress={true} showBackToTop={true} />
+      </div>
+    )
+  }
+  
   // Regular layout for non-docs pages
   return (
     <div className="min-h-screen flex flex-col">

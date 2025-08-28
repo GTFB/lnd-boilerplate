@@ -7,6 +7,7 @@ export { PageLayout } from './PageLayout'
 export { CollectionLayout } from './CollectionLayout'
 export { PublicLayout } from './PublicLayout'
 
+
 export type { BaseLayoutProps } from '../base/BaseLayout'
 export type { SingleColumnLayoutProps } from './SingleColumnLayout'
 export type { SidebarLeftLayoutProps } from './SidebarLeftLayout'
@@ -15,3 +16,4 @@ export type { SidebarBothLayoutProps } from './SidebarBothLayout'
 export type { PageLayoutProps } from './PageLayout'
 export type { CollectionLayoutProps } from './CollectionLayout'
 export type { PublicLayoutProps } from './PublicLayout'
+

@@ -130,11 +130,27 @@
     "landingPage": {
       "template": "single-column",
       "components": {
-        "header": "minimalHeader",
+        "header": "mainHeader",
         "content": "pageBuilder",
         "footer": "mainFooter"
       },
       "contentType": "tsx+json"
+    },
+    "homePage": {
+      "template": "public",
+      "components": {
+        "header": "mainHeader",
+        "content": "heroContent",
+        "footer": "mainFooter"
+      },
+      "contentType": "tsx",
+      "behavior": {
+        "layout": "single-column",
+        "maxWidth": "1480px",
+        "centered": true,
+        "showSidebar": false,
+        "showToc": false
+      }
     }
   },
   "seo": {

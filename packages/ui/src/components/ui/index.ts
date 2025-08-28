@@ -20,6 +20,11 @@ export * from './ThemeToggle'
 export * from './tooltip'
 export * from './LanguageSelector'
 
+// Image components
+export { Image } from './Image'
+export { Avatar } from './Avatar'
+export { ImageGallery } from './ImageGallery'
+
 // Export sidebar components with UI prefix to avoid conflicts
 export { 
   Sidebar as UISidebar,

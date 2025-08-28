@@ -5,6 +5,10 @@ export { MdxRenderer } from './MdxRenderer'
 export { PageBuilderExtended } from './PageBuilderExtended'
 export { TocUpdater } from './TocUpdater'
 
+// Content components
+export { BlogCard } from './BlogCard'
+export { ExpertCard } from './ExpertCard'
+
 export type { 
   BreadcrumbItem, 
   BreadcrumbsProps 

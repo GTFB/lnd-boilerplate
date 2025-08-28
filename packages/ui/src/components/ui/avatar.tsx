@@ -1,46 +1,74 @@
-import * as React from "react"
-import { cn } from "../../lib/utils"
+'use client'
 
-const Avatar = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      className
-    )}
-    {...props}
-  />
-))
-Avatar.displayName = "Avatar"
+import React from 'react'
+import { cn } from '@lnd/ui/lib/utils'
+import { Image } from './Image'
 
-const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement>
->(({ className, ...props }, ref) => (
-  <img
-    ref={ref}
-    className={cn("aspect-square h-full w-full object-cover", className)}
-    {...props}
-  />
-))
-AvatarImage.displayName = "AvatarImage"
+export interface AvatarProps {
+  src?: string
+  alt: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  fallback?: string
+  className?: string
+  fallbackSrc?: string
+}
 
-const AvatarFallback = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground",
-      className
-    )}
-    {...props}
-  />
-))
-AvatarFallback.displayName = "AvatarFallback"
+const sizeClasses = {
+  sm: 'w-8 h-8',
+  md: 'w-12 h-12',
+  lg: 'w-16 h-16',
+  xl: 'w-24 h-24'
+}
 
-export { Avatar, AvatarImage, AvatarFallback }
+const fallbackSizeClasses = {
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-2xl'
+}
+
+export function Avatar({
+  src,
+  alt,
+  size = 'md',
+  fallback,
+  className,
+  fallbackSrc = '/images/avatar-placeholder.jpg'
+}: AvatarProps) {
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
+  if (!src) {
+    return (
+      <div
+        className={cn(
+          'bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium',
+          sizeClasses[size],
+          className
+        )}
+      >
+        <span className={fallbackSizeClasses[size]}>
+          {fallback || getInitials(alt)}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className={cn('rounded-full overflow-hidden', sizeClasses[size], className)}>
+      <Image
+        src={src}
+        alt={alt}
+        fallbackSrc={fallbackSrc}
+        className="w-full h-full object-cover"
+        priority
+      />
+    </div>
+  )
+}
