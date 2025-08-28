@@ -49,7 +49,7 @@ header {
 /* Default 3-column layout точно как в HTML шаблоне */
 .grid-container {
   display: grid !important;
-  grid-template-columns: 280px 1fr 240px !important;
+  grid-template-columns: 270px 1fr 208px !important;
   grid-template-areas: "left-sidebar content right-sidebar" !important;
   gap: 0 1.25rem !important;
   transition: grid-template-columns 0.4s ease-in-out !important;
@@ -76,7 +76,7 @@ header {
 
 /* Hidden sidebar: возвращаем как в макете */
 .grid-container.sidebar-hidden {
-  grid-template-columns: 0 1fr 240px !important;
+  grid-template-columns: 0 1fr 208px !important;
   gap: 0 0 !important;
 }
 
@@ -393,7 +393,7 @@ body.modal-open {
 /* tablet: 1280px - скрываем правый сайдбар, остается 2 колонки */
 @media (max-width: 1280px) {
   .grid-container {
-    grid-template-columns: 280px 1fr !important;
+    grid-template-columns: 270px 1fr !important;
     grid-template-areas: "left-sidebar content" !important;
     transition: grid-template-columns 0.4s ease-in-out !important;
   }
@@ -453,7 +453,7 @@ body.modal-open {
   }
   
   .left-sidebar.mobile-expanded {
-    max-height: 500px !important;
+    max-height: 400px !important;
     opacity: 1 !important;
     visibility: visible !important;
     padding-top: 1rem !important;
@@ -535,9 +535,48 @@ body.modal-open {
   }
 }
 
+/* Дополнительные стили для мобильного сайдбара */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 400px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0 0 8px 8px;
+  z-index: 50;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+  padding: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
 
+.mobile-sidebar.open {
+  transform: translateY(0);
+}
 
+/* Стили для мобильного сайдбара с правильными отступами */
+.left-sidebar.mobile-expanded {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
 
+/* Убираем лишние отступы на мобильных */
+@media (max-width: 1024px) {
+  .content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .right-sidebar {
+    display: none !important;
+  }
+}
 
 /* Import custom animations - temporarily disabled */
 /* @import '../../../packages/ui/src/styles/animations.css'; */
@@ -637,6 +676,106 @@ body.modal-open {
   textarea:focus,
   select:focus {
     border-color: hsl(var(--ring));
+  }
+  
+  /* АГРЕССИВНО убираем все кольца и тени от Tailwind CSS */
+  .focus\:ring-2,
+  .focus\:ring-4,
+  .focus\:ring,
+  .focus\:ring-blue-500,
+  .focus\:ring-offset-2,
+  .focus\:ring-offset-0,
+  .focus\:ring-offset-white,
+  .focus\:ring-offset-background,
+  .focus-visible\:ring-2,
+  .focus-visible\:ring-4,
+  .focus-visible\:ring,
+  .focus-visible\:ring-blue-500,
+  .focus-visible\:ring-offset-2,
+  .focus-visible\:ring-offset-0,
+  .focus-visible\:ring-offset-white,
+  .focus-visible\:ring-offset-background {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  
+  /* Убираем ВСЕ кольца у ВСЕХ элементов с любыми кольцами */
+  *[class*="ring"] {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  
+  /* Убираем ВСЕ кольца у ВСЕХ элементов при любом состоянии */
+  *[class*="ring"]:focus,
+  *[class*="ring"]:focus-visible,
+  *[class*="ring"]:focus-within,
+  *[class*="ring"]:active,
+  *[class*="ring"]:hover {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  
+  /* ПРИНУДИТЕЛЬНО убираем все кольца у инпутов */
+  input,
+  input:focus,
+  input:focus-visible,
+  input:focus-within,
+  input:active,
+  input:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid hsl(var(--border)) !important;
+  }
+  
+  /* При фокусе меняем ТОЛЬКО цвет рамки */
+  input:focus,
+  input:focus-visible,
+  input:focus-within {
+    border-color: hsl(var(--ring)) !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* ПРИНУДИТЕЛЬНО убираем все кольца у кнопок */
+  button,
+  button:focus,
+  button:focus-visible,
+  button:focus-within,
+  button:active,
+  button:hover {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* При фокусе кнопок меняем ТОЛЬКО цвет рамки */
+  button:focus,
+  button:focus-visible,
+  button:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* ПРИНУДИТЕЛЬНО убираем все кольца у кнопок Button компонента */
+  .Button,
+  [class*="Button"],
+  button[class*="Button"],
+  button[class*="button"] {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* При фокусе Button компонента */
+  .Button:focus,
+  .Button:focus-visible,
+  .Button:focus-within,
+  [class*="Button"]:focus,
+  [class*="Button"]:focus-visible,
+  [class*="Button"]:focus-within,
+  button[class*="Button"]:focus,
+  button[class*="Button"]:focus-visible,
+  button[class*="Button"]:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
   }
 }
 
@@ -958,4 +1097,58 @@ body.modal-open {
 }
 .scrollbar-hide::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
+}
+
+/* Анимации для языкового селектора */
+.language-selector-dropdown {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.language-selector-dropdown-enter {
+  opacity: 0;
+  transform: scale(0.95) translateY(8px);
+}
+
+.language-selector-dropdown-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Стили для backdrop blur */
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Стили для анимаций */
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Стили для кнопки "наверх" */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Стили для progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  z-index: 9999;
+  transition: width 0.1s ease;
 }

@@ -235,7 +235,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
                 <div className="p-0">
                   {/* Content header: show-sidebar button + breadcrumbs */}
                   <div className="content-header flex items-center gap-4 mb-6">
-                    {!sidebarOpen && (
+                    {!isSidebarOpen && (
                       <button
                         id="show-sidebar-btn"
                         className="flex-shrink-0 text-gray-500 hover:text-black transition-colors"

@@ -3,7 +3,7 @@
 import { Hero } from '@lnd/ui/components/marketing'
 import { FeatureGrid } from '@lnd/ui/components/marketing'
 import { PricingTable } from '@lnd/ui/components/marketing'
-import { PublicLayout } from '@lnd/ui/templates/PublicLayout'
+import { PublicLayout } from '@lnd/ui/templates'
 
 export default function HomePage() {
   const features = [

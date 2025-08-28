@@ -1,0 +1,8 @@
+export { TwitterIcon } from './TwitterIcon'
+export { GitHubIcon } from './GitHubIcon'
+export { LinkedInIcon } from './LinkedInIcon'
+export { GBFlag } from './GBFlag'
+export { RUFlag } from './RUFlag'
+export { ESFlag } from './ESFlag'
+export { FRFlag } from './FRFlag'
+export { DEFlag } from './DEFlag'

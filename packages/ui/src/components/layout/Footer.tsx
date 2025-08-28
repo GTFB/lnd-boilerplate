@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 import { useDesignSystem } from '../../design-systems'
-import { Button } from '../ui'
-import { Input } from '../ui'
+import { Button, Input } from '../ui'
+import { CookieConsent } from '../ui/CookieConsent'
+import { TwitterIcon, GitHubIcon, LinkedInIcon } from '../ui/icons'
+import { MapPin, Mail, Phone } from 'lucide-react'
 
 export interface FooterProps {
   showLogo?: boolean
@@ -27,7 +29,6 @@ export const Footer: React.FC<FooterProps> = ({
   className = ''
 }) => {
   const { currentSystem } = useDesignSystem()
-  const [showCookieBanner, setShowCookieBanner] = useState(true)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [showBackToTopButton, setShowBackToTopButton] = useState(false)
   const [email, setEmail] = useState('')
@@ -62,17 +63,7 @@ export const Footer: React.FC<FooterProps> = ({
     setEmail('')
   }
 
-  const acceptCookies = () => {
-    setShowCookieBanner(false)
-    localStorage.setItem('cookiesAccepted', 'true')
-  }
 
-  useEffect(() => {
-    const cookiesAccepted = localStorage.getItem('cookiesAccepted')
-    if (cookiesAccepted) {
-      setShowCookieBanner(false)
-    }
-  }, [])
 
   return (
     <>
@@ -108,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({
 
       {/* Footer */}
       <footer className={`bg-background border-t ${className}`}>
-        <div className="mx-auto px-5 py-12 max-w-1480">
+        <div className="mx-auto max-w-[1480px] px-5 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Logo and Description */}
             {showLogo && (
@@ -172,9 +163,18 @@ export const Footer: React.FC<FooterProps> = ({
                 <div>
                   <h4 className="font-semibold mb-3 text-foreground">Contact Info</h4>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>📍 123 Developer Street, Tech City</p>
-                    <p>📧 contact@lnd-boilerplate.com</p>
-                    <p>📞 +1 (555) 123-4567</p>
+                    <div className="flex items-center space-x-2">
+                      <MapPin size={16} className="text-muted-foreground flex-shrink-0" />
+                      <span>123 Developer Street, Tech City</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Mail size={16} className="text-muted-foreground flex-shrink-0" />
+                      <span>support@altrp.org</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Phone size={16} className="text-muted-foreground flex-shrink-0" />
+                      <span>+1 (555) 123-4567</span>
+                    </div>
                   </div>
                 </div>
 
@@ -190,17 +190,32 @@ export const Footer: React.FC<FooterProps> = ({
                 <div>
                   <h4 className="font-semibold mb-3 text-foreground">Follow Us</h4>
                   <div className="flex space-x-4">
-                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                      <span className="sr-only">Twitter</span>
-                      🐦
+                    <a 
+                      href="https://twitter.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors group"
+                      aria-label="Follow us on Twitter"
+                    >
+                      <TwitterIcon size={20} className="group-hover:scale-110 transition-transform duration-200" />
                     </a>
-                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                      <span className="sr-only">GitHub</span>
-                      📚
+                    <a 
+                      href="https://github.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors group"
+                      aria-label="Follow us on GitHub"
+                    >
+                      <GitHubIcon size={20} className="group-hover:scale-110 transition-transform duration-200" />
                     </a>
-                    <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                      <span className="sr-only">LinkedIn</span>
-                      💼
+                    <a 
+                      href="https://linkedin.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors group"
+                      aria-label="Follow us on LinkedIn"
+                    >
+                      <LinkedInIcon size={20} className="group-hover:scale-110 transition-transform duration-200" />
                     </a>
                   </div>
                 </div>
@@ -222,7 +237,7 @@ export const Footer: React.FC<FooterProps> = ({
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1"
+                    className="flex-1 h-9"
                     required
                   />
                   <Button type="submit" size="sm">
@@ -250,27 +265,15 @@ export const Footer: React.FC<FooterProps> = ({
       </footer>
 
       {/* Cookie Consent Banner */}
-      {showCookieConsent && showCookieBanner && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 z-50">
-          <div className="mx-auto max-w-1480 px-5">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">
-                  We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.{' '}
-                  <a href="/cookies" className="text-primary hover:underline">Learn more</a>
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <Button variant="outline" size="sm" onClick={acceptCookies}>
-                  Accept
-                </Button>
-                <Button variant="ghost" size="sm" onClick={() => setShowCookieBanner(false)}>
-                  Decline
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {showCookieConsent && (
+        <CookieConsent
+          onAccept={(preferences) => {
+            console.log('Cookie preferences accepted:', preferences)
+          }}
+          onDecline={() => {
+            console.log('Cookies declined, only necessary cookies enabled')
+          }}
+        />
       )}
 
       {/* Back to Top Button with smooth animations */}
