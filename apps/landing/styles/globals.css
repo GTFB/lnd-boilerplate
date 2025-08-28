@@ -346,7 +346,7 @@ body.modal-open {
   line-height: 16px; /* Совпадает с высотой иконки */
   display: flex;
   align-items: center;
-  margin-top: 0; /* Убираем лишний отступ сверху */
+  margin-top: 22px; /* Отступ сверху для breadcrumbs */
 }
 
 .content h1, .content h2 {
