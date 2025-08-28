@@ -5,7 +5,16 @@ import { ProductList } from '@lnd/ui/components/ecommerce'
 
 export default function ExpertsPage() {
   // Mock data for now since we can't use server functions in client components
-  const experts: any[] = []
+  const experts: Array<{
+    id: string;
+    name: string;
+    bio: string;
+    avatar: string;
+    expertise: string[];
+    joined: string;
+    title: string;
+    location: string;
+  }> = []
   
   // Transform expert data to ProductList format
   const normalizedExperts = experts.map(expert => ({

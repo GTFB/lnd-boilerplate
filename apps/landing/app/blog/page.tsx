@@ -5,7 +5,18 @@ import { ProductList } from '@lnd/ui/components/ecommerce'
 
 export default function BlogPage() {
   // Mock data for now since we can't use server functions in client components
-  const blogPosts: any[] = []
+  const blogPosts: Array<{
+    slug: string;
+    frontmatter: {
+      title: string;
+      description: string;
+      coverImage?: string;
+      image?: string;
+      tags?: string[];
+      date: string;
+      authorId: string;
+    };
+  }> = []
   
   // Transform MDX files to ProductList format
   const normalizedPosts = blogPosts.map(post => ({

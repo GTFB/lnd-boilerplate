@@ -8,14 +8,14 @@ interface LegalPageProps {
   }
 }
 
-export default function LegalPage({ params }: LegalPageProps) {
+export default function LegalPage({ params: { slug } }: LegalPageProps) {
   // Mock data for now since we can't use server functions in client components
   const page = {
     frontmatter: {
-      title: 'Legal Page',
+      title: `Legal Page - ${slug}`,
       description: 'Legal page content'
     },
-    content: '# Legal Page\n\nThis is legal page content.'
+    content: `# Legal Page - ${slug}\n\nThis is legal page content for ${slug}.`
   }
 
   return (

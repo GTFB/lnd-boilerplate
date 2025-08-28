@@ -5,7 +5,13 @@ import Link from 'next/link'
 
 export default function LegalIndexPage() {
   // Mock data for now since we can't use server functions in client components
-  const legalPages: any[] = []
+  const legalPages: Array<{
+    slug: string;
+    frontmatter: {
+      title: string;
+      description: string;
+    };
+  }> = []
   
   return (
     <PublicLayout>

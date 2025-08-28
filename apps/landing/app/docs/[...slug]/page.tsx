@@ -4,7 +4,7 @@ import { SiteConfigProvider } from '@lnd/ui/providers/SiteConfigProvider'
 import { TocUpdater } from '@lnd/ui/components/content/TocUpdater'
 import { getDocsPage } from '@lnd/utils/content/readers'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { MdxContent } from '@lnd/ui/components/content/MdxContent'
+
 
 interface DocsPageProps {
   params: {

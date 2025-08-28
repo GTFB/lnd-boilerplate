@@ -44,8 +44,20 @@ const mockDocsPages = [
 
 export default function DocsIndexPage() {
   // Group pages by section
-  const sections: Record<string, any[]> = {}
-  const rootPages: any[] = []
+  const sections: Record<string, Array<{
+    slug: string;
+    frontmatter: {
+      title: string;
+      description: string;
+    };
+  }>> = {}
+  const rootPages: Array<{
+    slug: string;
+    frontmatter: {
+      title: string;
+      description: string;
+    };
+  }> = []
   
   mockDocsPages.forEach(page => {
     if (page.slug.includes('/')) {
@@ -73,7 +85,7 @@ export default function DocsIndexPage() {
         
         <div className="prose prose-lg max-w-none">
           <h2 className="font-heading">Welcome to LND Boilerplate</h2>
-          <p>Here you'll find everything you need to get started and build amazing web applications.</p>
+          <p>Here you&apos;ll find everything you need to get started and build amazing web applications.</p>
           
           {/* Root level pages */}
           {rootPages.length > 0 && (

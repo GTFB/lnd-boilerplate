@@ -186,8 +186,8 @@ clean-all: clean
 	rm -rf apps/*/node_modules
 	@echo "✅ All clean!"
 
-# Help
-help:
+# Extended Help
+extended-help:
 	@echo "Available commands:"
 	@echo "  Development:"
 	@echo "    dev          - Start development server"
@@ -205,7 +205,7 @@ help:
 	@echo "    analyze          - Analyze bundle size"
 	@echo "    security-audit   - Run security audit"
 	@echo "    clean-all        - Clean all files"
-	@echo "    help             - Show this help"
+	@echo "    extended-help    - Show this extended help"
 
 # Windows drive mapping utilities
 .PHONY: map-x unmap-x dev-goals-list-x
