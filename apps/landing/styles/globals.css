@@ -43,7 +43,7 @@ header {
 
 /* Sidebar control styles like in template */
 #show-sidebar-btn { 
-  display: inline-flex !important; 
+  display: inline-flex; /* Убираем !important чтобы React мог управлять видимостью */
 }
 
 /* Default 3-column layout точно как в HTML шаблоне */
@@ -337,17 +337,18 @@ body.modal-open {
 /* Улучшение отступов для контента */
 .content-header {
   margin-bottom: 24px;
-  align-items: flex-start; /* Изменено для правильного выравнивания */
+  align-items: center; /* Центрируем элементы по вертикали */
   display: flex;
   flex-direction: row; /* По умолчанию иконка слева, breadcrumbs справа */
-  padding-top: 32px; /* Отступ сверху для выравнивания с сайдбаром */
+  padding-top: 38px; /* Опущено на 16px вниз (22px + 16px) */
+  gap: 16px; /* Отступ между иконкой и breadcrumbs */
 }
 
 .content-header .breadcrumbs {
   line-height: 16px; /* Совпадает с высотой иконки */
   display: flex;
   align-items: center;
-  margin-top: 40px; /* Увеличенный отступ сверху для breadcrumbs */
+  margin-top: 0; /* Убираем отступ, используем общее выравнивание */
 }
 
 .content h1, .content h2 {

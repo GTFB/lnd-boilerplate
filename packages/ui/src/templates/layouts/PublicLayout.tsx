@@ -6,7 +6,7 @@ import { Header } from '../../components/layout/Header'
 import { Footer } from '../../components/layout/Footer'
 import { DocsSidebar } from '../../components/docs'
 import { useSidebar } from '../../contexts/SidebarContext'
-import { PanelTopOpen, ChevronDown } from 'lucide-react'
+import { PanelLeftClose, ChevronDown } from 'lucide-react'
 
 export interface PublicLayoutProps {
   children: React.ReactNode
@@ -235,14 +235,16 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
                 <div className="p-0">
                   {/* Content header: show-sidebar button + breadcrumbs */}
                   <div className="content-header flex items-center gap-4 mb-6">
-                    <button
-                      id="show-sidebar-btn"
-                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
-                      title="Open Menu"
-                    >
-                      <PanelTopOpen size={16} className="mobile-hide" />
-                      <ChevronDown size={16} className="mobile-show" />
-                    </button>
+                    {!sidebarOpen && (
+                      <button
+                        id="show-sidebar-btn"
+                        className="flex-shrink-0 text-gray-500 hover:text-black transition-colors"
+                        title="Open Menu"
+                      >
+                        <PanelLeftClose size={16} className="mobile-hide" />
+                        <ChevronDown size={16} className="mobile-show" />
+                      </button>
+                    )}
                     <div className="breadcrumbs flex-1 flex items-center">
                       {renderBreadcrumbs()}
                     </div>
