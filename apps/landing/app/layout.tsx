@@ -1,6 +1,8 @@
-import type { Metadata } from 'next'
+"use client"
 import { Inter, Inter_Tight } from 'next/font/google'
 import '../styles/globals.css'
+import { SidebarProvider, ThemeProvider } from '@lnd/ui/contexts'
+import { DesignSystemProvider } from '@lnd/ui/design-systems/DesignSystemProvider'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -14,10 +16,7 @@ const interTight = Inter_Tight({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'LND Boilerplate',
-  description: 'Modern web development platform built with Next.js 14, TypeScript and Tailwind CSS',
-}
+
 
 export default function RootLayout({
   children,
@@ -26,8 +25,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${interTight.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
+      <body className="font-sans antialiased" suppressHydrationWarning={true}>
+        <DesignSystemProvider>
+          <ThemeProvider>
+            <SidebarProvider>
+              {children}
+            </SidebarProvider>
+          </ThemeProvider>
+        </DesignSystemProvider>
       </body>
     </html>
   )

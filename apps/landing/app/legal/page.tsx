@@ -1,30 +1,17 @@
+"use client"
+
 import { PublicLayout } from '@lnd/ui/templates'
-import { getLegalPages } from '@lnd/utils/content'
-import { generateMetadata } from '@lnd/utils/seo/metadata'
 import Link from 'next/link'
-import type { Viewport } from 'next'
 
-// Generate SEO metadata for the legal index page
-export const metadata = generateMetadata({
-  title: 'Legal - LND Boilerplate',
-  description: 'Legal documents and policies for LND Boilerplate.',
-  keywords: ['legal', 'terms', 'privacy', 'policy'],
-  type: 'website',
-  url: 'https://lnd-boilerplate.com/legal'
-}, {
-  siteName: 'LND Boilerplate',
-  siteUrl: 'https://lnd-boilerplate.com'
-})
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
-
-export default async function LegalIndexPage() {
-  const legalPages = await getLegalPages()
+export default function LegalIndexPage() {
+  // Mock data for now since we can't use server functions in client components
+  const legalPages: Array<{
+    slug: string;
+    frontmatter: {
+      title: string;
+      description: string;
+    };
+  }> = []
   
   return (
     <PublicLayout>

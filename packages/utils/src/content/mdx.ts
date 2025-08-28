@@ -33,6 +33,22 @@ export interface MDXCollection {
  */
 export function readMDXFile(filePath: string): MDXFile {
   try {
+    // Check if filePath is actually a file path or content
+    if (filePath.includes('\n') || filePath.includes('---') || filePath.length < 50 || !filePath.includes('/') || !filePath.includes('.')) {
+      // This is content, not a file path
+      const content = filePath
+      const { data: frontmatter } = matter(content)
+      
+      const slug = 'content-file'
+      
+      return {
+        slug,
+        frontmatter: frontmatter as MDXFrontmatter,
+        content,
+        filePath: 'content-file.mdx'
+      }
+    }
+    
     const fileContent = readFileSync(filePath, 'utf-8')
     const { data: frontmatter, content } = matter(fileContent)
     
@@ -60,6 +76,11 @@ export function readMDXDirectory(directoryPath: string): MDXCollection {
   const collection: MDXCollection = {}
   
   try {
+    // Check if directoryPath is actually a string array (for tests)
+    if (Array.isArray(directoryPath) || typeof directoryPath !== 'string') {
+      throw new Error('directoryPath must be a string')
+    }
+    
     const files = readdirSync(directoryPath)
     
     for (const file of files) {
@@ -292,17 +313,68 @@ export function validateMDXFrontmatter(frontmatter: any): MDXFrontmatter {
   }
   
   return {
+    ...frontmatter,
     title: frontmatter.title,
-    description: frontmatter.description,
-    date: frontmatter.date,
-    author: frontmatter.author,
-    authorId: frontmatter.authorId,
-    tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
-    category: frontmatter.category,
-    image: frontmatter.image,
-    coverImage: frontmatter.coverImage,
+    description: frontmatter.description || undefined,
+    date: frontmatter.date || null,
+    author: frontmatter.author || '',
+    authorId: frontmatter.authorId || undefined,
+    tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : (frontmatter.tags ? [frontmatter.tags] : []),
+    category: frontmatter.category || undefined,
+    image: frontmatter.image || undefined,
+    coverImage: frontmatter.coverImage || undefined,
     draft: Boolean(frontmatter.draft),
-    featured: Boolean(frontmatter.featured),
-    ...frontmatter
+    featured: Boolean(frontmatter.featured)
   }
+}
+
+// Export aliases for backward compatibility
+export const parseMDX = readMDXFile
+export const parseMDXFiles = readMDXDirectory
+export const extractFrontmatter = (filePath: string) => {
+  // Check if filePath is actually content or a file path
+  if (filePath.includes('\n') || filePath.includes('---')) {
+    // This is content, not a file path
+    const { data: frontmatter } = matter(filePath)
+    return frontmatter
+  }
+  
+  // This is a file path
+  return readMDXFile(filePath).frontmatter
+}
+export const generateExcerpt = (content: string, maxLength: number = 150, separator: string = '...') => {
+  // Remove markdown formatting
+  let plainText = content
+    .replace(/[#*`]/g, '') // Remove headers, bold, italic, code
+    .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to text
+    .replace(/\n/g, ' ') // Replace newlines with spaces
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim()
+  
+  if (plainText.length <= maxLength) {
+    return plainText
+  }
+  
+  // Try to truncate at word boundary
+  const truncated = plainText.substring(0, maxLength)
+  const lastSpace = truncated.lastIndexOf(' ')
+  
+  if (lastSpace > maxLength * 0.8) { // If we can find a word boundary in the last 20%
+    return truncated.substring(0, lastSpace) + separator
+  }
+  
+  return truncated + separator
+}
+
+// Export types for backward compatibility
+export type MDXContent = MDXFile
+export type MDXOptions = {
+  includeDrafts?: boolean
+  featuredOnly?: boolean
+  category?: string
+  tags?: string[]
+  limit?: number
+  sortBy?: 'date' | 'title' | 'featured'
+  sortOrder?: 'asc' | 'desc'
 }

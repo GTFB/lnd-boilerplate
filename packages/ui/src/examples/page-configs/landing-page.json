@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "title": "LND Boilerplate - Modern Web Development Framework",
+    "description": "Build scalable web applications with our comprehensive boilerplate featuring TypeScript, Next.js, and modern tooling.",
+    "keywords": ["boilerplate", "typescript", "nextjs", "web development", "framework"]
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "title": "Build the Future of Web Development",
+      "subtitle": "Enterprise Ready",
+      "description": "LND Boilerplate provides everything you need to build modern, scalable web applications. From development to deployment, we've got you covered.",
+      "primaryButton": {
+        "text": "Get Started",
+        "href": "/docs/getting-started",
+        "variant": "default"
+      },
+      "secondaryButton": {
+        "text": "View on GitHub",
+        "href": "https://github.com/lnd-boilerplate",
+        "variant": "outline"
+      },
+      "image": {
+        "src": "/images/hero-dashboard.png",
+        "alt": "LND Boilerplate Dashboard Preview"
+      },
+      "background": "gradient"
+    },
+    {
+      "type": "features",
+      "title": "Why Choose LND Boilerplate?",
+      "subtitle": "Built for developers, by developers",
+      "features": [
+        {
+          "title": "TypeScript First",
+          "description": "Full TypeScript support with strict type checking and excellent IDE integration.",
+          "icon": "code",
+          "badge": "Core"
+        },
+        {
+          "title": "Next.js 14",
+          "description": "Latest Next.js with App Router, Server Components, and optimized performance.",
+          "icon": "zap",
+          "badge": "Latest"
+        },
+        {
+          "title": "Design Systems",
+          "description": "Multiple design systems (Lora, Alisa) with easy switching and customization.",
+          "icon": "lightbulb",
+          "badge": "Unique"
+        },
+        {
+          "title": "Component Library",
+          "description": "Comprehensive UI components built with Shadcn/ui and Tailwind CSS.",
+          "icon": "shield",
+          "badge": "Complete"
+        },
+        {
+          "title": "Flexible Layouts",
+          "description": "Four layout templates with responsive design and sidebar management.",
+          "icon": "globe",
+          "badge": "Flexible"
+        },
+        {
+          "title": "Developer Experience",
+          "description": "Hot reload, ESLint, Prettier, and comprehensive development tooling.",
+          "icon": "star",
+          "badge": "DX First"
+        }
+      ],
+      "layout": "grid",
+      "columns": 3
+    },
+    {
+      "type": "stats",
+      "title": "Trusted by Developers Worldwide",
+      "stats": [
+        {
+          "label": "GitHub Stars",
+          "value": "2.5k+",
+          "icon": "stars",
+          "trend": "up",
+          "trendValue": "+15% this month"
+        },
+        {
+          "label": "Downloads",
+          "value": "50k+",
+          "icon": "downloads",
+          "trend": "up",
+          "trendValue": "+25% this month"
+        },
+        {
+          "label": "Active Projects",
+          "value": "1.2k+",
+          "icon": "users",
+          "trend": "up",
+          "trendValue": "+10% this month"
+        },
+        {
+          "label": "Contributors",
+          "value": "45+",
+          "icon": "users",
+          "trend": "stable",
+          "trendValue": "Growing community"
+        }
+      ],
+      "columns": 4
+    },
+    {
+      "type": "testimonials",
+      "title": "What Developers Say",
+      "subtitle": "Real feedback from our community",
+      "testimonials": [
+        {
+          "name": "Alex Chen",
+          "role": "Senior Developer",
+          "company": "TechCorp",
+          "content": "LND Boilerplate saved us weeks of setup time. The TypeScript integration is flawless and the component library is exactly what we needed.",
+          "rating": 5
+        },
+        {
+          "name": "Sarah Johnson",
+          "role": "Full Stack Developer",
+          "company": "StartupXYZ",
+          "content": "The design system switching feature is brilliant. We can easily adapt our app for different brands without rebuilding components.",
+          "rating": 5
+        },
+        {
+          "name": "Mike Rodriguez",
+          "role": "Tech Lead",
+          "company": "Enterprise Inc",
+          "content": "Production-ready from day one. The layout system is incredibly flexible and the documentation is comprehensive.",
+          "rating": 5
+        }
+      ],
+      "layout": "grid"
+    },
+    {
+      "type": "pricing",
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Choose the plan that fits your needs",
+      "showAnnualToggle": true,
+      "plans": [
+        {
+          "name": "Community",
+          "price": "Free",
+          "description": "Perfect for personal projects and learning",
+          "features": [
+            "Full source code access",
+            "Basic documentation",
+            "Community support",
+            "MIT License",
+            "Regular updates"
+          ],
+          "buttonText": "Get Started",
+          "buttonHref": "/docs/getting-started",
+          "buttonVariant": "outline"
+        },
+        {
+          "name": "Pro",
+          "price": "$29",
+          "period": "month",
+          "description": "Ideal for professional developers and small teams",
+          "features": [
+            "Everything in Community",
+            "Priority support",
+            "Advanced examples",
+            "Custom components",
+            "Performance analytics",
+            "Team collaboration"
+          ],
+          "popular": true,
+          "buttonText": "Start Pro Trial",
+          "buttonHref": "/pricing/pro",
+          "buttonVariant": "default"
+        },
+        {
+          "name": "Enterprise",
+          "price": "Custom",
+          "description": "For large organizations with specific needs",
+          "features": [
+            "Everything in Pro",
+            "Custom integrations",
+            "Dedicated support",
+            "SLA guarantees",
+            "On-premise deployment",
+            "Training & consulting"
+          ],
+          "buttonText": "Contact Sales",
+          "buttonHref": "/contact/sales",
+          "buttonVariant": "outline"
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "title": "Ready to Build Something Amazing?",
+      "description": "Join thousands of developers who are already building the future with LND Boilerplate.",
+      "primaryButton": {
+        "text": "Start Building Now",
+        "href": "/docs/getting-started",
+        "variant": "default"
+      },
+      "secondaryButton": {
+        "text": "View Examples",
+        "href": "/examples",
+        "variant": "outline"
+      },
+      "background": "gradient",
+      "centered": true
+    }
+  ]
+}

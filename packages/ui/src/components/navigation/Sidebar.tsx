@@ -16,27 +16,29 @@ interface SidebarProps {
 }
 
 /**
- * Sidebar - RTL-ready navigation sidebar component
+ * Sidebar - Next.js style navigation sidebar component
  * 
  * Features:
- * - RTL support using logical CSS properties
+ * - Next.js inspired design with proper section grouping
  * - Hierarchical navigation with nested items
- * - Active state detection
- * - Clean, minimal design
+ * - Active state detection with visual indicators
+ * - Clean typography and spacing
  */
 export function Sidebar({ navItems, currentPath = '' }: SidebarProps) {
   return (
-    <nav className="space-y-0">
+    <nav className="space-y-8">
       {navItems.map((item) => (
-        <div key={item.href} className="mb-1">
-          <NavLink
-            href={item.href}
-            active={currentPath === item.href}
-          >
-            {item.title}
-          </NavLink>
+        <div key={item.href} className="space-y-2">
+          {/* Section header */}
+          <div className="px-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              {item.title}
+            </h3>
+          </div>
+          
+          {/* Section items */}
           {item.children && (
-            <div className="space-y-0">
+            <div className="space-y-1">
               {item.children.map((child) => (
                 <NavLink
                   key={child.href}

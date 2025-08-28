@@ -2,26 +2,44 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { cn } from '../../lib/utils'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { SearchModal } from '../ui/SearchModal'
 import { useSearchDocuments } from '../../hooks/useSearchDocuments'
 import { useSiteConfig } from '../../providers/SiteConfigProvider'
+import { useSidebar } from '../../contexts/SidebarContext'
 
 export interface HeaderProps {
   className?: string
 }
 
 export function Header({ className }: HeaderProps) {
+  const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { documents: searchDocuments, isLoading: isSearchLoading, error: searchError } = useSearchDocuments()
   const { config: siteConfig } = useSiteConfig()
+  
+  // Get search state from sidebar context for docs pages
+  const sidebarContext = pathname.startsWith('/docs') ? useSidebar() : null
 
   // Navigation items from site.config.json (simple menu)
   const navigationItems = (() => {
-    const blogPath = siteConfig?.getFeatureConfig('blog')?.path ?? '/blog'
-    const docsPath = siteConfig?.getFeatureConfig('documentation')?.path ?? '/docs'
+    if (!siteConfig) {
+      // Fallback navigation items when siteConfig is not loaded yet
+      return [
+        { name: 'Home', href: '/' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Docs', href: '/docs' },
+        { name: 'Experts', href: '/experts' },
+        { name: 'Legal', href: '/legal' },
+        { name: 'Contacts', href: '/contact' }
+      ]
+    }
+    
+    const blogPath = siteConfig.getFeatureConfig('blog')?.path ?? '/blog'
+    const docsPath = siteConfig.getFeatureConfig('documentation')?.path ?? '/docs'
     return [
       { name: 'Home', href: '/' },
       { name: 'Blog', href: blogPath },
@@ -30,7 +48,7 @@ export function Header({ className }: HeaderProps) {
       { name: 'Legal', href: '/legal' },
       { name: 'Contacts', href: '/contact' }
     ]
-  })()
+  })() || []
 
   // Log search loading state for debugging
   useEffect(() => {
@@ -74,7 +92,7 @@ export function Header({ className }: HeaderProps) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              {navigationItems.map((item) => (
+              {navigationItems?.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -84,6 +102,8 @@ export function Header({ className }: HeaderProps) {
                 </Link>
               ))}
             </nav>
+
+
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">
@@ -127,7 +147,7 @@ export function Header({ className }: HeaderProps) {
           {isMobileMenuOpen && (
             <div className="md:hidden border-t border-border/40">
               <nav className="py-4 space-y-2">
-                {navigationItems.map((item) => (
+                {navigationItems?.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}

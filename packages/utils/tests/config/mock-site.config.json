@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json.schema.org/draft/2020-12/schema",
+  "site": {
+    "name": "LND Boilerplate Test",
+    "shortName": "LND",
+    "description": "Test site for LND Boilerplate",
+    "version": "1.0.0",
+    "url": "https://test.example.com",
+    "author": {
+      "name": "Test Author",
+      "email": "test@example.com",
+      "url": "https://test.example.com"
+    },
+    "language": "en",
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "seo": {
+    "title": "LND Boilerplate Test",
+    "description": "Modern web development boilerplate",
+    "keywords": ["test", "boilerplate", "web"],
+    "ogImage": "/og-image.jpg",
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@lndboilerplate",
+    "robots": {
+      "index": true,
+      "follow": true,
+      "googleBot": {
+        "index": true,
+        "follow": true,
+        "maxVideoPreview": 0,
+        "maxImagePreview": "large",
+        "maxSnippet": 150
+      }
+    }
+  },
+  "manifest": {
+    "name": "LND Boilerplate Test",
+    "shortName": "LND",
+    "description": "Modern web development boilerplate",
+    "startUrl": "/",
+    "display": "standalone",
+    "backgroundColor": "#ffffff",
+    "themeColor": "#000000",
+    "orientation": "any",
+    "scope": "/",
+    "lang": "en",
+    "categories": ["productivity", "utilities"],
+    "icons": [
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [],
+    "shortcuts": []
+  },
+  "build": {
+    "framework": "nextjs",
+    "buildCommand": "bun run build",
+    "pageExtensions": [".tsx", ".ts", ".jsx", ".js"],
+    "output": "export",
+    "trailingSlash": true,
+    "images": {
+      "unoptimized": true
+    }
+  },
+  "deployment": {
+    "provider": "vercel",
+    "vercel": {
+      "framework": "nextjs",
+      "buildCommand": "bun run build",
+      "outputDirectory": ".next"
+    },
+    "netlify": {
+      "framework": "nextjs",
+      "buildCommand": "bun run build",
+      "publishDirectory": ".next"
+    }
+  },
+  "ui": {
+    "theme": "light",
+    "primaryColor": "#3b82f6",
+    "fontFamily": "Inter",
+    "content": {
+      "maxWidth": "1200px",
+      "sidebarWidth": "280px"
+    }
+  },
+  "features": {
+    "blog": true,
+    "docs": true,
+    "search": true,
+    "analytics": false
+  },
+  "environment": {
+    "development": {
+      "NODE_ENV": "development",
+      "NEXT_PUBLIC_API_URL": "http://localhost:3000/api"
+    },
+    "production": {
+      "NODE_ENV": "production",
+      "NEXT_PUBLIC_API_URL": "https://api.example.com"
+    },
+    "staging": {
+      "NODE_ENV": "staging",
+      "NEXT_PUBLIC_API_URL": "https://staging-api.example.com"
+    }
+  },
+  "devAgent": {
+    "enabled": true,
+    "port": 3001,
+    "database": {
+      "path": "./database.db"
+    }
+  },
+  "lastUpdated": "2024-01-01T00:00:00Z"
+}

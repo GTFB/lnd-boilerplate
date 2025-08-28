@@ -1,0 +1,184 @@
+---
+title: "Работа с изображениями в LND Boilerplate"
+description: "Полное руководство по использованию системы изображений в проекте"
+date: "2025-01-25"
+authorId: "john-smith"
+tags: ["Images", "UI", "Components", "Tutorial"]
+category: "Development"
+image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
+draft: false
+---
+
+# Работа с изображениями в LND Boilerplate
+
+LND Boilerplate предоставляет мощную и гибкую систему для работы с изображениями. В этой статье мы рассмотрим все доступные компоненты и утилиты.
+
+## Основные компоненты
+
+### Image Component
+
+Базовый компонент для отображения изображений с поддержкой fallback:
+
+```tsx
+import { Image } from '@lnd/ui/components/ui/Image'
+
+<Image
+  src="https://images.unsplash.com/photo-1234567890"
+  alt="Описание изображения"
+  width={800}
+  height={400}
+  fallbackSrc="/images/placeholder.jpg"
+  priority={true}
+/>
+```
+
+### Avatar Component
+
+Компонент для отображения аватаров пользователей:
+
+```tsx
+import { Avatar } from '@lnd/ui/components/ui/Avatar'
+
+<Avatar
+  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+  alt="John Smith"
+  size="lg"
+  fallback="JS"
+/>
+```
+
+### ImageGallery Component
+
+Галерея изображений с поддержкой lightbox:
+
+```tsx
+import { ImageGallery } from '@lnd/ui/components/ui/ImageGallery'
+
+const images = [
+  {
+    src: "https://images.unsplash.com/photo-1234567890",
+    alt: "Первое изображение",
+    caption: "Описание первого изображения"
+  },
+  {
+    src: "https://images.unsplash.com/photo-0987654321",
+    alt: "Второе изображение",
+    caption: "Описание второго изображения"
+  }
+]
+
+<ImageGallery
+  images={images}
+  columns={3}
+  showCaptions={true}
+  showLightbox={true}
+/>
+```
+
+## Утилиты для изображений
+
+### Генерация Unsplash URL
+
+```tsx
+import { generateUnsplashUrl } from '@lnd/utils/images'
+
+const imageUrl = generateUnsplashUrl('1234567890', {
+  width: 800,
+  height: 400,
+  fit: 'cover',
+  crop: 'center',
+  quality: 80
+})
+```
+
+### Генерация placeholder изображений
+
+```tsx
+import { generatePlaceholderUrl } from '@lnd/utils/images'
+
+const placeholderUrl = generatePlaceholderUrl(800, 400, 'Loading...', '#f3f4f6', '#6b7280')
+```
+
+### Responsive изображения
+
+```tsx
+import { generateSrcSet } from '@lnd/utils/images'
+
+const srcSet = generateSrcSet('https://images.unsplash.com/photo-1234567890')
+```
+
+## Интеграция с контентом
+
+### Блог-посты
+
+В frontmatter каждой статьи можно указать:
+
+```yaml
+---
+title: "Заголовок статьи"
+coverImage: "https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop"
+image: "https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop"
+---
+```
+
+### Эксперты
+
+В JSON файлах экспертов:
+
+```json
+{
+  "id": "expert-id",
+  "name": "Имя эксперта",
+  "avatar": "https://images.unsplash.com/photo-1234567890?w=400&h=400&fit=crop&crop=face"
+}
+```
+
+## Оптимизация изображений
+
+### CDN параметры
+
+- `w` - ширина изображения
+- `h` - высота изображения
+- `fit` - способ подгонки (cover, contain, fill)
+- `crop` - способ обрезки (center, top, bottom, left, right)
+- `q` - качество (1-100)
+- `blur` - размытие
+- `grayscale` - черно-белый фильтр
+
+### Примеры использования
+
+```tsx
+// Квадратное изображение для аватара
+const avatarUrl = "https://images.unsplash.com/photo-1234567890?w=400&h=400&fit=crop&crop=face"
+
+// Широкое изображение для hero секции
+const heroUrl = "https://images.unsplash.com/photo-1234567890?w=1200&h=600&fit=cover"
+
+// Маленькое изображение для превью
+const previewUrl = "https://images.unsplash.com/photo-1234567890?w=300&h=200&fit=crop"
+```
+
+## Fallback изображения
+
+Всегда указывайте fallback изображения:
+
+```tsx
+<Image
+  src={post.coverImage}
+  alt={post.title}
+  fallbackSrc="/images/blog-placeholder.jpg"
+/>
+```
+
+## Лучшие практики
+
+1. **Используйте правильные размеры** - не загружайте изображения больше необходимого
+2. **Указывайте alt текст** - для доступности и SEO
+3. **Используйте fallback** - на случай ошибки загрузки
+4. **Оптимизируйте формат** - WebP для современных браузеров
+5. **Lazy loading** - для изображений ниже fold
+
+## Заключение
+
+Система изображений в LND Boilerplate предоставляет все необходимые инструменты для создания современного веб-приложения. Используйте компоненты и утилиты для эффективной работы с изображениями.

@@ -1,0 +1,196 @@
+---
+title: "Performance Optimization Tips"
+description: "Learn how to optimize your LND Boilerplate application for maximum performance."
+date: "2025-01-15"
+authorId: "jane-doe"
+tags: ["Performance", "Optimization", "Web Vitals"]
+category: "Performance"
+image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
+draft: false
+---
+
+# Performance Optimization Tips
+
+Performance is crucial for user experience and SEO. Here are essential tips to optimize your LND Boilerplate application.
+
+## Core Web Vitals
+
+Focus on these key metrics:
+
+### Largest Contentful Paint (LCP)
+- **Target**: < 2.5 seconds
+- **Optimization**: Use Next.js Image component, optimize images
+- **Monitoring**: Use Google PageSpeed Insights
+
+### First Input Delay (FID)
+- **Target**: < 100 milliseconds
+- **Optimization**: Minimize JavaScript execution time
+- **Monitoring**: Use Chrome DevTools Performance tab
+
+### Cumulative Layout Shift (CLS)
+- **Target**: < 0.1
+- **Optimization**: Set image dimensions, avoid dynamic content insertion
+- **Monitoring**: Use Chrome DevTools Performance tab
+
+## Image Optimization
+
+### Use Next.js Image Component
+
+```tsx
+import Image from 'next/image'
+
+export default function OptimizedImage() {
+  return (
+    <Image
+      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
+      alt="Hero image"
+      width={800}
+      height={400}
+      priority // For above-the-fold images
+      placeholder="blur"
+      blurDataURL="data:image/jpeg;base64,..."
+    />
+  )
+}
+```
+
+### Image Formats
+
+- **WebP**: Modern format with better compression
+- **AVIF**: Next-generation format (limited browser support)
+- **JPEG**: Fallback for older browsers
+
+## Code Splitting
+
+### Route-based Splitting
+
+Next.js automatically splits code by routes:
+
+```tsx
+// This component is automatically code-split
+const DynamicComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <p>Loading...</p>
+})
+```
+
+### Component-based Splitting
+
+```tsx
+import dynamic from 'next/dynamic'
+
+const LazyComponent = dynamic(() => import('./LazyComponent'), {
+  ssr: false // Disable server-side rendering if needed
+})
+```
+
+## Caching Strategies
+
+### Static Generation
+
+```tsx
+// Generate static pages at build time
+export async function getStaticProps() {
+  const data = await fetchData()
+  return {
+    props: { data },
+    revalidate: 3600 // Revalidate every hour
+  }
+}
+```
+
+### API Routes Caching
+
+```tsx
+// Cache API responses
+export async function GET() {
+  const data = await fetchData()
+  
+  return new Response(JSON.stringify(data), {
+    headers: {
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
+    }
+  })
+}
+```
+
+## Bundle Analysis
+
+### Analyze Bundle Size
+
+```bash
+# Install bundle analyzer
+bun add -D @next/bundle-analyzer
+
+# Add to next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+})
+
+module.exports = withBundleAnalyzer(nextConfig)
+```
+
+### Run Analysis
+
+```bash
+ANALYZE=true bun run build
+```
+
+## Database Optimization
+
+### Connection Pooling
+
+```typescript
+// Use connection pooling for database connections
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+})
+```
+
+### Query Optimization
+
+```sql
+-- Use indexes for frequently queried columns
+CREATE INDEX idx_posts_date ON posts(created_at);
+CREATE INDEX idx_posts_status ON posts(status);
+```
+
+## Monitoring and Analytics
+
+### Performance Monitoring
+
+```typescript
+// Track Core Web Vitals
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+
+function sendToAnalytics(metric) {
+  // Send to your analytics service
+  console.log(metric)
+}
+
+getCLS(sendToAnalytics)
+getFID(sendToAnalytics)
+getFCP(sendToAnalytics)
+getLCP(sendToAnalytics)
+getTTFB(sendToAnalytics)
+```
+
+## Best Practices
+
+1. **Minimize JavaScript**: Remove unused code and dependencies
+2. **Optimize Images**: Use appropriate formats and sizes
+3. **Enable Compression**: Use gzip or brotli compression
+4. **Use CDN**: Serve static assets from a CDN
+5. **Monitor Performance**: Set up continuous monitoring
+
+## Tools and Resources
+
+- **Google PageSpeed Insights**: Test your site's performance
+- **Chrome DevTools**: Debug performance issues
+- **WebPageTest**: Detailed performance analysis
+- **Lighthouse**: Automated performance auditing
+
+Remember: Performance optimization is an ongoing process. Regularly monitor and optimize your application for the best user experience.

@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "title": "Getting Started - LND Boilerplate Documentation",
+    "description": "Learn how to set up and start using LND Boilerplate for your next web development project.",
+    "author": "LND Team",
+    "date": "2025-01-15",
+    "category": "Documentation",
+    "tags": ["getting-started", "setup", "installation", "tutorial"]
+  },
+  "breadcrumbs": [
+    {
+      "title": "Documentation",
+      "href": "/docs"
+    },
+    {
+      "title": "Getting Started",
+      "href": "/docs/getting-started"
+    }
+  ],
+  "sections": [
+    {
+      "type": "hero",
+      "title": "Getting Started with LND Boilerplate",
+      "subtitle": "Quick Start Guide",
+      "description": "Get up and running with LND Boilerplate in minutes. This guide will walk you through the installation, setup, and your first steps.",
+      "primaryButton": {
+        "text": "View on GitHub",
+        "href": "https://github.com/lnd-boilerplate",
+        "variant": "default"
+      },
+      "secondaryButton": {
+        "text": "Download Template",
+        "href": "/downloads/lnd-boilerplate.zip",
+        "variant": "outline"
+      },
+      "background": "default"
+    },
+    {
+      "type": "content",
+      "title": "Prerequisites",
+      "content": "<p>Before you begin, make sure you have the following installed on your system:</p><ul><li><strong>Node.js</strong> 18.0 or later</li><li><strong>npm</strong> 9.0 or later (or <strong>yarn</strong> 1.22 or later)</li><li><strong>Git</strong> for version control</li><li>A modern code editor (VS Code recommended)</li></ul>",
+      "layout": "narrow"
+    },
+    {
+      "type": "features",
+      "title": "Installation Options",
+      "subtitle": "Choose the method that works best for you",
+      "features": [
+        {
+          "title": "Quick Start",
+          "description": "Use our create-lnd-app command for instant setup with all dependencies.",
+          "icon": "zap",
+          "badge": "Recommended"
+        },
+        {
+          "title": "Manual Setup",
+          "description": "Clone the repository and configure everything step by step for full control.",
+          "icon": "code",
+          "badge": "Advanced"
+        },
+        {
+          "title": "Template Download",
+          "description": "Download a pre-configured template and start building immediately.",
+          "icon": "download",
+          "badge": "Simple"
+        }
+      ],
+      "columns": 3
+    },
+    {
+      "type": "content",
+      "title": "Quick Start Installation",
+      "content": "<p>For the fastest setup, use our create command:</p><pre><code>npx create-lnd-app@latest my-project\ncd my-project\nnpm run dev</code></pre><p>This will create a new project with all the necessary dependencies and configurations already set up.</p>",
+      "layout": "narrow"
+    },
+    {
+      "type": "content",
+      "title": "Manual Installation",
+      "content": "<p>If you prefer manual setup or want to customize the installation:</p><ol><li><strong>Clone the repository:</strong><br><code>git clone https://github.com/lnd-boilerplate/lnd-boilerplate.git</code></li><li><strong>Install dependencies:</strong><br><code>npm install</code></li><li><strong>Set up environment:</strong><br><code>cp .env.example .env.local</code></li><li><strong>Start development server:</strong><br><code>npm run dev</code></li></ol>",
+      "layout": "narrow"
+    },
+    {
+      "type": "stats",
+      "title": "Installation Time",
+      "stats": [
+        {
+          "label": "Quick Start",
+          "value": "< 2 min",
+          "icon": "clock",
+          "description": "From zero to running"
+        },
+        {
+          "label": "Manual Setup",
+          "value": "5-10 min",
+          "icon": "clock",
+          "description": "Full control setup"
+        },
+        {
+          "label": "First Build",
+          "value": "< 1 min",
+          "icon": "zap",
+          "description": "Initial compilation"
+        }
+      ],
+      "columns": 3
+    },
+    {
+      "type": "content",
+      "title": "Project Structure",
+      "content": "<p>After installation, your project will have this structure:</p><pre><code>my-project/\n├── apps/                 # Application packages\n│   ├── landing/         # Landing page app\n│   └── docs/            # Documentation app\n├── packages/            # Shared packages\n│   ├── ui/             # UI component library\n│   ├── config/         # Configuration utilities\n│   └── types/          # TypeScript type definitions\n├── docs/               # Project documentation\n├── package.json        # Root package.json\n└── README.md           # Project overview</code></pre>",
+      "layout": "wide"
+    },
+    {
+      "type": "faq",
+      "title": "Frequently Asked Questions",
+      "subtitle": "Common questions about getting started",
+      "items": [
+        {
+          "question": "What if I get an error during installation?",
+          "answer": "Check that you have the correct Node.js version installed. If you continue to have issues, try clearing your npm cache with 'npm cache clean --force' and then reinstall."
+        },
+        {
+          "question": "Can I use Yarn instead of npm?",
+          "answer": "Yes! LND Boilerplate works with both npm and Yarn. Simply replace 'npm' commands with 'yarn' equivalents in the installation and usage instructions."
+        },
+        {
+          "question": "How do I customize the default configuration?",
+          "answer": "You can modify the configuration files in the 'packages/config' directory. The main configuration file is 'site.config.json' where you can customize layouts, design systems, and component settings."
+        },
+        {
+          "question": "What's the difference between the quick start and manual setup?",
+          "answer": "Quick start uses our create command which automatically sets up everything for you. Manual setup gives you full control over each step and is better for learning or customizing the installation process."
+        }
+      ],
+      "layout": "accordion"
+    },
+    {
+      "type": "cta",
+      "title": "Ready to Continue?",
+      "description": "Now that you have LND Boilerplate installed, let's explore the core concepts and start building your first application.",
+      "primaryButton": {
+        "text": "Next: Core Concepts",
+        "href": "/docs/core-concepts",
+        "variant": "default"
+      },
+      "secondaryButton": {
+        "text": "View Examples",
+        "href": "/examples",
+        "variant": "outline"
+      },
+      "background": "muted",
+      "centered": true
+    }
+  ]
+}

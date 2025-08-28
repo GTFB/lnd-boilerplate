@@ -1,0 +1,114 @@
+{
+  "sections": [
+    {
+      "title": "DOCUMENTATION",
+      "items": [
+        {
+          "title": "Introduction",
+          "href": "/docs/introduction",
+          "file": "introduction.mdx"
+        },
+        {
+          "title": "Installation Guide", 
+          "href": "/docs/installation",
+          "file": "installation.mdx"
+        },
+        {
+          "title": "System Architecture",
+          "href": "/docs/architecture", 
+          "file": "architecture.mdx"
+        }
+      ]
+    },
+    {
+      "title": "GETTING STARTED",
+      "items": [
+        {
+          "title": "Quick Start Guide",
+          "href": "/docs/getting-started/quick-start",
+          "file": "getting-started/quick-start.mdx"
+        },
+        {
+          "title": "First Steps",
+          "href": "/docs/getting-started/first-steps", 
+          "file": "getting-started/first-steps.mdx"
+        }
+      ]
+    },
+    {
+      "title": "ADVANCED TOPICS",
+      "items": [
+        {
+          "title": "Customization Guide",
+          "href": "/docs/advanced/customization",
+          "file": "advanced/customization.mdx"
+        },
+        {
+          "title": "Performance Optimization",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf2",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf3",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf4",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf5",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf6",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf7",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf8",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf9",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf10",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf11",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf12",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        },
+        {
+          "title": "Perf12",
+          "href": "/docs/advanced/performance",
+          "file": "advanced/performance.mdx"
+        }
+      ]
+    }
+  ]
+}

@@ -15,11 +15,11 @@ export interface PageLayoutProps {
   showToc?: boolean
   tocItems?: Array<{
     id: string
-    text: string
+    title: string
     level: number
     children?: Array<{
       id: string
-      text: string
+      title: string
       level: number
     }>
   }>
@@ -108,7 +108,7 @@ export function PageLayout({
             
             {showToc && tocItems.length > 0 && (
               <aside className="hidden lg:block w-64 flex-shrink-0">
-                <TableOfContents items={tocItems} />
+                <TableOfContents toc={tocItems} />
               </aside>
             )}
           </div>

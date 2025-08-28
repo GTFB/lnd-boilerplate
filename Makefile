@@ -28,6 +28,12 @@ help:
 	@echo ""
 	@echo "For detailed dev-agent commands, run: make dev-help"
 
+# Start app dev server (apps/landing)
+.PHONY: dev
+dev:
+	@echo "🚀 Starting Next.js dev server (apps/landing)"
+	@bun run --cwd apps/landing dev
+
 # Dev Agent Proxy Commands
 dev-help:
 	@cd dev && make help
@@ -180,8 +186,8 @@ clean-all: clean
 	rm -rf apps/*/node_modules
 	@echo "✅ All clean!"
 
-# Help
-help:
+# Extended Help
+extended-help:
 	@echo "Available commands:"
 	@echo "  Development:"
 	@echo "    dev          - Start development server"
@@ -199,7 +205,7 @@ help:
 	@echo "    analyze          - Analyze bundle size"
 	@echo "    security-audit   - Run security audit"
 	@echo "    clean-all        - Clean all files"
-	@echo "    help             - Show this help"
+	@echo "    extended-help    - Show this extended help"
 
 # Windows drive mapping utilities
 .PHONY: map-x unmap-x dev-goals-list-x

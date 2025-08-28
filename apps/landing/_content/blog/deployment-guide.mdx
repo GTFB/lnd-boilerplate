@@ -1,0 +1,347 @@
+---
+title: "Deployment Guide"
+description: "Complete guide to deploying your LND Boilerplate application to various platforms."
+date: "2025-01-10"
+authorId: "john-smith"
+tags: ["Deployment", "DevOps", "Hosting"]
+category: "Deployment"
+image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&h=400&fit=crop"
+coverImage: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&h=400&fit=crop"
+draft: false
+---
+
+# Deployment Guide
+
+This guide covers deploying your LND Boilerplate application to various hosting platforms.
+
+## Vercel Deployment
+
+Vercel is the recommended platform for Next.js applications.
+
+### Automatic Deployment
+
+1. **Connect Repository**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Vercel will automatically detect Next.js
+
+2. **Configure Build Settings**
+   ```json
+   {
+     "buildCommand": "bun run build",
+     "outputDirectory": "apps/landing/.next",
+     "installCommand": "bun install"
+   }
+   ```
+
+3. **Environment Variables**
+   - Add environment variables in Vercel dashboard
+   - Set `NEXT_PUBLIC_APP_URL` to your domain
+
+### Manual Deployment
+
+```bash
+# Install Vercel CLI
+bun add -g vercel
+
+# Deploy
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+## Netlify Deployment
+
+### Build Configuration
+
+Create `netlify.toml`:
+
+```toml
+[build]
+  command = "bun run build"
+  publish = "apps/landing/.next"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+### Deployment Steps
+
+1. **Connect Repository**
+   - Go to [netlify.com](https://netlify.com)
+   - Import your GitHub repository
+
+2. **Configure Build**
+   - Build command: `bun run build`
+   - Publish directory: `apps/landing/.next`
+
+3. **Environment Variables**
+   - Add in Netlify dashboard
+   - Set production URLs
+
+## Docker Deployment
+
+### Dockerfile
+
+```dockerfile
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Install dependencies
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build the application
+RUN bun run build
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/apps/landing/.next/standalone ./
+COPY --from=builder /app/apps/landing/.next/static ./apps/landing/.next/static
+COPY --from=builder /app/apps/landing/public ./apps/landing/public
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["node", "apps/landing/server.js"]
+```
+
+### Build and Run
+
+```bash
+# Build Docker image
+docker build -t lnd-boilerplate .
+
+# Run container
+docker run -p 3000:3000 lnd-boilerplate
+```
+
+## Traditional Hosting
+
+### Build for Production
+
+```bash
+# Install dependencies
+bun install
+
+# Build the application
+bun run build
+
+# Start production server
+bun run start
+```
+
+### Server Configuration
+
+#### Nginx Configuration
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+#### Apache Configuration
+
+```apache
+<VirtualHost *:80>
+    ServerName yourdomain.com
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/
+</VirtualHost>
+```
+
+## Environment Configuration
+
+### Development
+
+```bash
+# .env.local
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_ENV=development
+```
+
+### Production
+
+```bash
+# .env.production
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+NEXT_PUBLIC_APP_ENV=production
+```
+
+## CI/CD Pipeline
+
+### GitHub Actions
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      
+      - name: Install dependencies
+        run: bun install
+      
+      - name: Build
+        run: bun run build
+      
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+```
+
+## Performance Optimization
+
+### Static Generation
+
+```typescript
+// Generate static pages at build time
+export async function getStaticProps() {
+  return {
+    props: { data },
+    revalidate: 3600 // Revalidate every hour
+  }
+}
+```
+
+### Image Optimization
+
+```typescript
+// Use Next.js Image component
+import Image from 'next/image'
+
+export default function OptimizedImage() {
+  return (
+    <Image
+      src="https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&h=400&fit=crop"
+      alt="Description"
+      width={800}
+      height={400}
+      priority
+    />
+  )
+}
+```
+
+## Monitoring and Analytics
+
+### Error Tracking
+
+```typescript
+// Add error tracking
+import * as Sentry from '@sentry/nextjs'
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+})
+```
+
+### Performance Monitoring
+
+```typescript
+// Track Core Web Vitals
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+
+function sendToAnalytics(metric) {
+  // Send to your analytics service
+}
+
+getCLS(sendToAnalytics)
+getFID(sendToAnalytics)
+getFCP(sendToAnalytics)
+getLCP(sendToAnalytics)
+getTTFB(sendToAnalytics)
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Build Failures**
+   - Check Node.js version compatibility
+   - Verify all dependencies are installed
+   - Check for TypeScript errors
+
+2. **Runtime Errors**
+   - Check environment variables
+   - Verify API endpoints
+   - Check browser console for errors
+
+3. **Performance Issues**
+   - Optimize images
+   - Enable compression
+   - Use CDN for static assets
+
+## Best Practices
+
+1. **Use Environment Variables**: Never hardcode sensitive data
+2. **Enable Compression**: Use gzip or brotli compression
+3. **Set Up Monitoring**: Monitor errors and performance
+4. **Use HTTPS**: Always use SSL certificates
+5. **Regular Updates**: Keep dependencies updated
+
+## Support
+
+For deployment issues:
+
+- Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment)
+- Review platform-specific guides
+- Check our [GitHub issues](https://github.com/your-repo/issues)
+
+Happy deploying! 🚀
