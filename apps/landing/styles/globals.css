@@ -338,13 +338,15 @@ body.modal-open {
 .content-header {
   margin-bottom: 24px;
   align-items: center;
+  display: flex;
+  flex-direction: row; /* По умолчанию иконка слева, breadcrumbs справа */
 }
 
 .content-header .breadcrumbs {
   line-height: 16px; /* Совпадает с высотой иконки */
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 0; /* Убираем лишний отступ сверху */
 }
 
 .content h1, .content h2 {
