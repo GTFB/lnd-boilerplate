@@ -337,16 +337,17 @@ body.modal-open {
 /* Улучшение отступов для контента */
 .content-header {
   margin-bottom: 24px;
-  align-items: center;
+  align-items: flex-start; /* Изменено для правильного выравнивания */
   display: flex;
   flex-direction: row; /* По умолчанию иконка слева, breadcrumbs справа */
+  padding-top: 32px; /* Отступ сверху для выравнивания с сайдбаром */
 }
 
 .content-header .breadcrumbs {
   line-height: 16px; /* Совпадает с высотой иконки */
   display: flex;
   align-items: center;
-  margin-top: 22px; /* Отступ сверху для breadcrumbs */
+  margin-top: 40px; /* Увеличенный отступ сверху для breadcrumbs */
 }
 
 .content h1, .content h2 {
