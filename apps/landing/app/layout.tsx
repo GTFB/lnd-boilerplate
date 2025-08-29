@@ -1,6 +1,7 @@
 "use client"
 import { Inter, Inter_Tight } from 'next/font/google'
 import '../styles/globals.css'
+import '../styles/blog.css'
 import { SidebarProvider, ThemeProvider } from '@lnd/ui/contexts'
 import { DesignSystemProvider } from '@lnd/ui/design-systems/DesignSystemProvider'
 

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Blog styles */
+@import './blog.css';
+
 /* Предотвращаем горизонтальное переполнение */
 html, body {
   overflow-x: auto; /* ИСПРАВЛЕНО: не блокируем sticky */
