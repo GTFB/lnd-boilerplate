@@ -17,6 +17,7 @@ interface CookieContextType {
   decline: () => void
   savePreferences: (preferences: CookiePreferences) => void
   preferences: CookiePreferences | null
+  hasConsent: (type: keyof CookiePreferences) => boolean
 }
 
 const CookieContext = createContext<CookieContextType | undefined>(undefined)
@@ -78,6 +79,13 @@ export function CookieProvider({ children }: { children: ReactNode }) {
     setShowBanner(false)
   }
 
+  const hasConsent = (type: keyof CookiePreferences) => {
+    if (!preferences) {
+      return false;
+    }
+    return preferences[type];
+  };
+
   // Не рендерим контекст на сервере
   if (!mounted) {
     return <>{children}</>
@@ -90,7 +98,8 @@ export function CookieProvider({ children }: { children: ReactNode }) {
       acceptAll,
       decline,
       savePreferences,
-      preferences
+      preferences,
+      hasConsent
     }}>
       {children}
     </CookieContext.Provider>
