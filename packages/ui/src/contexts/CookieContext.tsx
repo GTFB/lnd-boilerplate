@@ -15,6 +15,7 @@ interface CookieContextType {
   setShowBanner: (show: boolean) => void
   acceptAll: () => void
   decline: () => void
+  savePreferences: (preferences: CookiePreferences) => void
   preferences: CookiePreferences | null
 }
 
@@ -70,6 +71,13 @@ export function CookieProvider({ children }: { children: ReactNode }) {
     setShowBanner(false)
   }
 
+  const savePreferences = (newPreferences: CookiePreferences) => {
+    localStorage.setItem('cookiePreferences', JSON.stringify(newPreferences))
+    localStorage.setItem('cookiesAccepted', 'true')
+    setPreferences(newPreferences)
+    setShowBanner(false)
+  }
+
   // Не рендерим контекст на сервере
   if (!mounted) {
     return <>{children}</>
@@ -81,6 +89,7 @@ export function CookieProvider({ children }: { children: ReactNode }) {
       setShowBanner,
       acceptAll,
       decline,
+      savePreferences,
       preferences
     }}>
       {children}
