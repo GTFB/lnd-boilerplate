@@ -18,31 +18,41 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
   const [isLoading, setIsLoading] = useState(false)
   const [shouldRender, setShouldRender] = useState(false)
   const [isAnimated, setIsAnimated] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Handle delayed rendering for smooth animations
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true)
+      setIsClosing(false)
       // Start backdrop immediately, modal will appear with delay via CSS
       setIsAnimated(true)
     } else {
+      setIsClosing(true)
       setIsAnimated(false)
       // Delay hiding to allow close animation
-      const timer = setTimeout(() => setShouldRender(false), 600)
+      const timer = setTimeout(() => {
+        setShouldRender(false)
+        setIsClosing(false)
+        // Clear state when modal is fully closed
+        setQuery('')
+        setResults([])
+        setIsLoading(false)
+      }, 600)
       return () => clearTimeout(timer)
     }
   }, [isOpen])
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && !isClosing) {
       // Delay focus to allow animation to start
       const timer = setTimeout(() => {
         inputRef.current?.focus()
       }, 300)
       return () => clearTimeout(timer)
     }
-  }, [isOpen])
+  }, [isOpen, isClosing])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -142,6 +152,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
     onClose()
   }, [onClose])
 
+  const handleOverlayClick = useCallback((e: React.MouseEvent) => {
+    // Only close if clicking directly on overlay, not on modal content
+    if (e.target === e.currentTarget) {
+      onClose()
+    }
+  }, [onClose])
+
+  // Don't render anything if modal is not open and not in closing animation
   if (!shouldRender) return null
 
   return (
@@ -151,13 +169,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
         className={`fixed inset-0 bg-background/20 backdrop-blur-md z-[70] transition-all ease-out ${
           isAnimated ? 'opacity-100 duration-100' : 'opacity-0 duration-100'
         }`}
-        onClick={onClose}
+        onClick={handleOverlayClick}
+        style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
       />
       
       {/* Modal with smooth animations */}
       <div 
         className="fixed inset-0 z-[80] flex items-start justify-center pt-16 px-4" 
-        onClick={onClose}
+        onClick={handleOverlayClick}
+        style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
       >
         <div 
           className={`bg-background rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden transition-all ease-out transform ${
