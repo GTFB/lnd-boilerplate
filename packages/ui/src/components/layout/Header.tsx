@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
     const newState = !isOffCanvasOpen
     setIsOffCanvasOpen(newState)
     
-    // Обновляем aria-expanded для бургер-кнопки
+    // Update aria-expanded for burger button
     if (burgerButtonRef.current) {
       burgerButtonRef.current.setAttribute('aria-expanded', newState.toString())
     }
@@ -52,12 +52,12 @@ export const Header: React.FC<HeaderProps> = ({
   const closeOffCanvas = useCallback(() => {
     setIsOffCanvasOpen(false)
     
-    // Возвращаем фокус на бургер-кнопку
+    // Return focus to burger button
     setTimeout(() => {
       burgerButtonRef.current?.focus()
     }, 100)
     
-    // Обновляем aria-expanded
+    // Update aria-expanded
     if (burgerButtonRef.current) {
       burgerButtonRef.current.setAttribute('aria-expanded', 'false')
     }
@@ -76,17 +76,17 @@ export const Header: React.FC<HeaderProps> = ({
   // Hotkey support for search (Ctrl+K / Cmd+K and other layouts)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Проверяем различные раскладки клавиатуры
+      // Check different keyboard layouts
       const isSearchHotkey = (
-        // Английская раскладка: Ctrl+K
+        // English layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Русская раскладка: Ctrl+Л (K на русской раскладке)
+        // Russian layout: Ctrl+Л (K on Russian layout)
         ((e.ctrlKey || e.metaKey) && e.key === 'л') ||
-        // Немецкая раскладка: Ctrl+K
+        // German layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Французская раскладка: Ctrl+K
+        // French layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Испанская раскладка: Ctrl+K
+        // Spanish layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k')
       )
       
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
       document.addEventListener('keydown', handleFocusTrap)
       document.body.classList.add('modal-open')
       
-      // Focus первый элемент в офканвасе
+      // Focus first element in offcanvas
       setTimeout(() => {
         const firstFocusable = offcanvasRef.current?.querySelector('button') as HTMLElement
         firstFocusable?.focus()
@@ -282,7 +282,7 @@ export const Header: React.FC<HeaderProps> = ({
                <button 
                  onClick={() => { 
                    toggleSearch(); 
-                   // Задержка для плавного перехода между модалами
+                   // Delay for smooth transition between modals
                    setTimeout(() => closeOffCanvas(), 100);
                  }} 
                  className="w-full flex items-center space-x-2 py-1 px-1 rounded-md hover:bg-accent transition-colors text-left" 

@@ -35,7 +35,7 @@ import {
   SkipBack
 } from 'lucide-react'
 
-// Расширенные типы для секций
+// Extended types for sections
 export interface StatsSection {
   type: 'stats'
   title?: string
@@ -158,7 +158,7 @@ export interface GallerySection {
   showLightbox?: boolean
 }
 
-// Обновленный тип PageSection
+// Updated PageSection type
 export type ExtendedPageSection = 
   | HeroSection 
   | FeaturesSection 
@@ -172,10 +172,10 @@ export type ExtendedPageSection =
   | PricingSection
   | TeamSection
   | TimelineSection
-  | GallerySection
+  |   GallerySection
 
-// Импортируем существующие типы
-import { 
+// Import existing types
+import {  
   HeroSection, 
   FeaturesSection, 
   CTASection, 
@@ -184,7 +184,7 @@ import {
   ContentSection 
 } from './PageBuilder'
 
-// Компоненты для новых секций
+// Components for new sections
 const StatsSectionComponent: React.FC<StatsSection> = ({ 
   title, 
   subtitle, 
@@ -827,7 +827,7 @@ const GallerySectionComponent: React.FC<GallerySection> = ({
   )
 }
 
-// Основной компонент PageBuilderExtended
+// Main PageBuilderExtended component
 export interface PageBuilderExtendedProps {
   sections: ExtendedPageSection[]
   className?: string
@@ -841,7 +841,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
 
   const renderSection = (section: ExtendedPageSection, index: number) => {
     switch (section.type) {
-      // Существующие секции
+      // Existing sections
       case 'hero':
         return <HeroSectionComponent key={index} {...section} />
       case 'features':
@@ -855,7 +855,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
       case 'content':
         return <ContentSectionComponent key={index} {...section} />
       
-      // Новые секции
+      // New sections
       case 'stats':
         return <StatsSectionComponent key={index} {...section} />
       case 'contact-form':
@@ -883,7 +883,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
   )
 }
 
-// Импортируем существующие компоненты секций
+// Import existing section components
 import { 
   HeroSectionComponent,
   FeaturesSectionComponent,

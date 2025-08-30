@@ -7,7 +7,7 @@ import { BlogCard } from '@lnd/ui/components/content/BlogCard'
 import { ExpertCard } from '@lnd/ui/components/content/ExpertCard'
 
 export default function GalleryPage() {
-  // Пример изображений для галереи
+  // Example images for gallery
   const galleryImages = [
     {
       src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
@@ -47,7 +47,7 @@ export default function GalleryPage() {
     }
   ]
 
-  // Пример блог-постов
+  // Example blog posts
   const blogPosts = [
     {
       id: "getting-started",
@@ -79,7 +79,7 @@ export default function GalleryPage() {
     }
   ]
 
-  // Пример экспертов
+  // Example experts
   const experts = [
     {
       id: "john-smith",
@@ -124,7 +124,7 @@ export default function GalleryPage() {
   return (
     <PageLayout>
       <div className="space-y-16">
-        {/* Галерея изображений */}
+        {/* Image Gallery */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -143,7 +143,7 @@ export default function GalleryPage() {
           />
         </section>
 
-        {/* Блог-посты */}
+        {/* Blog Posts */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -161,7 +161,7 @@ export default function GalleryPage() {
           </div>
         </section>
 
-        {/* Эксперты */}
+        {/* Experts */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">

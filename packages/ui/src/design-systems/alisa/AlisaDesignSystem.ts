@@ -32,24 +32,24 @@ export class AlisaDesignSystem extends BaseDesignSystem {
       'color-muted': this.colors.muted,
       'color-border': this.colors.border,
       
-      // Дополнительные цвета для Alisa
+      // Additional colors for Alisa
       'color-primary-light': '#a855f7',
       'color-primary-dark': '#581c87',
       'color-accent-light': '#fbbf24',
       'color-accent-dark': '#d97706',
       
-      // Градиенты
+      // Gradients
       'gradient-primary': `linear-gradient(135deg, ${this.colors.primary}, ${this.colors.accent})`,
       'gradient-secondary': `linear-gradient(135deg, ${this.colors.secondary}, ${this.colors.primary})`,
       'gradient-accent': `linear-gradient(135deg, ${this.colors.accent}, #ef4444)`,
       
-      // Тени
+      // Shadows
       'shadow-sm': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
       'shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       'shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       'shadow-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       
-      // Скругления
+      // Border radius
       'radius-sm': '0.375rem',
       'radius-md': '0.75rem',
       'radius-lg': '1.5rem',
@@ -115,7 +115,7 @@ export class AlisaDesignSystem extends BaseDesignSystem {
     }
   }
 
-  // Специфичные для Alisa методы
+  // Alisa-specific methods
   getDynamicTransitions(): Record<string, string> {
     return {
       'transition-dynamic': `all ${this.animations.duration} ${this.animations.easing}`,

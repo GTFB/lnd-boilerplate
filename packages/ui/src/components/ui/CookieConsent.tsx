@@ -17,7 +17,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
     setMounted(true)
   }, [])
 
-  // Не рендерим на сервере
+  // Don't render on server
   if (!mounted) return null
 
   try {
@@ -51,7 +51,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
       </div>
     )
   } catch (error) {
-    // Если контекст недоступен, используем локальное состояние
+    // If context unavailable, use local state
     const [showBanner, setShowBanner] = React.useState(false)
 
     React.useEffect(() => {

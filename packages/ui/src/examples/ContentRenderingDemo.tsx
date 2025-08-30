@@ -16,7 +16,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 
-// Пример MDX контента
+// Example MDX content
 const sampleMdxContent = (
   <div>
     <h1>Welcome to LND Boilerplate</h1>
@@ -38,7 +38,7 @@ const sampleMdxContent = (
   </div>
 )
 
-// Пример JSON конфигурации
+// Example JSON configuration
 const samplePageConfig: {
   meta: {
     title: string

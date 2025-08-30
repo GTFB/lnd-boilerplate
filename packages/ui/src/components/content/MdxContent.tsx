@@ -21,9 +21,9 @@ export interface MdxContentProps {
   showProgressBar?: boolean
 }
 
-// Компоненты для MDX
+// Components for MDX
 const MdxComponents = {
-  // Заголовки
+  // Headers
   h1: ({ children, id, className, ...props }: any) => (
     <h1 
       className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 mt-8 first:mt-0" 
@@ -73,14 +73,14 @@ const MdxComponents = {
     </h6>
   ),
 
-  // Параграфы
+  // Paragraphs
   p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
     <p className="leading-7 [&:not(:first-child)]:mt-6 mb-4" {...props}>
       {children}
     </p>
   ),
 
-  // Списки
+  // Lists
   ul: ({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
     <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props}>
       {children}
@@ -97,7 +97,7 @@ const MdxComponents = {
     </li>
   ),
 
-  // Ссылки
+  // Links
   a: ({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
     const isExternal = href?.startsWith('http')
     return (
@@ -114,7 +114,7 @@ const MdxComponents = {
     )
   },
 
-  // Код
+  // Code
   code: ({ children, className, ...props }: React.HTMLAttributes<HTMLElement>) => {
     const isInline = !className?.includes('language-')
     if (isInline) {
@@ -134,7 +134,7 @@ const MdxComponents = {
     )
   },
 
-  // Блоки кода
+  // Code blocks
   pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => (
     <div className="relative group">
       <pre className="mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4" {...props}>
@@ -156,14 +156,14 @@ const MdxComponents = {
     </div>
   ),
 
-  // Блоки
+  // Blocks
   blockquote: ({ children, ...props }: React.BlockquoteHTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="mt-6 border-l-2 pl-6 italic text-muted-foreground" {...props}>
       {children}
     </blockquote>
   ),
 
-  // Таблицы
+  // Tables
   table: ({ children, ...props }: React.TableHTMLAttributes<HTMLTableElement>) => (
     <div className="my-6 w-full overflow-y-auto">
       <table className="w-full" {...props}>
@@ -197,12 +197,12 @@ const MdxComponents = {
     </td>
   ),
 
-  // Горизонтальная линия
+  // Horizontal line
   hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-8 border-muted" {...props} />
   ),
 
-  // Изображения
+  // Images
   img: ({ src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => (
     <img
       src={src}
@@ -212,7 +212,7 @@ const MdxComponents = {
     />
   ),
 
-  // Алерты
+  // Alerts
   Alert: ({ 
     children, 
     variant = 'info',
@@ -251,7 +251,7 @@ const MdxComponents = {
     )
   },
 
-  // Карточки
+  // Cards
   Card: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <Card {...props}>
       <CardContent className="p-6">
@@ -260,7 +260,7 @@ const MdxComponents = {
     </Card>
   ),
 
-  // Бейджи
+  // Badges
   Badge: ({ children, variant = 'default', ...props }: {
     children: React.ReactNode
     variant?: 'default' | 'secondary' | 'destructive' | 'outline'
@@ -270,7 +270,7 @@ const MdxComponents = {
     </Badge>
   ),
 
-  // Кнопки
+  // Buttons
   Button: ({ children, variant = 'default', size = 'default', ...props }: {
     children: React.ReactNode
     variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
@@ -292,7 +292,7 @@ export const MdxContent: React.FC<MdxContentProps> = ({
 
   return (
     <div className={`max-w-none w-full ${className}`} style={{ width: '100%', maxWidth: 'none' }}>
-      {/* Прогресс бар */}
+      {/* Progress bar */}
       {showProgressBar && (
         <div className="fixed top-0 left-0 w-full h-1 bg-muted z-50">
           <div 
@@ -303,7 +303,7 @@ export const MdxContent: React.FC<MdxContentProps> = ({
         </div>
       )}
 
-      {/* Основной контент */}
+      {/* Main content */}
       <div className="mdx-content w-full" style={{ width: '100%', maxWidth: 'none' }}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
@@ -316,7 +316,7 @@ export const MdxContent: React.FC<MdxContentProps> = ({
         })}
       </div>
 
-      {/* Скрипт для прогресс бара */}
+      {/* Script for progress bar */}
       {showProgressBar && (
         <script
           dangerouslySetInnerHTML={{

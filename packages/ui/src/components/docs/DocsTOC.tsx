@@ -19,13 +19,13 @@ function useActiveItem(itemIds: string[]) {
     const updateActiveItem = () => {
       const scrollPosition = window.scrollY + 100 // Offset for header
       
-      // Найти все заголовки на странице
+      // Find all headings on the page
       const headings = itemIds
         .map(id => document.getElementById(id))
         .filter(Boolean)
         .sort((a, b) => a!.offsetTop - b!.offsetTop)
       
-      // Найти активный заголовок
+      // Find active heading
       let current = null
       for (const heading of headings) {
         if (heading && heading.offsetTop <= scrollPosition) {
@@ -38,12 +38,12 @@ function useActiveItem(itemIds: string[]) {
       setActiveId(current)
     }
 
-    // Обновить при скролле
+    // Update on scroll
     const handleScroll = () => {
       requestAnimationFrame(updateActiveItem)
     }
 
-    // Инициализация
+    // Initialization
     updateActiveItem()
     
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -123,7 +123,7 @@ export function DocsTOC({
         On This Page
       </p>
 
-      {/* Градиент внизу для плавного перехода */}
+      {/* Gradient at bottom for smooth transition */}
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-10"></div>
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-8">
         {toc.map((item) => {

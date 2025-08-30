@@ -51,14 +51,14 @@ export const useLayout = (
   const layoutConfig = useMemo(() => {
     if (!config) return {}
     
-    // Получаем конфигурацию для текущего макета
+    // Get configuration for current layout
     const layoutTemplate = config.layouts?.templates?.[currentLayout]
     const pageTypeConfig = pageType ? config.pageTypes?.[pageType] : null
     
     return {
       ...layoutTemplate,
       ...pageTypeConfig,
-      // Дополнительные настройки для конкретного макета
+      // Additional settings for specific layout
       ...(currentLayout === 'sidebar-both' && {
         leftSidebarTitle: 'Navigation',
         rightSidebarTitle: 'Table of Contents'

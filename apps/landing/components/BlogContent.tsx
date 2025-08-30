@@ -149,23 +149,23 @@ export function BlogContent({ content }: BlogContentProps) {
       const originalSrc = imgElement.src
       const alt = imgElement.alt || `Image ${index + 1}`
       
-      // Создаем уникальный ID для изображения
+      // Create unique ID for image
       const imageId = `img-${index}-${Date.now()}`
       imageRefs.current.set(imageId, imgElement)
       
-      // Заменяем src на data-src для lazy loading
+      // Replace src with data-src for lazy loading
       imgElement.dataset.src = originalSrc
       imgElement.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
       imgElement.classList.add('lazy')
       imgElement.alt = alt
       
-      // Добавляем стили для lazy loading
+      // Add styles for lazy loading
       imgElement.style.transition = 'opacity 0.3s ease-in-out'
       imgElement.style.opacity = '0.7'
     })
   }, [parsedContent])
 
-  // Обработчик для галерей
+  // Gallery handler
   useEffect(() => {
     const galleryPlaceholders = document.querySelectorAll('.gallery-placeholder')
     galleryPlaceholders.forEach((placeholder) => {
@@ -173,7 +173,7 @@ export function BlogContent({ content }: BlogContentProps) {
       if (galleryId) {
         const gallery = galleries.find(g => g.id === galleryId)
         if (gallery) {
-          // Заменяем placeholder на реальную галерею
+          // Replace placeholder with real gallery
           const galleryElement = document.createElement('div')
           galleryElement.innerHTML = `<ModernImageGallery images={${JSON.stringify(gallery.images)}} columns={${gallery.columns}} />`
           placeholder.parentNode?.replaceChild(galleryElement, placeholder)
@@ -182,20 +182,20 @@ export function BlogContent({ content }: BlogContentProps) {
     })
   }, [galleries])
 
-  // Обработчик для загрузки изображений
+  // Image load handler
   const handleImageLoad = useCallback((img: HTMLImageElement) => {
     img.style.opacity = '1'
     img.classList.remove('lazy')
   }, [])
 
-  // Обработчик для ошибок загрузки изображений
+  // Image error handler
   const handleImageError = useCallback((img: HTMLImageElement) => {
     img.style.opacity = '0.5'
     img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmZmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4='
     img.alt = 'Image not found'
   }, [])
 
-  // Добавляем обработчики событий для изображений
+  // Add event handlers for images
   useEffect(() => {
     const currentImageRefs = imageRefs.current
     currentImageRefs.forEach((img) => {

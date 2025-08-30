@@ -29,7 +29,7 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
 
   return (
     <nav className="flex flex-col gap-2 text-sm relative h-full pl-0" aria-label="Documentation Navigation">
-      {/* Поиск с кнопкой скрытия */}
+      {/* Search with hide button */}
       <div className="mb-2 flex items-center gap-2">
         <div className="flex-1">
           {searchComponent}
@@ -58,7 +58,7 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
               if (item.type === "folder" && item.children) {
                 return (
                   <div key={item.$id} className="space-y-0" role="group" aria-labelledby={`section-${item.$id}`}>
-                    {/* Заголовок раздела */}
+                    {/* Section header */}
                     <div 
                       id={`section-${item.$id}`}
                       className="py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors duration-200"
@@ -67,7 +67,7 @@ export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
                     >
                       {item.name}
                     </div>
-                    {/* Подразделы */}
+                    {/* Subsections */}
                     <div role="group" aria-label={`${item.name} pages`}>
                       {item.children.map((child, childIndex) => {
                         return (

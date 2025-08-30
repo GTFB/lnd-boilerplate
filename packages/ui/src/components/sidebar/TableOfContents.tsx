@@ -33,7 +33,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [activeSection, setActiveSection] = useState<string>('')
   const [headings, setHeadings] = useState<HeadingItem[]>([])
 
-  // Автоматически генерируем TOC из заголовков на странице
+  // Automatically generate TOC from page headings
   useEffect(() => {
     if (!autoGenerate) return
 
@@ -46,7 +46,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
         const title = element.textContent || `Section ${index + 1}`
         const id = element.id || `heading-${index + 1}`
 
-        // Добавляем id если его нет
+        // Add id if it doesn't exist
         if (!element.id) {
           element.id = id
         }
@@ -62,12 +62,12 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       setHeadings(headingItems)
     }
 
-    // Генерируем TOC после рендера
+    // Generate TOC after render
     const timer = setTimeout(generateTOC, 100)
     return () => clearTimeout(timer)
   }, [autoGenerate])
 
-  // Отслеживаем активную секцию при скролле
+  // Track active section on scroll
   useEffect(() => {
     if (!autoGenerate || headings.length === 0) return
 
@@ -84,7 +84,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
     }
 
     window.addEventListener('scroll', handleScroll)
-    handleScroll() // Проверяем сразу
+    handleScroll() // Check immediately
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [autoGenerate, headings])

@@ -24,7 +24,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true)
-      // Запускаем backdrop сразу, модал появится с задержкой через CSS
+      // Start backdrop immediately, modal will appear with delay via CSS
       setIsAnimated(true)
     } else {
       setIsAnimated(false)
@@ -46,22 +46,22 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // ESC для закрытия
+      // ESC to close
       if (e.key === 'Escape') {
         onClose()
       }
       
-      // Те же горячие клавиши для закрытия
+      // Same hotkeys for closing
       const isSearchHotkey = (
-        // Английская раскладка: Ctrl+K
+        // English layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Русская раскладка: Ctrl+Л (K на русской раскладке)
+        // Russian layout: Ctrl+Л (K on Russian layout)
         ((e.ctrlKey || e.metaKey) && e.key === 'л') ||
-        // Немецкая раскладка: Ctrl+K
+        // German layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Французская раскладка: Ctrl+K
+        // French layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
-        // Испанская раскладка: Ctrl+K
+        // Spanish layout: Ctrl+K
         ((e.ctrlKey || e.metaKey) && e.key === 'k')
       )
       
@@ -74,28 +74,28 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, docum
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown)
       
-      // Вычисляем ширину скроллбара и сохраняем текущий padding
+      // Calculate scrollbar width and save current padding
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
       const currentPaddingRight = parseInt(window.getComputedStyle(document.body).paddingRight, 10) || 0
       
-      // Устанавливаем CSS переменную для ширины скроллбара
+      // Set CSS variable for scrollbar width
       document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
       
-      // Сохраняем текущий padding-right в data атрибут
+      // Save current padding-right in data attribute
       document.body.setAttribute('data-padding-right', currentPaddingRight.toString())
       
-      // Cookie banner остается видимым, модал накладывается поверх него
+      // Cookie banner remains visible, modal overlays it
       
       document.body.classList.add('modal-open')
     } else {
-      // Восстанавливаем оригинальный padding-right
+      // Restore original padding-right
       const originalPaddingRight = document.body.getAttribute('data-padding-right')
       if (originalPaddingRight) {
         document.body.style.paddingRight = `${originalPaddingRight}px`
         document.body.removeAttribute('data-padding-right')
       }
       
-      // Cookie banner остается видимым
+      // Cookie banner remains visible
       
       document.body.classList.remove('modal-open')
     }

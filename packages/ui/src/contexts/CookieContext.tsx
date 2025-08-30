@@ -27,7 +27,7 @@ export function CookieProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
-    // Проверяем localStorage после монтирования
+    // Check localStorage after mounting
     const cookiesAccepted = localStorage.getItem('cookiesAccepted')
     const savedPreferences = localStorage.getItem('cookiePreferences')
     
@@ -70,7 +70,7 @@ export function CookieProvider({ children }: { children: ReactNode }) {
     setShowBanner(false)
   }
 
-  // Не рендерим контекст на сервере
+  // Don't render context on server
   if (!mounted) {
     return <>{children}</>
   }

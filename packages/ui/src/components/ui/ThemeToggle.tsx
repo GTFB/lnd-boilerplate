@@ -5,7 +5,7 @@ import { cn } from '../../lib/utils'
 import { useTheme } from '../../contexts/ThemeContext'
 
 
-// Кастомная иконка переключения темы
+// Custom theme toggle icon
 function ThemeToggleIcon({ className }: { className?: string }) {
   return (
     <svg 
@@ -37,10 +37,10 @@ export interface ThemeToggleProps {
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { toggleTheme } = useTheme()
 
-  // Состояние для предотвращения гидратации
+  // State to prevent hydration
   const [isDark, setIsDark] = React.useState(false)
 
-  // Обновляем состояние после монтирования
+  // Update state after mounting
   React.useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'))
   }, [])

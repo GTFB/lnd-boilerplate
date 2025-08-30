@@ -5,13 +5,13 @@
 /* Blog styles */
 @import './blog.css';
 
-/* Предотвращаем горизонтальное переполнение */
+/* Prevent horizontal overflow */
 html, body {
-  overflow-x: auto; /* ИСПРАВЛЕНО: не блокируем sticky */
+  overflow-x: auto; /* FIXED: don't block sticky */
   max-width: 100vw;
 }
 
-/* Глобальные sticky правила - должны быть в начале */
+/* Global sticky rules - must be at the beginning */
 header {
   position: sticky !important;
   top: 0 !important;
@@ -27,7 +27,7 @@ header {
   }
 }
 
-/* Default 3-column layout точно как в HTML шаблоне */
+/* Default 3-column layout exactly as in HTML template */
 .grid-container {
   display: grid;
   grid-template-columns: 270px 1fr 208px;
@@ -43,8 +43,8 @@ header {
 
 .content {
   grid-area: content;
-  margin-left: -20px; /* компенсируем px-5 слева */
-  margin-right: -20px; /* компенсируем px-5 справа */
+  margin-left: -20px; /* compensate px-5 left */
+  margin-right: -20px; /* compensate px-5 right */
   padding-left: 20px;
   padding-right: 20px;
   transition: margin-left 0.4s ease-in-out;
@@ -55,7 +55,7 @@ header {
   transition: all 0.4s ease-in-out;
 }
 
-/* Hidden sidebar: возвращаем как в макете */
+/* Hidden sidebar: return as in layout */
 .grid-container.sidebar-hidden {
   grid-template-columns: 0 1fr 208px;
   gap: 0 0;
@@ -72,13 +72,13 @@ header {
 }
 
 .grid-container.sidebar-hidden .content { 
-  margin-left: -20px; /* компенсируем px-5 слева */
-  margin-right: -20px; /* компенсируем px-5 справа */
+  margin-left: -20px; /* compensate px-5 left */
+  margin-right: -20px; /* compensate px-5 right */
   padding-left: 20px;
   padding-right: 20px;
 }
 
-/* Контент тоже не должен переполняться - но без влияния на siblings */
+/* Content also shouldn't overflow - but without affecting siblings */
 .content > * {
   overflow-x: hidden !important;
   min-width: 0 !important;
@@ -88,7 +88,7 @@ header {
   box-sizing: border-box;
 }
 
-/* Убеждаемся что все элементы не выходят за viewport */
+/* Ensure all elements don't go beyond viewport */
 *,
 *::before,
 *::after {
@@ -97,7 +97,7 @@ header {
 
 /* Sidebar control styles like in template */
 #show-sidebar-btn { 
-  display: inline-flex; /* Убираем !important чтобы React мог управлять видимостью */
+  display: inline-flex; /* Remove !important so React can control visibility */
 }
 
 
@@ -112,13 +112,13 @@ header {
   display: none;
 }
 
-/* Предотвращаем переполнение в компонентах - НЕ на самих сайдбарах (ломает sticky) */
+/* Prevent overflow in components - NOT on sidebars themselves (breaks sticky) */
 .left-sidebar > *, .right-sidebar > * {
-  overflow-x: auto; /* ИСПРАВЛЕНО: не блокируем sticky */
+  overflow-x: auto; /* FIXED: don't block sticky */
   min-width: 0;
 }
 
-/* TOC и sidebar текст с обрезкой */
+/* TOC and sidebar text with truncation */
 .left-sidebar a, .right-sidebar a {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -126,15 +126,15 @@ header {
   max-width: 100%;
 }
 
-/* НЕ добавляем overflow на grid-container - это ломает sticky! */
+/* DON'T add overflow to grid-container - this breaks sticky! */
 
-/* Исправляем sticky позиционирование */
+/* Fix sticky positioning */
 .sticky {
   position: sticky !important;
 }
 
-/* КЛЮЧЕВЫЕ ИСПРАВЛЕНИЯ для sticky */
-/* Убираем overflow: hidden с всех родительских контейнеров */
+/* KEY FIXES for sticky */
+/* Remove overflow: hidden from all parent containers */
 .min-h-screen, 
 .min-h-full,
 .h-screen,
@@ -146,7 +146,7 @@ body {
   height: auto;
 }
 
-/* Обеспечиваем что grid-container не блокирует sticky */
+/* Ensure grid-container doesn't block sticky */
 .grid-container {
   min-height: 100vh;
   contain: none;
@@ -155,7 +155,7 @@ body {
   filter: none;
 }
 
-/* Обеспечиваем что flex контейнеры не блокируют sticky */
+/* Ensure flex containers don't block sticky */
 .flex,
 .flex-1,
 .flex-col,
@@ -166,23 +166,23 @@ body {
   filter: none;
 }
 
-/* Убираем все что может блокировать sticky, НО сохраняем offcanvas */
+/* Remove everything that can block sticky, BUT preserve offcanvas */
 *:not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]) {
   contain: none;
 }
 
-/* Исключаем только нужные элементы из глобального сброса */
+/* Exclude only necessary elements from global reset */
 *:not(.sticky):not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]):not([class*="transform"]):not([class*="transition"]):not([class*="bg-primary"]):not([class*="h-full"]):not(.scroll-progress-container):not(.scroll-progress-bar):not([class*="scroll-progress"]) {
   transform: none;
   filter: none;
 }
 
-/* Обеспечиваем достаточную высоту контента для срабатывания sticky */
+/* Ensure sufficient content height for sticky to work */
 .content {
-  min-height: auto; /* Естественная высота контента */
+  min-height: auto; /* Natural content height */
 }
 
-/* Обеспечиваем работу ScrollProgress Bar */
+/* Ensure ScrollProgress Bar works */
 [class*="fixed bottom-0 left-0"],
 .fixed.bottom-0.left-0.w-full,
 .fixed.bottom-0 {
@@ -193,7 +193,7 @@ body {
   filter: none;
 }
 
-/* ScrollProgress элементы - НЕ блокируем их анимации */
+/* ScrollProgress elements - DON'T block their animations */
 .scroll-progress-container,
 .scroll-progress-bar,
 [class*="scroll-progress"] {
@@ -204,7 +204,7 @@ body {
   z-index: 60;
 }
 
-/* ScrollProgress внутренний элемент */
+/* ScrollProgress inner element */
 [class*="h-full bg-primary"],
 [class*="bg-primary transition-all"],
 [style*="width:"] {
@@ -214,9 +214,9 @@ body {
   filter: none !important;
 }
 
-/* Тестовый элемент удален - sticky работает! */
+/* Test element removed - sticky works! */
 
-/* Фиксим сайдбары для sticky */
+/* Fix sidebars for sticky */
 .left-sidebar, .right-sidebar {
   overflow: visible !important;
   contain: none !important;
@@ -224,21 +224,21 @@ body {
   min-height: 100vh !important;
 }
 
-/* ПРИНУДИТЕЛЬНО делаем элементы sticky */
+/* FORCE elements to be sticky */
 .left-sidebar > div, .right-sidebar > div {
   position: sticky !important;
   top: 6rem !important;
   z-index: 10 !important;
 }
 
-/* Header принудительно sticky - МАКСИМАЛЬНО СПЕЦИФИЧНО */
+/* Header forced sticky - MAXIMUM SPECIFICITY */
 header {
   position: sticky !important;
   top: 0 !important;
   z-index: 50 !important;
 }
 
-/* Все возможные селекторы для header */
+/* All possible selectors for header */
 .sticky.top-0,
 nav.sticky,
 header.sticky,
@@ -249,7 +249,7 @@ header.sticky,
   z-index: 50 !important;
 }
 
-/* Специфичные селекторы для сайдбаров */
+/* Specific selectors for sidebars */
 .left-sidebar .sticky,
 .right-sidebar .sticky,
 aside .sticky,
@@ -260,7 +260,7 @@ aside .sticky,
   z-index: 10 !important;
 }
 
-/* Offcanvas анимации и стили */
+/* Offcanvas animations and styles */
 .offcanvas-overlay {
   position: fixed;
   top: 0;
@@ -303,13 +303,13 @@ aside .sticky,
   overflow-y: auto;
 }
 
-/* Добавляем flex направление к новому offcanvas-menu */
+/* Add flex direction to new offcanvas-menu */
 .offcanvas-menu {
   display: flex;
   flex-direction: column;
 }
 
-/* Активные состояния с улучшенными анимациями */
+/* Active states with improved animations */
 .offcanvas-overlay.is-open {
   opacity: 1;
   visibility: visible;
@@ -319,26 +319,26 @@ aside .sticky,
   transform: translateX(0);
 }
 
-/* Старые стили удалены - используем новые выше */
+/* Old styles removed - use new ones above */
 
-/* Блокировка скролла body при открытом офканвасе */
+/* Body scroll lock when offcanvas is open */
 body.no-scroll {
   overflow: hidden;
 }
 
-/* Блокировка скролла для модалов (без blur) */
+/* Scroll lock for modals (without blur) */
 body.modal-open {
   overflow: hidden;
-  /* Предотвращаем движение окна при скрытии скроллбара */
+  /* Prevent window movement when hiding scrollbar */
   padding-right: var(--scrollbar-width, 0px) !important;
 }
 
-/* Предотвращаем движение cookie banner при появлении скроллбара */
+/* Prevent cookie banner movement when scrollbar appears */
 body.modal-open [data-cookie-banner] {
   padding-right: var(--scrollbar-width, 0px) !important;
 }
 
-/* Принудительная ширина модального окна поиска */
+/* Forced width of search modal window */
 .search-modal .max-w-2xl {
   max-width: 42rem !important;
   width: 100% !important;
@@ -347,12 +347,12 @@ body.modal-open [data-cookie-banner] {
 
 
 
-/* Предотвращаем движение cookie banner при изменении сайдбара */
+/* Prevent cookie banner movement when sidebar changes */
 [data-cookie-banner] {
   transition: padding-right 0.4s ease-in-out;
 }
 
-/* Компенсация для cookie banner при скрытом сайдбаре */
+/* Compensation for cookie banner when sidebar is hidden */
 .grid-container.sidebar-hidden ~ [data-cookie-banner],
 .grid-container.sidebar-hidden [data-cookie-banner] {
   margin-left: 0;
@@ -362,7 +362,7 @@ body.modal-open [data-cookie-banner] {
   right: 0;
 }
 
-/* Стабилизация cookie banner - предотвращаем любое движение */
+/* Cookie banner stabilization - prevent any movement */
 [data-cookie-banner] {
   position: fixed !important;
   bottom: 0 !important;
@@ -374,10 +374,10 @@ body.modal-open [data-cookie-banner] {
   transition: opacity 0.3s ease, padding-right 0.4s ease-in-out !important;
 }
 
-/* Стабилизация модального окна поиска - предотвращаем движение при изменении сайдбара */
+/* Search modal window stabilization - prevent movement when sidebar changes */
 body.modal-open {
   overflow: hidden;
-  /* Предотвращаем движение окна при скрытии скроллбара */
+  /* Prevent window movement when hiding scrollbar */
   padding-right: var(--scrollbar-width, 0px) !important;
 }
 
@@ -393,21 +393,21 @@ body.modal-open {
 
 
 
-/* Улучшение отступов для контента */
+/* Improve content spacing */
 .content-header {
   margin-bottom: 24px;
-  align-items: center; /* Центрируем элементы по вертикали */
+  align-items: center; /* Center elements vertically */
   display: flex;
-  flex-direction: row; /* По умолчанию иконка слева, breadcrumbs справа */
-  padding-top: 38px; /* Опущено на 16px вниз (22px + 16px) */
-  gap: 16px; /* Отступ между иконкой и breadcrumbs */
+  flex-direction: row; /* By default icon on left, breadcrumbs on right */
+  padding-top: 38px; /* Lowered 16px down (22px + 16px) */
+  gap: 16px; /* Spacing between icon and breadcrumbs */
 }
 
 .content-header .breadcrumbs {
-  line-height: 16px; /* Совпадает с высотой иконки */
+  line-height: 16px; /* Matches icon height */
   display: flex;
   align-items: center;
-  margin-top: 0; /* Убираем отступ, используем общее выравнивание */
+  margin-top: 0; /* Remove margin, use general alignment */
 }
 
 .content h1, .content h2 {
@@ -421,7 +421,7 @@ body.modal-open {
   margin-top: 0 !important;
 }
 
-/* Desktop: скрываем mobile иконки и восстанавливаем sticky */
+/* Desktop: hide mobile icons and restore sticky */
 @media (min-width: 1024px) {
   .mobile-show {
     display: none !important;
@@ -431,7 +431,7 @@ body.modal-open {
     display: inline-block !important;
   }
   
-  /* Принудительно восстанавливаем sticky на десктопе */
+  /* Force restore sticky on desktop */
   header {
     position: sticky !important;
     top: 0 !important;
@@ -449,7 +449,7 @@ body.modal-open {
 }
 
 /* Responsive breakpoints based on site.config.json */
-/* tablet: 1280px - скрываем правый сайдбар, остается 2 колонки */
+/* tablet: 1280px - hide right sidebar, 2 columns remain */
 @media (max-width: 1280px) {
   .grid-container {
     grid-template-columns: 270px 1fr !important;
@@ -472,24 +472,24 @@ body.modal-open {
     display: none !important;
   }
   
-  /* Контент занимает всю доступную ширину + компенсация паддинга */
+  /* Content takes full available width + padding compensation */
   .content {
     grid-area: content !important;
-    margin-left: -20px !important; /* компенсируем px-5 слева */
-    margin-right: -20px !important; /* компенсируем px-5 справа */
+    margin-left: -20px !important; /* compensate px-5 left */
+    margin-right: -20px !important; /* compensate px-5 right */
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
   
   .grid-container.sidebar-hidden .content {
-    margin-left: -20px !important; /* компенсируем px-5 слева */
-    margin-right: -20px !important; /* компенсируем px-5 справа */
+    margin-left: -20px !important; /* compensate px-5 left */
+    margin-right: -20px !important; /* compensate px-5 right */
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
 }
 
-/* mobile: 1023px - перестройка в 1 колонку, сайдбары переносятся */
+/* mobile: 1023px - restructure to 1 column, sidebars are moved */
 @media (max-width: 1023px) {
   .grid-container {
     grid-template-columns: 1fr !important;
@@ -506,7 +506,7 @@ body.modal-open {
     opacity: 0 !important;
     visibility: hidden !important;
     transition: max-height 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s ease-out, padding 0.4s ease-out !important;
-    overflow: visible !important; /* ИСПРАВЛЕНО: не блокируем sticky */
+    overflow: visible !important; /* FIXED: don't block sticky */
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
@@ -519,7 +519,7 @@ body.modal-open {
     padding-bottom: 1rem !important;
   }
   
-  /* Отключаем sticky только на мобиле - только внутри сайдбаров */
+  /* Disable sticky only on mobile - only inside sidebars */
   .left-sidebar > div,
   .right-sidebar > div,
   .left-sidebar .sticky,
@@ -527,7 +527,7 @@ body.modal-open {
     position: static !important;
   }
   
-  /* НО header должен оставаться sticky даже на мобиле */
+  /* BUT header should remain sticky even on mobile */
   header {
     position: sticky !important;
     top: 0 !important;
@@ -539,10 +539,10 @@ body.modal-open {
 
   
   .content, .right-sidebar {
-    margin-left: -20px !important; /* компенсируем родительский px-5 */
-    margin-right: -20px !important; /* компенсируем родительский px-5 */
-    padding-left: 20px !important; /* кастомные отступы 20px */
-    padding-right: 20px !important; /* кастомные отступы 20px */
+    margin-left: -20px !important; /* compensate parent px-5 */
+    margin-right: -20px !important; /* compensate parent px-5 */
+    padding-left: 20px !important; /* custom padding 20px */
+    padding-right: 20px !important; /* custom padding 20px */
   }
   
   .right-sidebar {
@@ -551,7 +551,7 @@ body.modal-open {
     order: 3;
   }
   
-  /* Перемещаем иконку бургера вправо на мобиле */
+  /* Move burger icon to right on mobile */
   .content-header {
     flex-direction: row-reverse !important;
   }
@@ -560,7 +560,7 @@ body.modal-open {
     text-align: left !important;
   }
   
-  /* Скрываем desktop иконки на мобиле */
+  /* Hide desktop icons on mobile */
   .mobile-hide {
     display: none !important;
   }
@@ -587,14 +587,14 @@ body.modal-open {
   }
   
   .grid-container.sidebar-hidden .content {
-    margin-left: 0 !important; /* убираем отрицательные margins на мобильных */
+    margin-left: 0 !important; /* remove negative margins on mobile */
     margin-right: 0 !important;
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
 }
 
-/* Дополнительные стили для мобильного сайдбара */
+/* Additional styles for mobile sidebar */
 .mobile-sidebar {
   position: fixed;
   top: 0;
@@ -615,7 +615,7 @@ body.modal-open {
   transform: translateY(0);
 }
 
-/* Стили для мобильного сайдбара с правильными отступами */
+/* Styles for mobile sidebar with correct spacing */
 .left-sidebar.mobile-expanded {
   margin: 20px;
   padding: 20px;
@@ -625,7 +625,7 @@ body.modal-open {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Убираем лишние отступы на мобильных */
+/* Remove extra spacing on mobile */
 @media (max-width: 1024px) {
   .content {
     padding-left: 20px !important;
@@ -641,7 +641,7 @@ body.modal-open {
 /* @import '../../../packages/ui/src/styles/animations.css'; */
 
 @layer base {
-  /* --- Светлая тема (Light Theme) --- */
+  /* --- Light Theme --- */
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -677,7 +677,7 @@ body.modal-open {
     --code-number: 240 3.8% 46.1%;
   }
 
-  /* --- Темная тема (Dark Theme) --- */
+  /* --- Dark Theme --- */
   .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
@@ -721,13 +721,13 @@ body.modal-open {
     @apply bg-background text-foreground;
   }
   
-  /* АГРЕССИВНОЕ предотвращение мигания при переключении страниц в темной теме */
+  /* AGGRESSIVE flicker prevention when switching pages in dark theme */
   html {
     background-color: hsl(var(--background)) !important;
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Принудительно устанавливаем темный фон для ВСЕХ элементов в темной теме */
+  /* Force dark background for ALL elements in dark theme */
   .dark,
   .dark *,
   .dark html,
@@ -747,7 +747,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* ИСКЛЮЧАЕМ backdrop элементы из принудительного темного фона */
+  /* EXCLUDE backdrop elements from forced dark background */
   .dark [class*="backdrop-blur"],
   .dark [class*="bg-background/"],
   .dark [class*="backdrop-filter"],
@@ -759,7 +759,7 @@ body.modal-open {
     -webkit-backdrop-filter: blur(8px) !important;
   }
   
-  /* Предотвращаем мигание при навигации между страницами - ВСЕ контейнеры */
+  /* Prevent flicker when navigating between pages - ALL containers */
   .dark #__next,
   .dark [data-nextjs-page-router-viewport],
   .dark [data-nextjs-page-router-viewport] *,
@@ -771,7 +771,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Убеждаемся что все контейнеры страниц имеют правильный фон */
+  /* Ensure all page containers have correct background */
   .dark main,
   .dark div[role="main"],
   .dark main *,
@@ -780,7 +780,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Принудительно устанавливаем фон для всех возможных контейнеров страниц */
+  /* Force background for all possible page containers */
   .dark [class*="page"],
   .dark [class*="Page"],
   .dark [class*="layout"],
@@ -791,7 +791,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Предотвращаем мигание на уровне viewport и всех возможных контейнеров */
+  /* Prevent flicker at viewport level and all possible containers */
   .dark [data-nextjs-page-router-viewport],
   .dark [data-nextjs-page-router-viewport] *,
   .dark [data-nextjs-page-router-viewport] > div,
@@ -803,7 +803,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Принудительно устанавливаем фон для всех элементов с определенными классами */
+  /* Force background for all elements with specific classes */
   .dark [class*="bg-"],
   .dark [class*="text-"],
   .dark [class*="border-"] {
@@ -811,7 +811,7 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Предотвращаем мигание для всех возможных селекторов Next.js */
+  /* Prevent flicker for all possible Next.js selectors */
   .dark [data-nextjs-page-router-viewport] [class*="page"],
   .dark [data-nextjs-page-router-viewport] [class*="Page"],
   .dark [data-nextjs-page-router-viewport] [class*="layout"],
@@ -820,18 +820,18 @@ body.modal-open {
     color: hsl(var(--foreground)) !important;
   }
   
-  /* Быстрые переходы для CSS переменных темы */
+  /* Fast transitions for theme CSS variables */
   :root {
     transition: none;
   }
   
-  /* Мгновенное переключение темы без задержек */
+  /* Instant theme switching without delays */
   .dark,
   .light {
     transition: none;
   }
   
-  /* Принудительно устанавливаем CSS переменные для предотвращения мигания */
+  /* Force CSS variables to prevent flicker */
   .dark {
     --background: 0 0% 0% !important;
     --foreground: 0 0% 98% !important;
@@ -854,7 +854,7 @@ body.modal-open {
     --ring: 0 0% 83.1% !important;
   }
   
-  /* Исправляем кнопки в темной теме */
+  /* Fix buttons in dark theme */
   .dark .bg-primary {
     background-color: hsl(0 0% 98%) !important;
     color: hsl(0 0% 9%) !important;
@@ -869,7 +869,7 @@ body.modal-open {
     color: hsl(0 0% 9%) !important;
   }
   
-  /* Плавные переходы для всех элементов при смене темы */
+  /* Smooth transitions for all elements when changing theme */
   * {
     transition: background-color 0.15s ease-out, 
                 color 0.15s ease-out, 
@@ -879,7 +879,7 @@ body.modal-open {
                 transform 0.15s ease-out;
   }
   
-  /* Исключаем элементы, которые не должны иметь переходы */
+  /* Exclude elements that shouldn't have transitions */
   *:not([class*="transition"]):not([class*="animate"]):not([class*="transform"]) {
     transition: background-color 0.15s ease-out, 
                 color 0.15s ease-out, 
@@ -887,7 +887,7 @@ body.modal-open {
                 box-shadow 0.15s ease-out;
   }
   
-  /* Специальные переходы для важных элементов */
+  /* Special transitions for important elements */
   body, 
   header, 
   nav, 
@@ -933,7 +933,7 @@ body.modal-open {
     border-color: hsl(var(--ring));
   }
   
-  /* АГРЕССИВНО убираем все кольца и тени от Tailwind CSS */
+  /* AGGRESSIVELY remove all rings and shadows from Tailwind CSS */
   .focus\:ring-2,
   .focus\:ring-4,
   .focus\:ring,
@@ -954,13 +954,13 @@ body.modal-open {
     outline: none !important;
   }
   
-  /* Убираем ВСЕ кольца у ВСЕХ элементов с любыми кольцами */
+  /* Remove ALL rings from ALL elements with any rings */
   *[class*="ring"] {
     box-shadow: none !important;
     outline: none !important;
   }
   
-  /* Убираем ВСЕ кольца у ВСЕХ элементов при любом состоянии */
+  /* Remove ALL rings from ALL elements in any state */
   *[class*="ring"]:focus,
   *[class*="ring"]:focus-visible,
   *[class*="ring"]:focus-within,
@@ -970,7 +970,7 @@ body.modal-open {
     outline: none !important;
   }
   
-  /* ПРИНУДИТЕЛЬНО убираем все кольца у инпутов */
+  /* FORCE remove all rings from inputs */
   input,
   input:focus,
   input:focus-visible,
@@ -982,7 +982,7 @@ body.modal-open {
     border: 1px solid hsl(var(--border)) !important;
   }
   
-  /* При фокусе меняем ТОЛЬКО цвет рамки */
+  /* On focus change ONLY border color */
   input:focus,
   input:focus-visible,
   input:focus-within {
@@ -991,7 +991,7 @@ body.modal-open {
     box-shadow: none !important;
   }
   
-  /* ПРИНУДИТЕЛЬНО убираем все кольца у кнопок */
+  /* FORCE remove all rings from buttons */
   button,
   button:focus,
   button:focus-visible,
@@ -1002,7 +1002,7 @@ body.modal-open {
     box-shadow: none !important;
   }
   
-  /* При фокусе кнопок меняем ТОЛЬКО цвет рамки */
+  /* On button focus change ONLY border color */
   button:focus,
   button:focus-visible,
   button:focus-within {
@@ -1010,7 +1010,7 @@ body.modal-open {
     box-shadow: none !important;
   }
   
-  /* ПРИНУДИТЕЛЬНО убираем все кольца у кнопок Button компонента */
+  /* FORCE remove all rings from Button component buttons */
   .Button,
   [class*="Button"],
   button[class*="Button"],
@@ -1019,7 +1019,7 @@ body.modal-open {
     box-shadow: none !important;
   }
   
-  /* При фокусе Button компонента */
+  /* On Button component focus */
   .Button:focus,
   .Button:focus-visible,
   .Button:focus-within,
@@ -1246,18 +1246,18 @@ body.modal-open {
     }
   }
   
-  /* Принудительно переопределяем все prose размеры */
+  /* Force override all prose sizes */
   .prose, .prose-lg, .prose-xl {
     width: 100% !important;
     max-width: none !important;
   }
   
-  /* Переопределяем возможные Tailwind prose стили */
+  /* Override possible Tailwind prose styles */
   .prose-lg {
     max-width: none !important;
   }
   
-  /* MDX контент должен занимать полную ширину */
+  /* MDX content should take full width */
   .mdx-content {
     width: 100% !important;
     max-width: none !important;
@@ -1354,7 +1354,7 @@ body.modal-open {
   display: none;  /* Safari and Chrome */
 }
 
-/* Анимации для языкового селектора */
+/* Animations for language selector */
 .language-selector-dropdown {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1369,13 +1369,13 @@ body.modal-open {
   transform: scale(1) translateY(0);
 }
 
-/* Стили для backdrop blur */
+/* Styles for backdrop blur */
 .backdrop-blur {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* Исправляем backdrop blur для темной темы */
+/* Fix backdrop blur for dark theme */
 .dark .backdrop-blur,
 .dark [class*="backdrop-blur"],
 .dark [class*="bg-background/"] {
@@ -1384,26 +1384,26 @@ body.modal-open {
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Специальные правила для модальных окон в темной теме */
+/* Special rules for modal windows in dark theme */
 .dark .search-modal .bg-background\/20 {
   background-color: rgba(0, 0, 0, 0.3) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Исправляем backdrop для Sheet компонентов */
+/* Fix backdrop for Sheet components */
 .dark [class*="bg-background/80"] {
   background-color: rgba(0, 0, 0, 0.3) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Стили для анимаций */
+/* Styles for animations */
 .transition-all {
   transition: all 0.15s ease-out;
 }
 
-/* Стили для кнопки "наверх" */
+/* Styles for "back to top" button */
 .back-to-top {
   position: fixed;
   bottom: 2rem;
@@ -1419,7 +1419,7 @@ body.modal-open {
   visibility: visible;
 }
 
-/* Стили для progress bar */
+/* Styles for progress bar */
 .scroll-progress {
   position: fixed;
   top: 0;

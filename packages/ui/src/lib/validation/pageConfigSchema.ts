@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// Базовые схемы для общих элементов
+// Base schemas for common elements
 const ButtonSchema = z.object({
   text: z.string(),
   href: z.string().url().or(z.string().startsWith('/')),
@@ -17,7 +17,7 @@ const BadgeSchema = z.object({
   variant: z.enum(['default', 'secondary', 'destructive', 'outline']).optional()
 })
 
-// Схемы для секций
+// Schemas for sections
 const HeroSectionSchema = z.object({
   type: z.literal('hero'),
   title: z.string(),
@@ -229,7 +229,7 @@ const GallerySectionSchema = z.object({
   showLightbox: z.boolean().optional()
 })
 
-// Объединенная схема для всех секций
+// Combined schema for all sections
 const SectionSchema = z.union([
   HeroSectionSchema,
   FeaturesSectionSchema,
@@ -246,7 +246,7 @@ const SectionSchema = z.union([
   GallerySectionSchema
 ])
 
-// Схема для мета-информации
+// Schema for meta information
 const MetaSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
@@ -257,25 +257,25 @@ const MetaSchema = z.object({
   tags: z.array(z.string()).optional()
 })
 
-// Схема для хлебных крошек
+// Schema for breadcrumbs
 const BreadcrumbItemSchema = z.object({
   title: z.string(),
   href: z.string().url().or(z.string().startsWith('/'))
 })
 
-// Основная схема конфигурации страницы
+// Main page configuration schema
 export const PageConfigSchema = z.object({
   meta: MetaSchema.optional(),
   breadcrumbs: z.array(BreadcrumbItemSchema).optional(),
   sections: z.array(SectionSchema).min(1, 'At least one section is required')
 })
 
-// Типы TypeScript
+// TypeScript types
 export type PageConfig = z.infer<typeof PageConfigSchema>
 export type PageSection = z.infer<typeof SectionSchema>
 export type PageMeta = z.infer<typeof MetaSchema>
 
-// Функция валидации
+// Validation function
 export function validatePageConfig(config: unknown): { success: true; data: PageConfig } | { success: false; errors: string[] } {
   try {
     const validated = PageConfigSchema.parse(config)
@@ -293,13 +293,13 @@ export function validatePageConfig(config: unknown): { success: true; data: Page
   }
 }
 
-// Функция для получения ошибок валидации
+// Function to get validation errors
 export function getValidationErrors(config: unknown): string[] {
   const result = validatePageConfig(config)
   return result.success ? [] : result.errors
 }
 
-// Функция для проверки валидности
+// Function to check validity
 export function isValidPageConfig(config: unknown): config is PageConfig {
   return validatePageConfig(config).success
 }

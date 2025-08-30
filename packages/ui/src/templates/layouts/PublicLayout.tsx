@@ -168,25 +168,25 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     
     const hideSidebar = () => {
       if (window.innerWidth <= 1023) {
-        // На мобиле используем класс для плавной анимации
+        // On mobile use class for smooth animation
         leftSidebar?.classList.remove('mobile-expanded')
       } else {
-        // На desktop используем grid класс
+        // On desktop use grid class
         gridContainer?.classList.add('sidebar-hidden')
       }
     }
     
     const showSidebar = () => {
       if (window.innerWidth <= 1023) {
-        // На мобиле используем класс для плавной анимации
+        // On mobile use class for smooth animation
         leftSidebar?.classList.add('mobile-expanded')
       } else {
-        // На desktop используем grid класс
+        // On desktop use grid class
         gridContainer?.classList.remove('sidebar-hidden')
       }
     }
     
-    // Используем делегирование событий - слушаем клики на всем документе
+    // Use event delegation - listen for clicks on entire document
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (target.closest('#hide-sidebar-btn')) {

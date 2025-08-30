@@ -18,7 +18,7 @@ import {
   Lightbulb
 } from 'lucide-react'
 
-// Типы для секций страницы
+// Types for page sections
 export interface HeroSection {
   type: 'hero'
   title: string
@@ -121,7 +121,7 @@ export interface PageBuilderProps {
   className?: string
 }
 
-// Компоненты для секций
+// Components for sections
 const HeroSectionComponent: React.FC<HeroSection> = ({ 
   title, 
   subtitle, 

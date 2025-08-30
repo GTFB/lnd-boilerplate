@@ -31,13 +31,13 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Предотвращаем мигание при загрузке страницы
+              // Prevent flickering on page load
               (function() {
                 try {
                   const theme = localStorage.getItem('theme') || 'light';
                   const isDark = theme === 'dark';
                   
-                  // Применяем тему только к documentElement
+                  // Apply theme only to documentElement
                   if (isDark) {
                     document.documentElement.classList.add('dark');
                     document.documentElement.style.backgroundColor = 'hsl(0 0% 0%)';
@@ -48,7 +48,7 @@ export default function RootLayout({
                     document.documentElement.style.color = 'hsl(222.2 84% 4.9%)';
                   }
                   
-                  // Применяем стили к body после его создания
+                  // Apply styles to body after its creation
                   if (document.body) {
                     if (isDark) {
                       document.body.style.backgroundColor = 'hsl(0 0% 0%)';

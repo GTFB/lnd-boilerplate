@@ -146,7 +146,7 @@ import { BaseLayout, BaseLayoutProps } from './base/BaseLayout'
 export const CustomLayout: React.FC<BaseLayoutProps> = ({ children, ...props }) => {
   return (
     <BaseLayout layout="custom" {...props}>
-      {/* Ваша кастомная структура */}
+      {/* Your custom structure */}
       {children}
     </BaseLayout>
   )
@@ -191,18 +191,18 @@ function App() {
 4. Обновите импорты
 
 ```tsx
-// Было
+// Before
 import { PublicLayout } from './templates'
 
-// Стало
+// After
 import { LayoutRenderer } from '@your-org/ui'
 
-// Было
+// Before
 <PublicLayout>
   <Content />
 </PublicLayout>
 
-// Стало
+// After
 <LayoutRenderer layout="sidebar-both" pageType="documentation">
   <Content />
 </LayoutRenderer>
