@@ -79,7 +79,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                 </Button>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
                   <Checkbox
                     checked={localPreferences.necessary}
@@ -142,7 +142,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg sm:col-span-2">
+                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
                   <Checkbox
                     checked={localPreferences.functional}
                     onCheckedChange={(checked) => handlePreferenceChange('functional', checked)}
@@ -251,84 +251,84 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                 </Button>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
-                  <Checkbox
-                    checked={localPreferences.necessary}
-                    onCheckedChange={(checked) => handlePreferenceChange('necessary', checked)}
-                    disabled
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-medium text-foreground truncate">Necessary</span>
-                      <span className="text-xs text-muted-foreground">(Always)</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      Essential functionality
-                    </p>
-                  </div>
-                </div>
+                             <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
+                   <Checkbox
+                     checked={localPreferences.necessary}
+                     onCheckedChange={(checked) => handlePreferenceChange('necessary', checked)}
+                     disabled
+                   />
+                   <div className="flex-1 min-w-0">
+                     <div className="flex items-center space-x-1">
+                       <span className="text-sm font-medium text-foreground truncate">Necessary</span>
+                       <span className="text-xs text-muted-foreground">(Always)</span>
+                     </div>
+                     <p className="text-xs text-muted-foreground truncate">
+                       Essential functionality
+                     </p>
+                   </div>
+                 </div>
 
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
-                  <Checkbox
-                    checked={localPreferences.analytics}
-                    onCheckedChange={(checked) => handlePreferenceChange('analytics', checked)}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-medium text-foreground truncate">Analytics</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      Site usage analysis
-                    </p>
-                  </div>
-                </div>
+                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
+                   <Checkbox
+                     checked={localPreferences.analytics}
+                     onCheckedChange={(checked) => handlePreferenceChange('analytics', checked)}
+                   />
+                   <div className="flex-1 min-w-0">
+                     <div className="flex items-center space-x-1">
+                       <span className="text-sm font-medium text-foreground truncate">Analytics</span>
+                     </div>
+                     <p className="text-xs text-muted-foreground truncate">
+                       Site usage analysis
+                     </p>
+                   </div>
+                 </div>
 
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
-                  <Checkbox
-                    checked={localPreferences.marketing}
-                    onCheckedChange={(checked) => handlePreferenceChange('marketing', checked)}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-medium text-foreground truncate">Marketing</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      Personalized ads
-                    </p>
-                  </div>
-                </div>
+                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
+                   <Checkbox
+                     checked={localPreferences.marketing}
+                     onCheckedChange={(checked) => handlePreferenceChange('marketing', checked)}
+                   />
+                   <div className="flex-1 min-w-0">
+                     <div className="flex items-center space-x-1">
+                       <span className="text-sm font-medium text-foreground truncate">Marketing</span>
+                     </div>
+                     <p className="text-xs text-muted-foreground truncate">
+                       Personalized ads
+                     </p>
+                   </div>
+                 </div>
 
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
-                  <Checkbox
-                    checked={localPreferences.preferences}
-                    onCheckedChange={(checked) => handlePreferenceChange('preferences', checked)}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-medium text-foreground truncate">Preferences</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      Save settings
-                    </p>
-                  </div>
-                </div>
+                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
+                   <Checkbox
+                     checked={localPreferences.preferences}
+                     onCheckedChange={(checked) => handlePreferenceChange('preferences', checked)}
+                   />
+                   <div className="flex-1 min-w-0">
+                     <div className="flex items-center space-x-1">
+                       <span className="text-sm font-medium text-foreground truncate">Preferences</span>
+                     </div>
+                     <p className="text-xs text-muted-foreground truncate">
+                       Save settings
+                     </p>
+                   </div>
+                 </div>
 
-                <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg sm:col-span-2">
-                  <Checkbox
-                    checked={localPreferences.functional}
-                    onCheckedChange={(checked) => handlePreferenceChange('functional', checked)}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-1">
-                      <span className="text-sm font-medium text-foreground truncate">Functional</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      Enhanced features & personalization
-                    </p>
-                  </div>
-                </div>
-              </div>
+                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
+                   <Checkbox
+                     checked={localPreferences.functional}
+                     onCheckedChange={(checked) => handlePreferenceChange('functional', checked)}
+                   />
+                   <div className="flex-1 min-w-0">
+                     <div className="flex items-center space-x-1">
+                       <span className="text-sm font-medium text-foreground truncate">Functional</span>
+                     </div>
+                     <p className="text-xs text-muted-foreground truncate">
+                       Enhanced features & personalization
+                     </p>
+                   </div>
+                 </div>
+               </div>
 
               <div className="flex space-x-2 pt-2">
                 <Button variant="outline" size="sm" onClick={handleDecline}>
