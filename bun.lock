@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "lnd-boilerplate",
+      "dependencies": {
+        "next-themes": "^0.4.6",
+      },
       "devDependencies": {
         "@types/bun": "^1.2.21",
         "@types/node": "^20.0.0",

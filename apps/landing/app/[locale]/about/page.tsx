@@ -10,7 +10,7 @@ import {
 } from '@lnd/ui/components/ui/card';
 import { Badge } from '@lnd/ui/components/ui/badge';
 import { Rocket, Code, Palette, Zap, Users, Target } from 'lucide-react';
-import { NavigationTest } from '../../components/NavigationTest';
+import { NavigationTest } from '../../../components/NavigationTest';
 
 export default function AboutPage() {
   const features = [

@@ -17,7 +17,6 @@ const useSafeLocale = () => {
     const pathname = window.location.pathname
     const localeMatch = pathname.match(/^\/([a-z]{2})(\/|$)/)
     if (localeMatch) {
-      console.log('LanguageSelector: extracted locale from URL:', localeMatch[1])
       return localeMatch[1]
     }
   }
@@ -26,10 +25,8 @@ const useSafeLocale = () => {
   try {
     const { useLocale } = require('next-intl')
     const locale = useLocale()
-    console.log('LanguageSelector: useLocale returned:', locale)
     return locale
   } catch (error) {
-    console.warn('LanguageSelector: useLocale failed, using fallback:', error)
     // Return default locale if context is not available
     return 'en'
   }
@@ -83,12 +80,10 @@ export const LanguageSelector: React.FC = () => {
   }, [isOpen])
 
   const handleLanguageChange = (langCode: string) => {
-    console.log('LanguageSelector: handleLanguageChange called with:', langCode)
     setIsOpen(false)
     
     // Get the current path without locale
-    let pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '') || '/'
-    console.log('LanguageSelector: pathWithoutLocale:', pathWithoutLocale)
+    let pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(\/|$)/, '$1') || '/'
     
     // If we're on the root path, just go to the locale
     if (pathWithoutLocale === '/') {
@@ -96,52 +91,59 @@ export const LanguageSelector: React.FC = () => {
     }
     
     // For English (default locale), don't add the locale prefix
-    const newPath = langCode === 'en' ? pathWithoutLocale || '/' : `/${langCode}${pathWithoutLocale}`
-    console.log('LanguageSelector: navigating to', newPath)
-    router.push(newPath)
+    let newPath
+    if (langCode === 'en') {
+      // For English, use the path without locale prefix
+      newPath = pathWithoutLocale || '/'
+    } else {
+      // For other languages, add the locale prefix
+      newPath = `/${langCode}${pathWithoutLocale}`
+    }
+    
+    // Use router.replace to avoid adding to history stack
+    router.replace(newPath)
+    
+    // Force re-render after navigation
+    setTimeout(() => {
+      setForceUpdate(prev => prev + 1)
+    }, 100)
   }
 
   // Get current language directly from URL for immediate updates
   const getCurrentLanguage = () => {
     // Get locale from URL path
     const pathnameLocale = pathname.match(/^\/([a-z]{2})(\/|$)/)?.[1]
-    console.log('LanguageSelector: getCurrentLanguage - pathnameLocale:', pathnameLocale, 'pathname:', pathname)
     
     if (pathnameLocale) {
       const currentLang = languages.find(lang => lang.code === pathnameLocale)
       if (currentLang) {
-        console.log('LanguageSelector: getCurrentLanguage - found language:', currentLang.code)
         return currentLang
       }
     }
     
-    // Default to English for root path
-    console.log('LanguageSelector: getCurrentLanguage - defaulting to English')
-    return languages[0]
+    // If no locale in path, it's English (default)
+    return languages[0] // English is first in the array
   }
   
   const currentLanguage = getCurrentLanguage()
 
   return (
     <div className="relative" ref={dropdownRef} key={`language-selector-${forceUpdate}`}>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => {
-          console.log('LanguageSelector: button clicked, current isOpen:', isOpen)
-          const newIsOpen = !isOpen
-          console.log('LanguageSelector: setting isOpen to:', newIsOpen)
-          setIsOpen(newIsOpen)
-        }}
-        className="flex items-center justify-center px-2 py-0 language-selector-button"
-        style={{ 
-          width: '80px', 
-          minWidth: '80px',
-          backgroundColor: 'hsl(var(--card))',
-          border: '1px solid hsl(var(--border))',
-          color: 'hsl(var(--foreground))'
-        }}
-      >
+             <Button
+         variant="ghost"
+         size="sm"
+         onClick={() => {
+           setIsOpen(!isOpen)
+         }}
+         className="flex items-center justify-center px-2 py-0 language-selector-button hover:bg-primary/10 hover:text-primary transition-colors w-full cursor-pointer select-none"
+         style={{ 
+           width: '80px', 
+           minWidth: '80px',
+           backgroundColor: 'hsl(var(--card))',
+           border: '1px solid hsl(var(--border))',
+           color: 'hsl(var(--foreground))'
+         }}
+       >
         <span className="flex items-center justify-center mr-1" style={{ width: '24px', minWidth: '24px' }}>
           {currentLanguage?.flag || currentLanguage?.fallback}
         </span>
@@ -168,8 +170,7 @@ export const LanguageSelector: React.FC = () => {
         }}
       />
     
-      {/* Dropdown */}
-      {isOpen && <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '5px', zIndex: 9999 }}>Dropdown is OPEN</div>}
+             {/* Dropdown */}
       <div
         className={`absolute mt-2 bg-background border rounded-md shadow-lg z-40 transition-all duration-100 ease-out transform language-selector-dropdown ${
           isOpen 
@@ -190,23 +191,24 @@ export const LanguageSelector: React.FC = () => {
           {languages.map((language) => (
             <button
               key={language.code}
-              onClick={() => {
-                console.log('LanguageSelector: language item clicked:', language.code)
-                handleLanguageChange(language.code)
-              }}
-              className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors flex items-center space-x-3 language-selector-item ${
-                locale === language.code ? 'bg-accent text-accent-foreground' : ''
-              }`}
-              style={{
-                color: 'hsl(var(--foreground))',
-                backgroundColor: locale === language.code ? 'hsl(var(--accent))' : 'transparent'
-              }}
+              onClick={() => handleLanguageChange(language.code)}
+                             className={`w-full text-left px-4 py-3 text-sm transition-colors flex items-center space-x-3 language-selector-item cursor-pointer ${
+                 currentLanguage.code === language.code 
+                   ? '' 
+                   : 'hover:bg-primary/20 hover:text-primary hover:shadow-sm'
+               }`}
+                             style={{
+                 color: currentLanguage.code === language.code ? 'hsl(var(--accent-foreground))' : 'hsl(var(--foreground))',
+                 backgroundColor: 'transparent',
+                 cursor: 'pointer',
+                 userSelect: 'none'
+               }}
             >
               <span className="flex items-center justify-center h-4" style={{ width: '24px', minWidth: '24px' }}>
                 {language.flag || language.fallback}
               </span>
               <span className="flex-1">{language.name}</span>
-              {locale === language.code && (
+              {currentLanguage.code === language.code && (
                 <Check className="w-4 h-4 text-primary" />
               )}
             </button>

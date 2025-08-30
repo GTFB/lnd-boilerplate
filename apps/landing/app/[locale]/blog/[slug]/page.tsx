@@ -2,7 +2,7 @@ import { PageLayout } from '@lnd/ui/templates';
 import { getBlogPost, getBlogPosts } from '@lnd/utils/content/server';
 import { notFound } from 'next/navigation';
 import { BlogCategories } from '@lnd/ui/components/sidebar/BlogCategories';
-import { BlogContent } from '../../../components/BlogContent';
+import { BlogContent } from '../../../../components/BlogContent';
 
 interface BlogPostPageProps {
   params: {

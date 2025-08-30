@@ -8,7 +8,10 @@ export default createMiddleware({
   defaultLocale: 'en',
 
   // Always use the default locale for the root path
-  localePrefix: 'as-needed'
+  localePrefix: 'as-needed',
+  
+  // Don't redirect for the root path
+  localeDetection: false
 });
 
 export const config = {
