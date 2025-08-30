@@ -11,8 +11,8 @@ import { writeFileSync, existsSync, mkdirSync } from "fs";
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.log("❌ Пожалуйста, укажите путь к базе данных");
-  console.log("Пример: bun run scripts/set-db-path.ts C:/OSPanel/data/dev-agent/dev-agent.db");
+  console.log("❌ Please specify the database path");
+  console.log("Example: bun run scripts/set-db-path.ts C:/OSPanel/data/dev-agent/dev-agent.db");
   process.exit(1);
 }
 
@@ -20,14 +20,14 @@ const dbPath = args[0];
 const configDir = "G:\\Общие диски\\Altrp\\dev-agent";
 const envFile = join(configDir, ".env");
 
-// Создаем папку config если её нет
+// Create config folder if it doesn't exist
 if (!existsSync(configDir)) {
   mkdirSync(configDir, { recursive: true });
 }
 
-// Создаем файл конфигурации
+// Create configuration file
 const envContent = `# Dev Agent Database Configuration
-# Путь к базе данных
+# Database path
 DEV_AGENT_DB_PATH=${dbPath}
 
 # Другие настройки

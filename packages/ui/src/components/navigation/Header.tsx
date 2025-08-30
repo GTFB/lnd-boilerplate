@@ -111,7 +111,7 @@ export function Header({ className }: HeaderProps) {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                className="py-1 px-1 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />

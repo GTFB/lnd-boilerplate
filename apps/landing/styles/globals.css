@@ -721,6 +721,202 @@ body.modal-open {
     @apply bg-background text-foreground;
   }
   
+  /* АГРЕССИВНОЕ предотвращение мигания при переключении страниц в темной теме */
+  html {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Принудительно устанавливаем темный фон для ВСЕХ элементов в темной теме */
+  .dark,
+  .dark *,
+  .dark html,
+  .dark body,
+  .dark #__next,
+  .dark [data-nextjs-page-router-viewport],
+  .dark main,
+  .dark div[role="main"],
+  .dark div,
+  .dark section,
+  .dark article,
+  .dark aside,
+  .dark header,
+  .dark footer,
+  .dark nav {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* ИСКЛЮЧАЕМ backdrop элементы из принудительного темного фона */
+  .dark [class*="backdrop-blur"],
+  .dark [class*="bg-background/"],
+  .dark [class*="backdrop-filter"],
+  .dark .search-modal [class*="bg-background/"],
+  .dark [class*="bg-background/80"],
+  .dark [class*="bg-background/20"] {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  /* Предотвращаем мигание при навигации между страницами - ВСЕ контейнеры */
+  .dark #__next,
+  .dark [data-nextjs-page-router-viewport],
+  .dark [data-nextjs-page-router-viewport] *,
+  .dark [data-nextjs-page-router-viewport] > *,
+  .dark [data-nextjs-page-router-viewport] > div,
+  .dark [data-nextjs-page-router-viewport] > main,
+  .dark [data-nextjs-page-router-viewport] > section {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Убеждаемся что все контейнеры страниц имеют правильный фон */
+  .dark main,
+  .dark div[role="main"],
+  .dark main *,
+  .dark div[role="main"] * {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Принудительно устанавливаем фон для всех возможных контейнеров страниц */
+  .dark [class*="page"],
+  .dark [class*="Page"],
+  .dark [class*="layout"],
+  .dark [class*="Layout"],
+  .dark [class*="container"],
+  .dark [class*="Container"] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Предотвращаем мигание на уровне viewport и всех возможных контейнеров */
+  .dark [data-nextjs-page-router-viewport],
+  .dark [data-nextjs-page-router-viewport] *,
+  .dark [data-nextjs-page-router-viewport] > div,
+  .dark [data-nextjs-page-router-viewport] > main,
+  .dark [data-nextjs-page-router-viewport] > section,
+  .dark [data-nextjs-page-router-viewport] > article,
+  .dark [data-nextjs-page-router-viewport] > aside {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Принудительно устанавливаем фон для всех элементов с определенными классами */
+  .dark [class*="bg-"],
+  .dark [class*="text-"],
+  .dark [class*="border-"] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Предотвращаем мигание для всех возможных селекторов Next.js */
+  .dark [data-nextjs-page-router-viewport] [class*="page"],
+  .dark [data-nextjs-page-router-viewport] [class*="Page"],
+  .dark [data-nextjs-page-router-viewport] [class*="layout"],
+  .dark [data-nextjs-page-router-viewport] [class*="Layout"] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Быстрые переходы для CSS переменных темы */
+  :root {
+    transition: none;
+  }
+  
+  /* Мгновенное переключение темы без задержек */
+  .dark,
+  .light {
+    transition: none;
+  }
+  
+  /* Принудительно устанавливаем CSS переменные для предотвращения мигания */
+  .dark {
+    --background: 0 0% 0% !important;
+    --foreground: 0 0% 98% !important;
+    --card: 0 0% 3.9% !important;
+    --card-foreground: 0 0% 98% !important;
+    --popover: 0 0% 3.9% !important;
+    --popover-foreground: 0 0% 98% !important;
+    --primary: 0 0% 98% !important;
+    --primary-foreground: 0 0% 9% !important;
+    --secondary: 0 0% 14.9% !important;
+    --secondary-foreground: 0 0% 98% !important;
+    --muted: 0 0% 14.9% !important;
+    --muted-foreground: 0 0% 63.9% !important;
+    --accent: 0 0% 14.9% !important;
+    --accent-foreground: 0 0% 98% !important;
+    --destructive: 0 62.8% 30.6% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    --border: 0 0% 14.9% !important;
+    --input: 0 0% 14.9% !important;
+    --ring: 0 0% 83.1% !important;
+  }
+  
+  /* Исправляем кнопки в темной теме */
+  .dark .bg-primary {
+    background-color: hsl(0 0% 98%) !important;
+    color: hsl(0 0% 9%) !important;
+  }
+  
+  .dark .text-primary-foreground {
+    color: hsl(0 0% 9%) !important;
+  }
+  
+  .dark .bg-primary.text-primary-foreground {
+    background-color: hsl(0 0% 98%) !important;
+    color: hsl(0 0% 9%) !important;
+  }
+  
+  /* Плавные переходы для всех элементов при смене темы */
+  * {
+    transition: background-color 0.15s ease-out, 
+                color 0.15s ease-out, 
+                border-color 0.15s ease-out, 
+                box-shadow 0.15s ease-out,
+                opacity 0.15s ease-out,
+                transform 0.15s ease-out;
+  }
+  
+  /* Исключаем элементы, которые не должны иметь переходы */
+  *:not([class*="transition"]):not([class*="animate"]):not([class*="transform"]) {
+    transition: background-color 0.15s ease-out, 
+                color 0.15s ease-out, 
+                border-color 0.15s ease-out, 
+                box-shadow 0.15s ease-out;
+  }
+  
+  /* Специальные переходы для важных элементов */
+  body, 
+  header, 
+  nav, 
+  main, 
+  aside, 
+  footer,
+  .bg-background,
+  .bg-card,
+  .bg-popover,
+  .bg-primary,
+  .bg-secondary,
+  .bg-muted,
+  .bg-accent,
+  .bg-destructive,
+  .text-foreground,
+  .text-primary,
+  .text-secondary,
+  .text-muted,
+  .text-accent,
+  .text-destructive,
+  .border-border,
+  .border-input,
+  .border-ring {
+    transition: background-color 0.15s ease-out, 
+                color 0.15s ease-out, 
+                border-color 0.15s ease-out, 
+                box-shadow 0.15s ease-out !important;
+  }
+  
   /* Remove blue glow from form elements */
   input:focus,
   textarea:focus,
@@ -1179,9 +1375,32 @@ body.modal-open {
   -webkit-backdrop-filter: blur(8px);
 }
 
+/* Исправляем backdrop blur для темной темы */
+.dark .backdrop-blur,
+.dark [class*="backdrop-blur"],
+.dark [class*="bg-background/"] {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Специальные правила для модальных окон в темной теме */
+.dark .search-modal .bg-background\/20 {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Исправляем backdrop для Sheet компонентов */
+.dark [class*="bg-background/80"] {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
 /* Стили для анимаций */
 .transition-all {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.15s ease-out;
 }
 
 /* Стили для кнопки "наверх" */

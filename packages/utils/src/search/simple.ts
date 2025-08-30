@@ -1,5 +1,8 @@
 import type { SearchDocument, SearchResult, SearchOptions } from './types'
 
+// Re-export types for convenience
+export type { SearchDocument, SearchResult, SearchOptions }
+
 /**
  * Simple search implementation without external dependencies
  */

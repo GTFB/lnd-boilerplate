@@ -25,7 +25,47 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${inter.variable} ${interTight.variable}`} suppressHydrationWarning={true}>
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Предотвращаем мигание при загрузке страницы
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'light';
+                  const isDark = theme === 'dark';
+                  
+                  // Применяем тему только к documentElement
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.backgroundColor = 'hsl(0 0% 0%)';
+                    document.documentElement.style.color = 'hsl(0 0% 98%)';
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.style.backgroundColor = 'hsl(0 0% 100%)';
+                    document.documentElement.style.color = 'hsl(222.2 84% 4.9%)';
+                  }
+                  
+                  // Применяем стили к body после его создания
+                  if (document.body) {
+                    if (isDark) {
+                      document.body.style.backgroundColor = 'hsl(0 0% 0%)';
+                      document.body.style.color = 'hsl(0 0% 98%)';
+                    } else {
+                      document.body.style.backgroundColor = 'hsl(0 0% 100%)';
+                      document.body.style.color = 'hsl(222.2 84% 4.9%)';
+                    }
+                  }
+                } catch (e) {
+                  console.warn('Failed to apply theme on load:', e);
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased" suppressHydrationWarning={true}>
         <DesignSystemProvider>
           <ThemeProvider>

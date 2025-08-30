@@ -236,7 +236,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-8 w-8" alt="User avatar">
                       <AvatarImage src="/avatars/user.png" alt="User" />
                       <AvatarFallback>U</AvatarFallback>
                     </Avatar>

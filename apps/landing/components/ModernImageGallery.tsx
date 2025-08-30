@@ -9,7 +9,7 @@ import lgZoom from 'lightgallery/plugins/zoom'
 import lgFullscreen from 'lightgallery/plugins/fullscreen'
 import lgShare from 'lightgallery/plugins/share'
 
-// Импортируем стили lightGallery
+// Import lightGallery styles
 import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
@@ -30,7 +30,7 @@ interface ModernImageGalleryProps {
 export function ModernImageGallery({ images }: ModernImageGalleryProps) {
   const lightGalleryRef = useRef<{ openGallery: (index: number) => void } | null>(null)
 
-  // Подготавливаем данные для lightGallery
+  // Prepare data for lightGallery
   const galleryItems = images.map((image) => ({
     src: image.src,
     thumb: image.src,
@@ -38,12 +38,12 @@ export function ModernImageGallery({ images }: ModernImageGalleryProps) {
     alt: image.alt
   }))
 
-  // Показываем только первые 3 изображения в карусели
+  // Show only first 3 images in carousel
   const visibleImages = images.slice(0, 3)
 
   return (
     <div className="lightgallery-container">
-      {/* Карусель с 3 изображениями */}
+      {/* Carousel with 3 images */}
       <div className="carousel-preview">
         <div className="grid grid-cols-3 gap-4">
           {visibleImages.map((image, _index) => (
@@ -60,7 +60,7 @@ export function ModernImageGallery({ images }: ModernImageGalleryProps) {
                   sizes="(max-width: 768px) 33vw, 200px"
                 />
                 
-                {/* Overlay с подписью */}
+                {/* Overlay with caption */}
                 <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
                   <div className="w-full p-3 text-white">
                     <p className="text-xs font-medium leading-tight line-clamp-2">{image.caption}</p>
@@ -71,19 +71,19 @@ export function ModernImageGallery({ images }: ModernImageGalleryProps) {
           ))}
         </div>
         
-        {/* Кнопка "Показать все" */}
+        {/* "Show all" button */}
         <div className="mt-4 text-center">
           <button
             onClick={() => lightGalleryRef.current?.openGallery(0)}
             className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
           >
             <ImageIcon className="w-4 h-4 mr-2" />
-            Показать все ({images.length})
+            Show all ({images.length})
           </button>
         </div>
       </div>
 
-      {/* LightGallery компонент */}
+      {/* LightGallery component */}
       <LightGallery
         speed={500}
         plugins={[lgThumbnail, lgZoom, lgFullscreen, lgShare]}

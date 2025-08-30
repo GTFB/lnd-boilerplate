@@ -5,10 +5,11 @@
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { SiteConfigManager, getSiteConfig, initSiteConfig, isFeatureEnabled, getSiteName, getSiteUrl } from '../../src/config/site-config.utils';
 import { SiteConfig, Environment, FeatureKey } from '../../src/config/site-config.types';
+import { join } from 'path';
 
 describe('SiteConfigManager', () => {
   let configManager: SiteConfigManager;
-  const testConfigPath = './tests/config/mock-site.config.json';
+  const testConfigPath = join(__dirname, 'mock-site.config.json');
 
   beforeEach(() => {
     configManager = new SiteConfigManager(testConfigPath);
@@ -79,7 +80,7 @@ describe('SiteConfigManager', () => {
 
     it('should return Netlify configuration', () => {
       const netlify = configManager.getDeploymentConfig('netlify');
-      expect(netlify).toHaveProperty('framework');
+      expect(netlify).toHaveProperty('command');
     });
 
     it('should throw error for invalid provider', () => {
@@ -98,7 +99,7 @@ describe('SiteConfigManager', () => {
   describe('getFeatureConfig', () => {
     it('should return feature configuration', () => {
       const blog = configManager.getFeatureConfig('blog');
-      expect(blog).toBe(true);
+      expect(blog).toEqual({ enabled: true, postsPerPage: 10, path: '/blog', enableComments: true, enableTags: true, enableCategories: true });
     });
 
     it('should throw error for invalid feature', () => {

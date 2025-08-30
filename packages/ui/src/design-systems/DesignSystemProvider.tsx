@@ -5,6 +5,7 @@ import { BaseDesignSystem } from './BaseDesignSystem'
 import { LoraDesignSystem } from './LoraDesignSystem'
 import { AlisaDesignSystem } from './AlisaDesignSystem'
 import { DesignSystemName } from '../types'
+import { CookieProvider } from '../contexts/CookieContext'
 
 interface DesignSystemContextType {
   currentSystem: DesignSystemName
@@ -63,7 +64,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
       switchSystem,
       getCurrentSystem
     }}>
-      {children}
+      <CookieProvider>
+        {children}
+      </CookieProvider>
     </DesignSystemContext.Provider>
   )
 }

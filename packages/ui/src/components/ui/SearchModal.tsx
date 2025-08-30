@@ -8,9 +8,11 @@ import { X, Search } from 'lucide-react'
 export interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
+  documents?: any[]
+  isLoading?: boolean
 }
 
-export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
+export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, documents = [], isLoading: externalIsLoading = false }) => {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)

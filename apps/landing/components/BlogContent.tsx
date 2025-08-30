@@ -17,7 +17,7 @@ export function BlogContent({ content }: BlogContentProps) {
   // const [visibleImages] = useState<Set<string>>(new Set())
   const imageRefs = useRef<Map<string, HTMLImageElement>>(new Map())
 
-  // Intersection Observer для lazy loading изображений
+  // Intersection Observer for lazy loading images
   useEffect(() => {
     const imageObserver = new IntersectionObserver(
       (entries) => {
@@ -52,7 +52,7 @@ export function BlogContent({ content }: BlogContentProps) {
     }
   }, [])
 
-  // Функция для парсинга изображений
+  // Function for parsing images
   // const parseImages = useCallback((imagesStr: string) => {
   //   const images: Array<{src: string, alt: string, caption: string}> = []
   //   const imageRegex = /\{\s*src:\s*"([^"]+)",\s*alt:\s*"([^"]+)",\s*caption:\s*"([^"]*)"\s*\}/g
@@ -69,16 +69,16 @@ export function BlogContent({ content }: BlogContentProps) {
   //   return images
   // }, [])
 
-  // Парсим контент только один раз при изменении content
+  // Parse content only once when content changes
   const parsedContent = useMemo(() => {
     let parsedContent = content
     let galleryIndex = 0
     
-    // Обрабатываем ModernImageGallery компоненты
+    // Process ModernImageGallery components
     const imageGalleryRegex = /<ModernImageGallery\s+([^>]*)\s*\/>/g
     parsedContent = parsedContent.replace(imageGalleryRegex, (match, props) => {
       try {
-        // Извлекаем props
+        // Extract props
         const imagesMatch = props.match(/images=\{\[([\s\S]*?)\]\}/)
         // const columnsMatch = props.match(/columns=\{(\d+)\}/)
         
@@ -87,7 +87,7 @@ export function BlogContent({ content }: BlogContentProps) {
           // const images = parseImages(imagesStr)
           // const columns = columnsMatch ? parseInt(columnsMatch[1]) : 3
           
-          // Добавляем галерею в состояние
+          // Add gallery to state
           const galleryId = `gallery-${galleryIndex}`
           galleryIndex++
           
@@ -100,48 +100,48 @@ export function BlogContent({ content }: BlogContentProps) {
       return match
     })
     
-    // Парсим markdown в HTML
+    // Parse markdown to HTML
     let htmlContent = marked(parsedContent) as string
     
-    // Добавляем CSS классы к HTML элементам
+    // Add CSS classes to HTML elements
     htmlContent = htmlContent
-      // Заголовки
+              // Headings
       .replace(/<h1>/g, '<h1 class="blog-content-h1">')
       .replace(/<h2>/g, '<h2 class="blog-content-h2">')
       .replace(/<h3>/g, '<h3 class="blog-content-h3">')
       .replace(/<h4>/g, '<h4 class="blog-content-h4">')
       .replace(/<h5>/g, '<h5 class="blog-content-h5">')
       .replace(/<h6>/g, '<h6 class="blog-content-h6">')
-      // Параграфы
+              // Paragraphs
       .replace(/<p>/g, '<p class="blog-content-p">')
-      // Списки
+              // Lists
       .replace(/<ul>/g, '<ul class="blog-content-ul">')
       .replace(/<ol>/g, '<ol class="blog-content-ol">')
       .replace(/<li>/g, '<li class="blog-content-li">')
-      // Ссылки
+              // Links
       .replace(/<a\s+href=/g, '<a class="blog-content-a" href=')
-      // Код
+              // Code
       .replace(/<code>/g, '<code class="blog-content-code">')
       .replace(/<pre>/g, '<pre class="blog-content-pre">')
-      // Блоки цитат
+              // Blockquotes
       .replace(/<blockquote>/g, '<blockquote class="blog-content-blockquote">')
-      // Изображения - добавляем lazy loading
+              // Images - add lazy loading
       .replace(/<img/g, '<img class="blog-content-img lazy" loading="lazy"')
-      // Таблицы
+              // Tables
       .replace(/<table>/g, '<table class="blog-content-table">')
       .replace(/<th>/g, '<th class="blog-content-th">')
       .replace(/<td>/g, '<td class="blog-content-td">')
       .replace(/<tr>/g, '<tr class="blog-content-tr">')
-      // Горизонтальные линии
+              // Horizontal lines
       .replace(/<hr>/g, '<hr class="blog-content-hr">')
-      // Жирный и курсив
+              // Bold and italic
       .replace(/<strong>/g, '<strong class="blog-content-strong">')
       .replace(/<em>/g, '<em class="blog-content-em">')
     
     return htmlContent
   }, [content])
 
-  // Обработчик для замены изображений на lazy loading версии
+      // Handler for replacing images with lazy loading versions
   useEffect(() => {
     const images = document.querySelectorAll('.blog-content-img')
     images.forEach((img, index) => {

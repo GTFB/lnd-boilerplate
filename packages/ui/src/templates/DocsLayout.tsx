@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { PublicLayout } from './PublicLayout'
+import { PublicLayout } from './layouts/PublicLayout'
 import { DocumentationConfig } from '@lnd/utils/config/site-config.types'
 import { DocsTOC } from '../components/docs'
 import { ChevronRight, ChevronDown, ExternalLink } from 'lucide-react'

@@ -3,7 +3,7 @@
 import React from 'react'
 import { cn } from '@lnd/ui/lib/utils'
 import { Image } from '../ui/Image'
-import { Avatar } from '../ui/Avatar'
+import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import { ArrowRight } from 'lucide-react'

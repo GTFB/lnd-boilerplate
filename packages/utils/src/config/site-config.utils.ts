@@ -4,7 +4,7 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
-import { SiteConfig, Environment, FeatureKey, DeploymentProvider, isSiteConfig, isValidEnvironment, isValidFeatureKey, isValidDeploymentProvider } from './site-config.types';
+import { SiteConfig, Environment, FeatureKey, DeploymentProvider, isSiteConfig, isValidEnvironment, isValidFeatureKey, isValidDeploymentProvider, VercelConfig, NetlifyConfig } from './site-config.types';
 
 /**
  * Site configuration manager
@@ -213,7 +213,7 @@ export class SiteConfigManager {
    * Generate Vercel configuration from site config
    */
   generateVercelConfig() {
-    const deploymentConfig = this.getDeploymentConfig('vercel');
+    const deploymentConfig = this.getDeploymentConfig('vercel') as VercelConfig;
     
     return {
       buildCommand: deploymentConfig.framework,
@@ -230,7 +230,7 @@ export class SiteConfigManager {
    * Generate Netlify configuration from site config
    */
   generateNetlifyConfig() {
-    const deploymentConfig = this.getDeploymentConfig('netlify');
+    const deploymentConfig = this.getDeploymentConfig('netlify') as NetlifyConfig;
     
     return {
       build: {

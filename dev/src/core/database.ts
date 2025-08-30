@@ -15,11 +15,11 @@ import { getMigrationVersions, getMigrationSQL } from "./schema.js";
 
 // Helper functions for Bun operations
 const bunWrite = async (path: string, data: string | ArrayBuffer): Promise<number> => {
-  return (globalThis as any).Bun.write(path, data);
+  return (globalThis as { Bun: { write: (path: string, data: string | ArrayBuffer) => Promise<number> } }).Bun.write(path, data);
 };
 
 const bunFile = (path: string) => {
-  return (globalThis as any).Bun.file(path);
+  return (globalThis as { Bun: { file: (path: string) => unknown } }).Bun.file(path);
 };
 
 /**

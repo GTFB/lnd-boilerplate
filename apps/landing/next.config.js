@@ -17,7 +17,7 @@ const nextConfig = {
       },
     ],
   },
-  // Настройки для устранения Fast Refresh warnings
+  // Settings to eliminate Fast Refresh warnings
   webpack: (config, { dev, isServer }) => {
     // MDX loader
     config.module.rules.push({
@@ -34,7 +34,7 @@ const nextConfig = {
 
     return config;
   },
-  // Настройки для устранения портовых предупреждений
+  // Settings to eliminate port warnings
   devIndicators: {
     buildActivity: false,
   },

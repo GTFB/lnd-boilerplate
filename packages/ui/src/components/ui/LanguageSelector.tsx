@@ -15,7 +15,7 @@ export const LanguageSelector: React.FC = () => {
   const [currentLang, setCurrentLang] = useState('EN')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Обработчик клика вне компонента и клавиши Escape
+  // Click outside component and Escape key handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -41,11 +41,11 @@ export const LanguageSelector: React.FC = () => {
   }, [isOpen])
 
   const languages = [
-    { code: 'EN', name: 'English', flag: <GBFlag className="w-5 h-4" /> },
-    { code: 'RU', name: 'Русский', flag: <RUFlag className="w-5 h-4" /> },
-    { code: 'ES', name: 'Español', flag: <ESFlag className="w-5 h-4" /> },
-    { code: 'FR', name: 'Français', flag: <FRFlag className="w-5 h-4" /> },
-    { code: 'DE', name: 'Deutsch', flag: <DEFlag className="w-5 h-4" /> }
+    { code: 'EN', name: 'English', flag: <GBFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇬🇧' },
+    { code: 'RU', name: 'Russian', flag: <RUFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇷🇺' },
+    { code: 'ES', name: 'Español', flag: <ESFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇪🇸' },
+    { code: 'FR', name: 'Français', flag: <FRFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇫🇷' },
+    { code: 'DE', name: 'Deutsch', flag: <DEFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇩🇪' }
   ]
 
   const handleLanguageChange = (langCode: string) => {
@@ -59,22 +59,25 @@ export const LanguageSelector: React.FC = () => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-1.5 px-3"
-      >
-        <span className="flex items-center mr-1">{currentLanguage?.flag}</span>
-        <span className="hidden sm:inline mr-1">{currentLanguage?.code}</span>
-        <ChevronDown 
-          className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
-        />
-      </Button>
+                     <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center justify-center px-2 py-0"
+          style={{ width: '80px', minWidth: '80px' }}
+        >
+         <span className="flex items-center justify-center mr-1" style={{ width: '24px', minWidth: '24px' }}>
+           {currentLanguage?.flag || currentLanguage?.fallback}
+         </span>
+         <span className="hidden sm:inline mr-1">{currentLanguage?.code}</span>
+         <ChevronDown 
+           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+         />
+       </Button>
 
-            {/* Overlay - всегда присутствует, но видимый только при открытом дропдауне */}
+            {/* Overlay - starts below header */}
       <div 
-        className={`fixed inset-0 z-40 transition-opacity duration-300 ease-out ${
+        className={`fixed top-16 left-0 right-0 bottom-0 z-30 transition-opacity duration-300 ease-out ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsOpen(false)}
@@ -82,11 +85,12 @@ export const LanguageSelector: React.FC = () => {
       
       {/* Dropdown */}
       <div 
-        className={`absolute right-2 mt-2 w-[224px] bg-background border rounded-md shadow-lg z-50 transition-all duration-300 ease-out transform ${
+        className={`absolute right-0 mt-2 w-[200px] bg-background border rounded-md shadow-lg z-40 transition-all duration-300 ease-out transform ${
           isOpen 
             ? 'opacity-100 scale-100 translate-y-0' 
             : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
         }`}
+        style={{ minWidth: '200px', maxWidth: '250px' }}
       >
         <div className="py-1">
           {languages.map((language) => (
@@ -97,7 +101,9 @@ export const LanguageSelector: React.FC = () => {
                 currentLang === language.code ? 'bg-accent text-accent-foreground' : ''
               }`}
             >
-              <span className="flex items-center">{language.flag}</span>
+              <span className="flex items-center justify-center h-4" style={{ width: '24px', minWidth: '24px' }}>
+                {language.flag || language.fallback}
+              </span>
               <span className="flex-1">{language.name}</span>
               {currentLang === language.code && (
                 <Check className="w-4 h-4 text-primary" />

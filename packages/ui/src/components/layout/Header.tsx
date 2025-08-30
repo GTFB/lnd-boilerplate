@@ -199,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="hidden lg:flex items-center space-x-2 h-10">
                 <button 
                   onClick={toggleSearch} 
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-md border transition-colors" 
+                  className="flex items-center gap-2 px-2 py-1 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-md border transition-colors" 
                   aria-label="Open search"
                 >
                   <Search className="w-4 h-4" />
@@ -278,16 +278,16 @@ export const Header: React.FC<HeaderProps> = ({
             </nav>
             
             <div className="mt-6 space-y-4">
-              {/* Search Button for Mobile */}
-              <button 
-                onClick={() => { 
-                  toggleSearch(); 
-                  // Задержка для плавного перехода между модалами
-                  setTimeout(() => closeOffCanvas(), 100);
-                }} 
-                className="w-full flex items-center space-x-2 p-2 rounded-md hover:bg-accent transition-colors text-left" 
-                aria-label="Open search"
-              >
+                             {/* Search Button for Mobile */}
+               <button 
+                 onClick={() => { 
+                   toggleSearch(); 
+                   // Задержка для плавного перехода между модалами
+                   setTimeout(() => closeOffCanvas(), 100);
+                 }} 
+                 className="w-full flex items-center space-x-2 py-1 px-1 rounded-md hover:bg-accent transition-colors text-left" 
+                 aria-label="Open search"
+               >
                 <Search className="w-5 h-5" />
                 <span className="text-sm font-medium">Search</span>
               </button>

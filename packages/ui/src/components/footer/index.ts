@@ -1,5 +1,4 @@
 export { MainFooter } from './MainFooter'
-export { CookieConsent } from './CookieConsent'
 export { ScrollProgress } from './ScrollProgress'
 
 export type { 
@@ -9,11 +8,6 @@ export type {
   ContactInfo, 
   MainFooterProps 
 } from './MainFooter'
-
-export type { 
-  CookieCategory, 
-  CookieConsentProps 
-} from './CookieConsent'
 
 export type { 
   ScrollProgressProps 

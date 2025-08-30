@@ -266,14 +266,7 @@ export const Footer: React.FC<FooterProps> = ({
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
-        <CookieConsent
-          onAccept={(preferences) => {
-            console.log('Cookie preferences accepted:', preferences)
-          }}
-          onDecline={() => {
-            console.log('Cookies declined, only necessary cookies enabled')
-          }}
-        />
+        <CookieConsent />
       )}
 
       {/* Back to Top Button with smooth animations */}
