@@ -1,4 +1,4 @@
-import { PageLayout } from '@lnd/ui/templates'
+import { PageLayout } from '@lnd/ui/templates/layouts'
 import { BlogCard } from '@lnd/ui/components/content'
 import { getBlogPosts } from '@lnd/utils/content/server'
 
@@ -22,10 +22,7 @@ export default async function BlogPage() {
   }))
 
   return (
-    <PageLayout
-      title="Блог"
-      description="Последние статьи и руководства по разработке"
-    >
+    <PageLayout>
       <div className="space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">

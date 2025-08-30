@@ -16,7 +16,11 @@ export default function ExpertsPage() {
       social: {
         github: 'https://github.com/alexpetrov',
         linkedin: 'https://linkedin.com/in/alexpetrov',
-        twitter: 'https://twitter.com/alexpetrov'
+        twitter: 'https://twitter.com/alexpetrov',
+        behance: '',
+        dribbble: '',
+        stackoverflow: '',
+        medium: ''
       },
       location: 'Москва, Россия',
       joined: '2023-01-15'
@@ -29,9 +33,13 @@ export default function ExpertsPage() {
       bio: 'Креативный дизайнер с 8-летним опытом создания интуитивных и красивых пользовательских интерфейсов для веб и мобильных приложений.',
       expertise: ['UI Design', 'UX Research', 'Figma', 'Design Systems'],
       social: {
+        github: '',
+        linkedin: 'https://linkedin.com/in/mariasidorova',
+        twitter: '',
         behance: 'https://behance.net/mariasidorova',
         dribbble: 'https://dribbble.com/mariasidorova',
-        linkedin: 'https://linkedin.com/in/mariasidorova'
+        stackoverflow: '',
+        medium: ''
       },
       location: 'Санкт-Петербург, Россия',
       joined: '2022-08-20'
@@ -46,7 +54,11 @@ export default function ExpertsPage() {
       social: {
         github: 'https://github.com/dmitrykozlov',
         linkedin: 'https://linkedin.com/in/dmitrykozlov',
-        stackoverflow: 'https://stackoverflow.com/users/dmitrykozlov'
+        twitter: '',
+        behance: '',
+        dribbble: '',
+        stackoverflow: 'https://stackoverflow.com/users/dmitrykozlov',
+        medium: ''
       },
       location: 'Екатеринбург, Россия',
       joined: '2023-03-10'
@@ -59,8 +71,12 @@ export default function ExpertsPage() {
       bio: 'Стратегический product manager с глубоким пониманием пользовательских потребностей. Управляет разработкой продуктов от идеи до запуска.',
       expertise: ['Product Strategy', 'User Research', 'Agile', 'Analytics'],
       social: {
+        github: '',
         linkedin: 'https://linkedin.com/in/annavolkova',
         twitter: 'https://twitter.com/annavolkova',
+        behance: '',
+        dribbble: '',
+        stackoverflow: '',
         medium: 'https://medium.com/@annavolkova'
       },
       location: 'Казань, Россия',
@@ -69,10 +85,7 @@ export default function ExpertsPage() {
   ]
 
   return (
-    <PageLayout
-      title="Наша команда"
-      description="Знакомьтесь с экспертами, которые создают LND Boilerplate"
-    >
+    <PageLayout>
       <div className="space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">

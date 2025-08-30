@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { PublicLayout } from './PublicLayout'
 import { DocumentationConfig } from '@lnd/utils/config/site-config.types'
 import { DocsTOC } from '../components/docs'
+import { ChevronRight, ChevronDown, ExternalLink } from 'lucide-react'
 
 /**
  * DocsLayout - Optimized for documentation pages
@@ -133,15 +134,11 @@ export const DocsLayout: React.FC<DocsLayoutProps> = ({
       <div className="flex items-center gap-4 mb-8">
         <nav className="flex items-center gap-2 text-sm text-gray-500">
           <a href="/" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Home</a>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-          </svg>
+          <ChevronRight className="w-4 h-4" />
           {title && title !== sectionName ? (
             <>
               <a href={sectionUrl} className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">{sectionName}</a>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
+              <ChevronRight className="w-4 h-4" />
               <span className="text-gray-900 dark:text-gray-100 font-medium">{title}</span>
             </>
           ) : (
@@ -163,9 +160,7 @@ export const DocsLayout: React.FC<DocsLayoutProps> = ({
           className="fixed top-20 end-4 z-40 p-2 bg-background border border-border rounded-md shadow-md hover:bg-accent"
           title="Show TOC"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <ChevronDown className="w-4 h-4" />
         </button>
       )}
 

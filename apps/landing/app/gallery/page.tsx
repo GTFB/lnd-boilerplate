@@ -89,9 +89,13 @@ export default function GalleryPage() {
       bio: "John is a creative UI/UX designer with 8 years of experience in creating beautiful, user-centered designs.",
       expertise: ["UI/UX Design", "Design Systems", "Figma", "Accessibility"],
       social: {
+        github: '',
         linkedin: "https://linkedin.com/in/johnsmith",
+        twitter: '',
+        behance: "https://behance.net/johnsmith",
         dribbble: "https://dribbble.com/johnsmith",
-        behance: "https://behance.net/johnsmith"
+        stackoverflow: '',
+        medium: ''
       },
       location: "New York, NY",
       joined: "2021-03-20"
@@ -104,9 +108,13 @@ export default function GalleryPage() {
       bio: "Jane is a seasoned frontend architect with over 10 years of experience building scalable and performant web applications.",
       expertise: ["Next.js", "React", "TypeScript", "Performance", "Architecture"],
       social: {
+        github: "https://github.com/janedoe",
         linkedin: "https://linkedin.com/in/janedoe",
         twitter: "https://twitter.com/janedoe_dev",
-        github: "https://github.com/janedoe"
+        behance: '',
+        dribbble: '',
+        stackoverflow: '',
+        medium: ''
       },
       location: "San Francisco, CA",
       joined: "2020-01-15"
@@ -114,10 +122,7 @@ export default function GalleryPage() {
   ]
 
   return (
-    <PageLayout
-      title="Галерея изображений"
-      description="Демонстрация работы с изображениями в LND Boilerplate"
-    >
+    <PageLayout>
       <div className="space-y-16">
         {/* Галерея изображений */}
         <section>

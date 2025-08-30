@@ -89,16 +89,15 @@ export function ImageGallery({
                     </p>
                   )}
                   {image.link && (
-                    <Button variant="outline" size="sm" asChild>
-                      <a 
-                        href={image.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View
-                      </a>
-                    </Button>
+                    <a 
+                      href={image.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center px-3 py-1.5 text-sm border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+                    >
+                      View
+                    </a>
                   )}
                 </div>
               </div>

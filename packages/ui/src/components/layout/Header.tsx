@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDesignSystem } from '../../design-systems'
 import { ThemeToggle } from '../ui'
 import { SearchModal } from '../ui'
 import { LanguageSelector } from '../ui/LanguageSelector'
+import { Search, Menu, X } from 'lucide-react'
 
 export interface HeaderProps {
   showLogo?: boolean
@@ -27,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false)
   const burgerButtonRef = useRef<HTMLButtonElement>(null)
   const offcanvasRef = useRef<HTMLDivElement>(null)
+  const [isMac, setIsMac] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +38,67 @@ export const Header: React.FC<HeaderProps> = ({
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const toggleOffCanvas = useCallback(() => {
+    const newState = !isOffCanvasOpen
+    setIsOffCanvasOpen(newState)
+    
+    // Обновляем aria-expanded для бургер-кнопки
+    if (burgerButtonRef.current) {
+      burgerButtonRef.current.setAttribute('aria-expanded', newState.toString())
+    }
+  }, [isOffCanvasOpen])
+
+  const closeOffCanvas = useCallback(() => {
+    setIsOffCanvasOpen(false)
+    
+    // Возвращаем фокус на бургер-кнопку
+    setTimeout(() => {
+      burgerButtonRef.current?.focus()
+    }, 100)
+    
+    // Обновляем aria-expanded
+    if (burgerButtonRef.current) {
+      burgerButtonRef.current.setAttribute('aria-expanded', 'false')
+    }
+  }, [])
+
+  const toggleSearch = useCallback(() => {
+    setIsSearchOpen(!isSearchOpen)
+  }, [isSearchOpen])
+
+  // Detect OS for keyboard shortcut display
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase()
+    setIsMac(userAgent.includes('mac'))
+  }, [])
+
+  // Hotkey support for search (Ctrl+K / Cmd+K and other layouts)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Проверяем различные раскладки клавиатуры
+      const isSearchHotkey = (
+        // Английская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Русская раскладка: Ctrl+Л (K на русской раскладке)
+        ((e.ctrlKey || e.metaKey) && e.key === 'л') ||
+        // Немецкая раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Французская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Испанская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k')
+      )
+      
+      if (isSearchHotkey) {
+        e.preventDefault()
+        toggleSearch()
+      }
+    }
+    
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [toggleSearch])
 
   // ESC key support and focus management
   useEffect(() => {
@@ -89,35 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
       document.removeEventListener('keydown', handleFocusTrap)
       document.body.classList.remove('modal-open')
     }
-  }, [isOffCanvasOpen])
-
-  const toggleOffCanvas = () => {
-    const newState = !isOffCanvasOpen
-    setIsOffCanvasOpen(newState)
-    
-    // Обновляем aria-expanded для бургер-кнопки
-    if (burgerButtonRef.current) {
-      burgerButtonRef.current.setAttribute('aria-expanded', newState.toString())
-    }
-  }
-
-  const closeOffCanvas = () => {
-    setIsOffCanvasOpen(false)
-    
-    // Возвращаем фокус на бургер-кнопку
-    setTimeout(() => {
-      burgerButtonRef.current?.focus()
-    }, 100)
-    
-    // Обновляем aria-expanded
-    if (burgerButtonRef.current) {
-      burgerButtonRef.current.setAttribute('aria-expanded', 'false')
-    }
-  }
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen)
-  }
+  }, [isOffCanvasOpen, closeOffCanvas])
 
   return (
     <>
@@ -162,10 +197,15 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Controls - Desktop only */}
             {showControls && (
               <div className="hidden lg:flex items-center space-x-2 h-10">
-                <button onClick={toggleSearch} className="p-2 rounded-md hover:bg-accent transition-colors h-10 flex items-center justify-center" aria-label="Open search">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                <button 
+                  onClick={toggleSearch} 
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-md border transition-colors" 
+                  aria-label="Open search"
+                >
+                  <Search className="w-4 h-4" />
+                  <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                    <span className="text-xs">{isMac ? '⌘' : 'Ctrl'}</span>K
+                  </kbd>
                 </button>
                 <LanguageSelector />
                 <ThemeToggle />
@@ -185,9 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-haspopup="true"
               aria-controls="offcanvas-menu"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <Menu className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -222,9 +260,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-2 rounded-md hover:bg-accent transition-colors" 
               aria-label="Close menu"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+                              <X className="w-5 h-5" />
             </button>
           </div>
           
@@ -252,9 +288,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="w-full flex items-center space-x-2 p-2 rounded-md hover:bg-accent transition-colors text-left" 
                 aria-label="Open search"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <Search className="w-5 h-5" />
                 <span className="text-sm font-medium">Search</span>
               </button>
               

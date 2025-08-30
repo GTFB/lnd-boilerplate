@@ -2,6 +2,7 @@
 
 import { PublicLayout } from '@lnd/ui/templates'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
 export default function LegalIndexPage() {
   // Mock data for now since we can't use server functions in client components
@@ -42,9 +43,7 @@ export default function LegalIndexPage() {
                   className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
                 >
                   Read more
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </div>
             ))}

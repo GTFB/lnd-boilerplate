@@ -19,13 +19,11 @@ export default function LegalPage({ params: { slug } }: LegalPageProps) {
   }
 
   return (
-    <PageLayout
-      title={page.frontmatter.title}
-      description={page.frontmatter.description}
-    >
+    <PageLayout>
       <div className="prose prose-lg max-w-none">
         <div dangerouslySetInnerHTML={{ __html: page.content.replace(/#{1,6}\s+(.+)/g, (match, title) => {
-          const level = match.match(/^#+/)[0].length
+          const levelMatch = match.match(/^#+/)
+          const level = levelMatch ? levelMatch[0].length : 1
           return `<h${level}>${title}</h${level}>`
         }) }} />
       </div>

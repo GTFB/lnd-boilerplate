@@ -71,17 +71,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
             {!isFirst && separator}
             
             {item.href && !isLast ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
-                asChild
+              <a 
+                href={item.href} 
+                className="flex items-center space-x-1 h-6 px-2 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-colors"
               >
-                <a href={item.href} className="flex items-center space-x-1">
-                  {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
-                  <span className="truncate max-w-24">{item.title}</span>
-                </a>
-              </Button>
+                {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
+                <span className="truncate max-w-24">{item.title}</span>
+              </a>
             ) : (
               <span className="flex items-center space-x-1 px-2 text-xs font-medium text-foreground">
                 {item.icon && <span className="flex-shrink-0">{item.icon}</span>}

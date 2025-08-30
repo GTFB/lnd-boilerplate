@@ -540,15 +540,12 @@ const PricingSectionComponent: React.FC<PricingSection> = ({
                   ))}
                 </ul>
                 
-                <Button
-                  variant={plan.buttonVariant || 'default'}
-                  className="w-full"
-                  asChild
+                <a 
+                  href={plan.buttonHref}
+                  className="w-full inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
-                  <a href={plan.buttonHref}>
-                    {plan.buttonText}
-                  </a>
-                </Button>
+                  {plan.buttonText}
+                </a>
               </CardContent>
             </Card>
           ))}
@@ -810,11 +807,14 @@ const GallerySectionComponent: React.FC<GallerySection> = ({
                       </p>
                     )}
                     {image.link && (
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={image.link} target="_blank" rel="noopener noreferrer">
-                          View
-                        </a>
-                      </Button>
+                      <a 
+                        href={image.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-1.5 text-sm border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+                      >
+                        View
+                      </a>
                     )}
                   </div>
                 </div>

@@ -17,7 +17,9 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config) => {
+  // Настройки для устранения Fast Refresh warnings
+  webpack: (config, { dev, isServer }) => {
+    // MDX loader
     config.module.rules.push({
       test: /\.mdx?$/,
       use: [
@@ -29,7 +31,12 @@ const nextConfig = {
         },
       ],
     });
+
     return config;
+  },
+  // Настройки для устранения портовых предупреждений
+  devIndicators: {
+    buildActivity: false,
   },
 }
 

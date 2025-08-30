@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { PageLayout } from '@lnd/ui/templates'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
 import { Badge } from '@lnd/ui/components/ui/badge'
 import { Rocket, Code, Palette, Zap, Users, Target } from 'lucide-react'
 

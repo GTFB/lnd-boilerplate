@@ -282,7 +282,8 @@ export function validatePageConfig(config: unknown): { success: true; data: Page
     return { success: true, data: validated }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errors = error.errors.map(err => {
+      const zodError = error as any
+      const errors = zodError.errors.map((err: any) => {
         const path = err.path.join('.')
         return `${path}: ${err.message}`
       })

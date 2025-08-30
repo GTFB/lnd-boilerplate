@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Button } from './button'
 import { Input } from './input'
+import { X, Search } from 'lucide-react'
 
 export interface SearchModalProps {
   isOpen: boolean
@@ -21,13 +22,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true)
-      // Запускаем анимацию через микротаск для правильного рендера
-      const timer = setTimeout(() => setIsAnimated(true), 10)
-      return () => clearTimeout(timer)
+      // Запускаем backdrop сразу, модал появится с задержкой через CSS
+      setIsAnimated(true)
     } else {
       setIsAnimated(false)
       // Delay hiding to allow close animation
-      const timer = setTimeout(() => setShouldRender(false), 500)
+      const timer = setTimeout(() => setShouldRender(false), 600)
       return () => clearTimeout(timer)
     }
   }, [isOpen])
@@ -43,26 +43,68 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   }, [isOpen])
 
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // ESC для закрытия
       if (e.key === 'Escape') {
+        onClose()
+      }
+      
+      // Те же горячие клавиши для закрытия
+      const isSearchHotkey = (
+        // Английская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Русская раскладка: Ctrl+Л (K на русской раскладке)
+        ((e.ctrlKey || e.metaKey) && e.key === 'л') ||
+        // Немецкая раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Французская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k') ||
+        // Испанская раскладка: Ctrl+K
+        ((e.ctrlKey || e.metaKey) && e.key === 'k')
+      )
+      
+      if (isSearchHotkey) {
+        e.preventDefault()
         onClose()
       }
     }
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('keydown', handleKeyDown)
+      
+      // Вычисляем ширину скроллбара и сохраняем текущий padding
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      const currentPaddingRight = parseInt(window.getComputedStyle(document.body).paddingRight, 10) || 0
+      
+      // Устанавливаем CSS переменную для ширины скроллбара
+      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+      
+      // Сохраняем текущий padding-right в data атрибут
+      document.body.setAttribute('data-padding-right', currentPaddingRight.toString())
+      
+      // Cookie banner остается видимым, модал накладывается поверх него
+      
       document.body.classList.add('modal-open')
     } else {
+      // Восстанавливаем оригинальный padding-right
+      const originalPaddingRight = document.body.getAttribute('data-padding-right')
+      if (originalPaddingRight) {
+        document.body.style.paddingRight = `${originalPaddingRight}px`
+        document.body.removeAttribute('data-padding-right')
+      }
+      
+      // Cookie banner остается видимым
+      
       document.body.classList.remove('modal-open')
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('keydown', handleKeyDown)
       document.body.classList.remove('modal-open')
     }
   }, [isOpen, onClose])
 
-  const handleSearch = async (searchQuery: string) => {
+  const handleSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([])
       return
@@ -85,18 +127,18 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
       setResults(mockResults)
       setIsLoading(false)
     }, 300)
-  }
+  }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     handleSearch(query)
-  }
+  }, [handleSearch, query])
 
-  const handleResultClick = (result: any) => {
+  const handleResultClick = useCallback((result: any) => {
     // Navigate to result
     window.location.href = result.url
     onClose()
-  }
+  }, [onClose])
 
   if (!shouldRender) return null
 
@@ -104,18 +146,21 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     <div className="search-modal">
       {/* Overlay with backdrop blur and animation */}
       <div 
-        className={`fixed inset-0 bg-background/20 backdrop-blur-md z-50 transition-all ease-out ${
-          isAnimated ? 'opacity-100 duration-500' : 'opacity-0 duration-300'
+        className={`fixed inset-0 bg-background/20 backdrop-blur-md z-[70] transition-all ease-out ${
+          isAnimated ? 'opacity-100 duration-100' : 'opacity-0 duration-100'
         }`}
         onClick={onClose}
       />
       
       {/* Modal with smooth animations */}
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4" onClick={onClose}>
+      <div 
+        className="fixed inset-0 z-[80] flex items-start justify-center pt-16 px-4" 
+        onClick={onClose}
+      >
         <div 
           className={`bg-background rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden transition-all ease-out transform ${
             isAnimated 
-              ? 'opacity-100 scale-100 translate-y-0 duration-500 delay-100' 
+              ? 'opacity-100 scale-100 translate-y-0 duration-500 delay-200' 
               : 'opacity-0 scale-90 -translate-y-8 duration-300'
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -129,9 +174,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
               onClick={onClose}
               className="p-2"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-5 h-5" />
             </Button>
           </div>
 
@@ -150,14 +193,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                   }}
                   className="w-full pl-10"
                 />
-                <svg 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               </div>
             </form>
           </div>
@@ -212,7 +248,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           {/* Footer */}
           <div className="p-4 border-t bg-muted/50">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Press Esc to close</span>
+              <span>Press Esc or Ctrl+K to close</span>
               <span>Use ↑↓ to navigate, Enter to select</span>
             </div>
           </div>

@@ -27,6 +27,57 @@ header {
   }
 }
 
+/* Default 3-column layout точно как в HTML шаблоне */
+.grid-container {
+  display: grid;
+  grid-template-columns: 270px 1fr 208px;
+  grid-template-areas: "left-sidebar content right-sidebar";
+  gap: 0 1.25rem;
+  transition: grid-template-columns 0.4s ease-in-out;
+}
+
+.left-sidebar {
+  grid-area: left-sidebar;
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+.content {
+  grid-area: content;
+  margin-left: -20px; /* компенсируем px-5 слева */
+  margin-right: -20px; /* компенсируем px-5 справа */
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: margin-left 0.4s ease-in-out;
+}
+
+.right-sidebar {
+  grid-area: right-sidebar;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Hidden sidebar: возвращаем как в макете */
+.grid-container.sidebar-hidden {
+  grid-template-columns: 0 1fr 208px;
+  gap: 0 0;
+}
+
+.grid-container.sidebar-hidden .left-sidebar { 
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.grid-container.sidebar-hidden #show-sidebar-btn { 
+  display: inline-block; 
+}
+
+.grid-container.sidebar-hidden .content { 
+  margin-left: -20px; /* компенсируем px-5 слева */
+  margin-right: -20px; /* компенсируем px-5 справа */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* Контент тоже не должен переполняться - но без влияния на siblings */
 .content > * {
   overflow-x: hidden !important;
@@ -49,56 +100,7 @@ header {
   display: inline-flex; /* Убираем !important чтобы React мог управлять видимостью */
 }
 
-/* Default 3-column layout точно как в HTML шаблоне */
-.grid-container {
-  display: grid !important;
-  grid-template-columns: 270px 1fr 208px !important;
-  grid-template-areas: "left-sidebar content right-sidebar" !important;
-  gap: 0 1.25rem !important;
-  transition: grid-template-columns 0.4s ease-in-out !important;
-}
 
-.left-sidebar {
-  grid-area: left-sidebar !important;
-  transition: opacity 0.4s, transform 0.4s !important;
-}
-
-.content {
-  grid-area: content !important;
-  margin-left: -20px !important; /* компенсируем px-5 слева */
-  margin-right: -20px !important; /* компенсируем px-5 справа */
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-  transition: margin-left 0.4s ease-in-out !important;
-}
-
-.right-sidebar {
-  grid-area: right-sidebar !important;
-  transition: all 0.4s ease-in-out !important;
-}
-
-/* Hidden sidebar: возвращаем как в макете */
-.grid-container.sidebar-hidden {
-  grid-template-columns: 0 1fr 208px !important;
-  gap: 0 0 !important;
-}
-
-.grid-container.sidebar-hidden .left-sidebar { 
-  opacity: 0 !important;
-  transform: translateX(-20px) !important;
-  pointer-events: none !important;
-}
-
-.grid-container.sidebar-hidden #show-sidebar-btn { 
-  display: inline-block !important; 
-}
-
-.grid-container.sidebar-hidden .content { 
-  margin-left: -20px !important; /* компенсируем px-5 слева */
-  margin-right: -20px !important; /* компенсируем px-5 справа */
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
 
 /* Hide scrollbars */
 .scrollbar-hide {
@@ -112,16 +114,16 @@ header {
 
 /* Предотвращаем переполнение в компонентах - НЕ на самих сайдбарах (ломает sticky) */
 .left-sidebar > *, .right-sidebar > * {
-  overflow-x: auto !important; /* ИСПРАВЛЕНО: не блокируем sticky */
-  min-width: 0 !important;
+  overflow-x: auto; /* ИСПРАВЛЕНО: не блокируем sticky */
+  min-width: 0;
 }
 
 /* TOC и sidebar текст с обрезкой */
 .left-sidebar a, .right-sidebar a {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  max-width: 100% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 /* НЕ добавляем overflow на grid-container - это ломает sticky! */
@@ -139,18 +141,18 @@ header {
 .h-full,
 html,
 body {
-  overflow: visible !important;
-  contain: none !important;
-  height: auto !important;
+  overflow: visible;
+  contain: none;
+  height: auto;
 }
 
 /* Обеспечиваем что grid-container не блокирует sticky */
 .grid-container {
-  min-height: 100vh !important;
-  contain: none !important;
-  overflow: visible !important;
-  transform: none !important;
-  filter: none !important;
+  min-height: 100vh;
+  contain: none;
+  overflow: visible;
+  transform: none;
+  filter: none;
 }
 
 /* Обеспечиваем что flex контейнеры не блокируют sticky */
@@ -158,48 +160,48 @@ body {
 .flex-1,
 .flex-col,
 .flex-row {
-  overflow: visible !important;
-  contain: none !important;
-  transform: none !important;
-  filter: none !important;
+  overflow: visible;
+  contain: none;
+  transform: none;
+  filter: none;
 }
 
 /* Убираем все что может блокировать sticky, НО сохраняем offcanvas */
 *:not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]) {
-  contain: none !important;
+  contain: none;
 }
 
 /* Исключаем только нужные элементы из глобального сброса */
 *:not(.sticky):not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]):not([class*="transform"]):not([class*="transition"]):not([class*="bg-primary"]):not([class*="h-full"]):not(.scroll-progress-container):not(.scroll-progress-bar):not([class*="scroll-progress"]) {
-  transform: none !important;
-  filter: none !important;
+  transform: none;
+  filter: none;
 }
 
 /* Обеспечиваем достаточную высоту контента для срабатывания sticky */
 .content {
-  min-height: auto !important; /* Естественная высота контента */
+  min-height: auto; /* Естественная высота контента */
 }
 
 /* Обеспечиваем работу ScrollProgress Bar */
 [class*="fixed bottom-0 left-0"],
 .fixed.bottom-0.left-0.w-full,
 .fixed.bottom-0 {
-  position: fixed !important;
-  z-index: 60 !important;
-  transform: none !important;
-  contain: none !important;
-  filter: none !important;
+  position: fixed;
+  z-index: 60;
+  transform: none;
+  contain: none;
+  filter: none;
 }
 
 /* ScrollProgress элементы - НЕ блокируем их анимации */
 .scroll-progress-container,
 .scroll-progress-bar,
 [class*="scroll-progress"] {
-  transform: none !important;
-  contain: none !important;
-  filter: none !important;
-  position: fixed !important;
-  z-index: 60 !important;
+  transform: none;
+  contain: none;
+  filter: none;
+  position: fixed;
+  z-index: 60;
 }
 
 /* ScrollProgress внутренний элемент */
@@ -327,7 +329,61 @@ body.no-scroll {
 /* Блокировка скролла для модалов (без blur) */
 body.modal-open {
   overflow: hidden;
+  /* Предотвращаем движение окна при скрытии скроллбара */
+  padding-right: var(--scrollbar-width, 0px) !important;
 }
+
+/* Предотвращаем движение cookie banner при появлении скроллбара */
+body.modal-open [data-cookie-banner] {
+  padding-right: var(--scrollbar-width, 0px) !important;
+}
+
+/* Принудительная ширина модального окна поиска */
+.search-modal .max-w-2xl {
+  max-width: 42rem !important;
+  width: 100% !important;
+  min-width: 32rem !important;
+}
+
+
+
+/* Предотвращаем движение cookie banner при изменении сайдбара */
+[data-cookie-banner] {
+  transition: padding-right 0.4s ease-in-out;
+}
+
+/* Компенсация для cookie banner при скрытом сайдбаре */
+.grid-container.sidebar-hidden ~ [data-cookie-banner],
+.grid-container.sidebar-hidden [data-cookie-banner] {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/* Стабилизация cookie banner - предотвращаем любое движение */
+[data-cookie-banner] {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  transform: none !important;
+  transition: opacity 0.3s ease, padding-right 0.4s ease-in-out !important;
+}
+
+/* Стабилизация модального окна поиска - предотвращаем движение при изменении сайдбара */
+body.modal-open {
+  overflow: hidden;
+  /* Предотвращаем движение окна при скрытии скроллбара */
+  padding-right: var(--scrollbar-width, 0px) !important;
+}
+
+
+
+
 
 
 

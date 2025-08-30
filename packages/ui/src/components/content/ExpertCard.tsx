@@ -103,24 +103,18 @@ export function ExpertCard({ expert, variant = 'default', className }: ExpertCar
         
         <div className="flex justify-center gap-2">
           {Object.entries(expert.social).map(([platform, url]) => (
-            <Button
+            <a
               key={platform}
-              variant="outline"
-              size="sm"
-              asChild
-              className="flex items-center gap-2"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${platform} профиль ${expert.name}`}
+              className="flex items-center gap-2 px-3 py-1.5 text-sm border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
             >
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`${platform} профиль ${expert.name}`}
-              >
-                <span>{getSocialIcon(platform)}</span>
-                <span className="hidden sm:inline capitalize">{platform}</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            </Button>
+              <span>{getSocialIcon(platform)}</span>
+              <span className="hidden sm:inline capitalize">{platform}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           ))}
         </div>
       </CardContent>

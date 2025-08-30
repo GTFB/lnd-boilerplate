@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Button } from './button'
-import { GBFlag, RUFlag, ESFlag, FRFlag, DEFlag } from './icons'
+import { GBFlag } from './icons/GBFlag'
+import { RUFlag } from './icons/RUFlag'
+import { ESFlag } from './icons/ESFlag'
+import { FRFlag } from './icons/FRFlag'
+import { DEFlag } from './icons/DEFlag'
+import { useTranslations, useLocale } from '../../hooks/useTranslations'
+import { ChevronDown, Check } from 'lucide-react'
 
 export const LanguageSelector: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -61,14 +67,9 @@ export const LanguageSelector: React.FC = () => {
       >
         <span className="flex items-center mr-1">{currentLanguage?.flag}</span>
         <span className="hidden sm:inline mr-1">{currentLanguage?.code}</span>
-        <svg 
+        <ChevronDown 
           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        />
       </Button>
 
             {/* Overlay - всегда присутствует, но видимый только при открытом дропдауне */}
@@ -99,9 +100,7 @@ export const LanguageSelector: React.FC = () => {
               <span className="flex items-center">{language.flag}</span>
               <span className="flex-1">{language.name}</span>
               {currentLang === language.code && (
-                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+                <Check className="w-4 h-4 text-primary" />
               )}
             </button>
           ))}
