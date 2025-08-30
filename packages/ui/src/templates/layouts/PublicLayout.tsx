@@ -6,7 +6,7 @@ import { Header } from '../../components/layout/Header'
 import { Footer } from '../../components/layout/Footer'
 import { DocsSidebar } from '../../components/docs'
 import { useSidebar } from '../../contexts/SidebarContext'
-import { PanelLeftClose, ChevronDown } from 'lucide-react'
+import { PanelLeftClose, ChevronDown, ChevronRight, Search } from 'lucide-react'
 
 export interface PublicLayoutProps {
   children: React.ReactNode
@@ -153,9 +153,7 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
               className="w-full ps-10 pe-4 py-2 border border-input rounded-md focus:border-ring bg-background text-sm"
             />
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <Search className="w-4 h-4 text-muted-foreground" />
             </div>
           </div>
         </div>
@@ -170,25 +168,25 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
     
     const hideSidebar = () => {
       if (window.innerWidth <= 1023) {
-        // На мобиле используем класс для плавной анимации
+        // On mobile use class for smooth animation
         leftSidebar?.classList.remove('mobile-expanded')
       } else {
-        // На desktop используем grid класс
+        // On desktop use grid class
         gridContainer?.classList.add('sidebar-hidden')
       }
     }
     
     const showSidebar = () => {
       if (window.innerWidth <= 1023) {
-        // На мобиле используем класс для плавной анимации
+        // On mobile use class for smooth animation
         leftSidebar?.classList.add('mobile-expanded')
       } else {
-        // На desktop используем grid класс
+        // On desktop use grid class
         gridContainer?.classList.remove('sidebar-hidden')
       }
     }
     
-    // Используем делегирование событий - слушаем клики на всем документе
+    // Use event delegation - listen for clicks on entire document
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (target.closest('#hide-sidebar-btn')) {

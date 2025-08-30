@@ -30,15 +30,15 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
 }) => {
   const { currentSystem } = useDesignSystem()
 
-  // Добавляем домашнюю страницу если нужно
+  // Add home page if needed
   const allItems = showHome 
     ? [{ title: 'Home', href: homeHref, icon: <Home className="h-4 w-4" /> }, ...items]
     : items
 
-  // Ограничиваем количество элементов
+  // Limit number of items
   const displayItems = allItems.slice(-maxItems)
 
-  // Если элементов больше максимума, добавляем "..." в начало
+  // If more items than maximum, add "..." at the beginning
   const hasOverflow = allItems.length > maxItems
   const overflowItems = hasOverflow ? allItems.slice(0, -maxItems + 1) : []
 
@@ -51,7 +51,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
             size="sm"
             className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
             onClick={() => {
-              // Показать все элементы или открыть выпадающее меню
+              // Show all items or open dropdown menu
               console.log('Show all breadcrumbs')
             }}
           >
@@ -71,17 +71,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
             {!isFirst && separator}
             
             {item.href && !isLast ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
-                asChild
+              <a 
+                href={item.href} 
+                className="flex items-center space-x-1 h-6 px-2 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-colors"
               >
-                <a href={item.href} className="flex items-center space-x-1">
-                  {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
-                  <span className="truncate max-w-24">{item.title}</span>
-                </a>
-              </Button>
+                {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
+                <span className="truncate max-w-24">{item.title}</span>
+              </a>
             ) : (
               <span className="flex items-center space-x-1 px-2 text-xs font-medium text-foreground">
                 {item.icon && <span className="flex-shrink-0">{item.icon}</span>}

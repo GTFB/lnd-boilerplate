@@ -244,7 +244,7 @@ export const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({
           {showUserMenu && (
             <div className="border-t p-4">
               <div className="flex items-center space-x-3">
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8" alt="User avatar">
                   <AvatarImage src="/avatars/user.png" alt="User" />
                   <AvatarFallback>U</AvatarFallback>
                 </Avatar>

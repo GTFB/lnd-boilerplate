@@ -173,7 +173,7 @@ export const BlogCategories: React.FC<BlogCategoriesProps> = ({
                 className="flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 <div className="flex items-center space-x-3">
-                  {'icon' in item && item.icon && typeof item.icon === 'object' && React.isValidElement(item.icon) && item.icon}
+                  {'icon' in item && item.icon ? (item.icon as React.ReactNode) : null}
                   <span>{item.title}</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">

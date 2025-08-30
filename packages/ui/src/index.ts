@@ -2,11 +2,18 @@
 export * from './components'
 export * from './templates'
 export * from './design-systems'
-export * from './config'
 export * from './examples'
 // export * from './contexts' // removed to avoid conflicting exports
 export * from './providers'
-export * from './lib'
+
+// Export config with specific names to avoid conflicts
+export { ConfigManager as UIConfigManager } from './config'
+
+// Export lib with specific names to avoid conflicts
+export { 
+  validatePageConfig as UIValidatePageConfig,
+  PageConfigSchema as UIPageConfigSchema
+} from './lib'
 
 // Export specific components to avoid conflicts
 export { 

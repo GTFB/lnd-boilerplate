@@ -45,7 +45,6 @@ export default async function DocsPage({ params }: DocsPageProps) {
       <PublicLayout>
         <TocUpdater headings={headings} />
         <div className="w-full prose prose-lg max-w-none" style={{ width: '100%', maxWidth: 'none' }}>
-          {/* @ts-expect-error Server Component */}
           <MDXRemote source={page.content} />
         </div>
       </PublicLayout>

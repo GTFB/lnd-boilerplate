@@ -16,7 +16,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 
-// Пример MDX контента
+// Example MDX content
 const sampleMdxContent = (
   <div>
     <h1>Welcome to LND Boilerplate</h1>
@@ -38,7 +38,7 @@ const sampleMdxContent = (
   </div>
 )
 
-// Пример JSON конфигурации
+// Example JSON configuration
 const samplePageConfig: {
   meta: {
     title: string
@@ -47,33 +47,41 @@ const samplePageConfig: {
     date: string
   }
   sections: Array<{
-    type: 'hero' | 'stats' | 'features'
+    type: 'hero'
     title: string
     subtitle?: string
     description?: string
     primaryButton?: {
       text: string
       href: string
-      variant: string
+      variant?: "default" | "outline" | "link" | "secondary" | "destructive" | "ghost"
     }
     secondaryButton?: {
       text: string
       href: string
-      variant: string
+      variant?: "default" | "outline" | "link" | "secondary" | "destructive" | "ghost"
     }
-    background?: string
-    stats?: Array<{
+    background?: "default" | "gradient" | "image"
+  } | {
+    type: 'stats'
+    title: string
+    stats: Array<{
       label: string
-      value: string
-      icon: string
-      description: string
+      value: string | number
+      icon?: "users" | "downloads" | "stars" | "awards" | "trending" | "clock"
+      description?: string
+      trend?: "up" | "down" | "stable"
+      trendValue?: string
     }>
-    columns?: number
-    features?: Array<{
+  } | {
+    type: 'features'
+    title: string
+    columns?: 1 | 2 | 3 | 4
+    features: Array<{
       title: string
       description: string
-      icon: string
-      badge: string
+      icon?: "users" | "code" | "shield" | "star" | "zap" | "globe" | "book" | "lightbulb"
+      badge?: string
     }>
   }>
 } = {
@@ -108,28 +116,27 @@ const samplePageConfig: {
         {
           label: "Section Types",
           value: "13+",
-          icon: "code",
+          icon: "stars",
           description: "Pre-built sections"
         },
         {
           label: "Layout Templates",
-          value: "4",
-          icon: "globe",
+          value: 4,
+          icon: "trending",
           description: "Flexible layouts"
         },
         {
           label: "Design Systems",
           value: "2+",
-          icon: "lightbulb",
+          icon: "awards",
           description: "Easy switching"
         }
-      ],
-      columns: 3
+      ]
     },
     {
       type: "features",
       title: "Key Benefits",
-      subtitle: "Why choose our system?",
+      // subtitle: "Why choose our system?", // Removed as it's not part of features type
       features: [
         {
           title: "JSON-Driven",
@@ -140,7 +147,7 @@ const samplePageConfig: {
         {
           title: "MDX Support",
           description: "Rich content with React components",
-          icon: "file-text",
+          icon: "book",
           badge: "Powerful"
         },
         {

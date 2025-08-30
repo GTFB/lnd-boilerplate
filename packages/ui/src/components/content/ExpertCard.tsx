@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { cn } from '@lnd/ui/lib/utils'
-import { Avatar } from '../ui/Avatar'
+import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import { Button } from '../ui/button'
@@ -78,7 +78,7 @@ export function ExpertCard({ expert, variant = 'default', className }: ExpertCar
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            <span>С {formatDate(expert.joined)}</span>
+            <span>Since {formatDate(expert.joined)}</span>
           </div>
         </div>
       </CardHeader>
@@ -103,24 +103,18 @@ export function ExpertCard({ expert, variant = 'default', className }: ExpertCar
         
         <div className="flex justify-center gap-2">
           {Object.entries(expert.social).map(([platform, url]) => (
-            <Button
+            <a
               key={platform}
-              variant="outline"
-              size="sm"
-              asChild
-              className="flex items-center gap-2"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${platform} profile ${expert.name}`}
+              className="flex items-center gap-2 px-3 py-1.5 text-sm border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
             >
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`${platform} профиль ${expert.name}`}
-              >
-                <span>{getSocialIcon(platform)}</span>
-                <span className="hidden sm:inline capitalize">{platform}</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            </Button>
+              <span>{getSocialIcon(platform)}</span>
+              <span className="hidden sm:inline capitalize">{platform}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           ))}
         </div>
       </CardContent>

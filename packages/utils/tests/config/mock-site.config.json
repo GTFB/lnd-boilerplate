@@ -1,56 +1,57 @@
 {
-  "$schema": "https://json.schema.org/draft/2020-12/schema",
+  "$schema": "https://example.com/site-config.schema.json",
   "site": {
-    "name": "LND Boilerplate Test",
-    "shortName": "LND",
-    "description": "Test site for LND Boilerplate",
+    "name": "Test Site",
+    "shortName": "TestSite",
+    "description": "A test site for unit tests",
     "version": "1.0.0",
-    "url": "https://test.example.com",
+    "url": "https://example.com",
     "author": {
       "name": "Test Author",
       "email": "test@example.com",
-      "url": "https://test.example.com"
+      "url": "https://example.com"
     },
     "language": "en",
     "locale": "en-US",
     "timezone": "UTC"
   },
   "seo": {
-    "title": "LND Boilerplate Test",
-    "description": "Modern web development boilerplate",
-    "keywords": ["test", "boilerplate", "web"],
-    "ogImage": "/og-image.jpg",
+    "title": "Test Site - SEO Title",
+    "description": "Test site description",
+    "keywords": ["test", "site", "example"],
+    "ogImage": "/images/og-image.jpg",
     "twitterCard": "summary_large_image",
-    "twitterHandle": "@lndboilerplate",
+    "twitterHandle": "@testsite",
     "robots": {
       "index": true,
       "follow": true,
       "googleBot": {
         "index": true,
         "follow": true,
-        "maxVideoPreview": 0,
+        "maxVideoPreview": -1,
         "maxImagePreview": "large",
-        "maxSnippet": 150
+        "maxSnippet": -1
       }
     }
   },
   "manifest": {
-    "name": "LND Boilerplate Test",
-    "shortName": "LND",
-    "description": "Modern web development boilerplate",
+    "name": "Test Site App",
+    "shortName": "TestApp",
+    "description": "Test Progressive Web App",
     "startUrl": "/",
     "display": "standalone",
     "backgroundColor": "#ffffff",
     "themeColor": "#000000",
-    "orientation": "any",
+    "orientation": "portrait",
     "scope": "/",
     "lang": "en",
     "categories": ["productivity", "utilities"],
     "icons": [
       {
-        "src": "/icon-192.png",
+        "src": "/icons/icon-192.png",
         "sizes": "192x192",
-        "type": "image/png"
+        "type": "image/png",
+        "purpose": "any"
       }
     ],
     "screenshots": [],
@@ -58,62 +59,171 @@
   },
   "build": {
     "framework": "nextjs",
-    "buildCommand": "bun run build",
-    "pageExtensions": [".tsx", ".ts", ".jsx", ".js"],
-    "output": "export",
-    "trailingSlash": true,
-    "images": {
-      "unoptimized": true
+    "outputDirectory": "dist",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "devCommand": "npm run dev",
+    "nodeVersion": "18",
+    "pageExtensions": ["ts", "tsx"],
+    "webpack": {
+      "mdx": {
+        "enabled": true,
+        "jsxImportSource": "react"
+      }
     }
   },
   "deployment": {
-    "provider": "vercel",
     "vercel": {
       "framework": "nextjs",
-      "buildCommand": "bun run build",
-      "outputDirectory": ".next"
+      "functions": {},
+      "rewrites": [],
+      "headers": []
     },
     "netlify": {
-      "framework": "nextjs",
-      "buildCommand": "bun run build",
-      "publishDirectory": ".next"
+      "command": "npm run build",
+      "publish": "dist",
+      "base": "/",
+      "environment": {},
+      "redirects": [],
+      "headers": [],
+      "functions": {
+        "directory": "dist"
+      }
     }
   },
   "ui": {
-    "theme": "light",
-    "primaryColor": "#3b82f6",
-    "fontFamily": "Inter",
-    "content": {
-      "maxWidth": "1200px",
-      "sidebarWidth": "280px"
-    }
+    "theme": {
+      "default": "light",
+      "darkMode": "class",
+      "colors": {
+        "border": "hsl(var(--border))",
+        "input": "hsl(var(--input))",
+        "ring": "hsl(var(--ring))",
+        "background": "hsl(var(--background))",
+        "foreground": "hsl(var(--foreground))",
+        "primary": {
+          "DEFAULT": "hsl(var(--primary))",
+          "foreground": "hsl(var(--primary-foreground))"
+        },
+        "secondary": {
+          "DEFAULT": "hsl(var(--secondary))",
+          "foreground": "hsl(var(--secondary-foreground))"
+        },
+        "destructive": {
+          "DEFAULT": "hsl(var(--destructive))",
+          "foreground": "hsl(var(--destructive-foreground))"
+        },
+        "muted": {
+          "DEFAULT": "hsl(var(--muted))",
+          "foreground": "hsl(var(--muted-foreground))"
+        },
+        "accent": {
+          "DEFAULT": "hsl(var(--accent))",
+          "foreground": "hsl(var(--accent-foreground))"
+        },
+        "popover": {
+          "DEFAULT": "hsl(var(--popover))",
+          "foreground": "hsl(var(--popover-foreground))"
+        },
+        "card": {
+          "DEFAULT": "hsl(var(--card))",
+          "foreground": "hsl(var(--card-foreground))"
+        }
+      },
+      "borderRadius": {
+        "lg": "var(--radius)",
+        "md": "calc(var(--radius) - 2px)",
+        "sm": "calc(var(--radius) - 4px)"
+      },
+      "animation": {
+        "fadeIn": "fadeIn 0.5s ease-in-out",
+        "slideUp": "slideUp 0.3s ease-out",
+        "slideDown": "slideDown 0.3s ease-out"
+      }
+    },
+    "content": ["mdx", "markdown", "json"]
   },
   "features": {
-    "blog": true,
-    "docs": true,
-    "search": true,
-    "analytics": false
+    "blog": {
+      "enabled": true,
+      "path": "/blog",
+      "postsPerPage": 10,
+      "enableComments": true,
+      "enableTags": true,
+      "enableCategories": true
+    },
+    "search": {
+      "enabled": true,
+      "provider": "local",
+      "indexPath": "/search-index.json",
+      "enableFilters": true
+    },
+    "analytics": {
+      "enabled": true,
+      "provider": "google",
+      "trackingId": "GA_TRACKING_ID"
+    },
+    "i18n": {
+      "enabled": true,
+      "defaultLocale": "en",
+      "locales": ["en", "ru"],
+      "pathnames": {
+        "/": "/",
+        "/blog": "/blog"
+      }
+    },
+    "pwa": {
+      "enabled": true,
+      "offlineSupport": true,
+      "installPrompt": true
+    },
+    "documentation": {
+      "enabled": true,
+      "path": "/docs",
+      "navigation": {
+        "enabled": true,
+        "position": "left",
+        "showProgress": true,
+        "showBreadcrumbs": true
+      },
+      "search": {
+        "enabled": true,
+        "provider": "local",
+        "placeholder": "Search documentation..."
+      },
+      "layout": {
+        "sidebar": true,
+        "toc": true,
+        "footer": true
+      }
+    }
   },
   "environment": {
     "development": {
-      "NODE_ENV": "development",
-      "NEXT_PUBLIC_API_URL": "http://localhost:3000/api"
+      "API_URL": "http://localhost:3000/api",
+      "NODE_ENV": "development"
     },
     "production": {
-      "NODE_ENV": "production",
-      "NEXT_PUBLIC_API_URL": "https://api.example.com"
+      "API_URL": "https://api.example.com",
+      "NODE_ENV": "production"
     },
     "staging": {
-      "NODE_ENV": "staging",
-      "NEXT_PUBLIC_API_URL": "https://staging-api.example.com"
+      "API_URL": "https://staging-api.example.com",
+      "NODE_ENV": "staging"
     }
   },
   "devAgent": {
-    "enabled": true,
-    "port": 3001,
-    "database": {
-      "path": "./database.db"
+    "name": "Test Dev Agent",
+    "version": "1.0.0",
+    "description": "Development agent for testing",
+    "workflow": {
+      "syncInterval": 300,
+      "autoSync": true
+    },
+    "branches": {
+      "main": "main",
+      "featurePrefix": "feature/"
     }
   },
-  "lastUpdated": "2024-01-01T00:00:00Z"
+  "lastUpdated": "2024-01-01T00:00:00.000Z"
 }

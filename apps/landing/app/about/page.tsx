@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { PageLayout } from '@lnd/ui/templates'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
 import { Badge } from '@lnd/ui/components/ui/badge'
 import { Rocket, Code, Palette, Zap, Users, Target } from 'lucide-react'
 
@@ -10,41 +10,41 @@ export default function AboutPage() {
   const features = [
     {
       icon: Rocket,
-      title: 'Быстрый старт',
-      description: 'Создавайте профессиональные лендинги за считанные минуты с готовыми компонентами и шаблонами'
+      title: 'Quick Start',
+      description: 'Create professional landing pages in minutes with ready-made components and templates'
     },
     {
       icon: Code,
-      title: 'Современный стек',
-      description: 'Построен на Next.js 14, TypeScript и Tailwind CSS для максимальной производительности'
+      title: 'Modern Stack',
+      description: 'Built on Next.js 14, TypeScript and Tailwind CSS for maximum performance'
     },
     {
       icon: Palette,
-      title: 'Гибкий дизайн',
-      description: 'Адаптивные компоненты с поддержкой темной темы и кастомизации'
+      title: 'Flexible Design',
+      description: 'Adaptive components with dark theme support and customization'
     },
     {
       icon: Zap,
-      title: 'Высокая производительность',
-      description: 'Оптимизирован для Core Web Vitals и быстрой загрузки страниц'
+      title: 'High Performance',
+      description: 'Optimized for Core Web Vitals and fast page loading'
     },
     {
       icon: Users,
-      title: 'Комьюнити',
-      description: 'Активная команда разработчиков и открытый исходный код'
+      title: 'Community',
+      description: 'Active development team and open source code'
     },
     {
       icon: Target,
-      title: 'Масштабируемость',
-      description: 'Monorepo архитектура для легкого управления зависимостями'
+      title: 'Scalability',
+      description: 'Monorepo architecture for easy dependency management'
     }
   ]
 
   const stats = [
-    { label: 'Компонентов', value: '50+' },
-    { label: 'Шаблонов', value: '15+' },
-    { label: 'Утилит', value: '25+' },
-    { label: 'Версия', value: '1.0.0' }
+    { label: 'Components', value: '50+' },
+    { label: 'Templates', value: '15+' },
+    { label: 'Utilities', value: '25+' },
+    { label: 'Version', value: '1.0.0' }
   ]
 
   return (
@@ -53,11 +53,11 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            О LND Boilerplate
+            About LND Boilerplate
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Мы создаем инструменты, которые помогают разработчикам строить современные веб-приложения быстрее и эффективнее. 
-            LND Boilerplate — это результат многолетнего опыта в веб-разработке.
+            We create tools that help developers build modern web applications faster and more efficiently. 
+            LND Boilerplate is the result of years of experience in web development.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
         {/* Features */}
         <div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
-            Почему выбирают нас
+            Why Choose Us
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature) => {
@@ -100,57 +100,57 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Mission */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Наша миссия
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Демократизировать доступ к качественным инструментам веб-разработки. 
-              Мы верим, что каждый разработчик заслуживает иметь доступ к лучшим практикам и компонентам.
-            </p>
-          </div>
-        </div>
+                 {/* Mission */}
+         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
+           <div className="text-center">
+             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+               Our Mission
+             </h2>
+             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+               To democratize access to quality web development tools. 
+               We believe every developer deserves access to best practices and components.
+             </p>
+           </div>
+         </div>
 
-        {/* Tech Stack */}
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
-            Технологический стек
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              'Next.js 14', 'TypeScript', 'Tailwind CSS', 'React 18', 
-              'Monorepo', 'ESLint', 'Prettier', 'Bun'
-            ].map((tech) => (
-              <Badge key={tech} variant="secondary" className="text-sm px-3 py-1">
-                {tech}
-              </Badge>
-            ))}
-          </div>
-        </div>
+         {/* Tech Stack */}
+         <div>
+           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
+             Technology Stack
+           </h2>
+           <div className="flex flex-wrap justify-center gap-3">
+             {[
+               'Next.js 14', 'TypeScript', 'Tailwind CSS', 'React 18', 
+               'Monorepo', 'ESLint', 'Prettier', 'Bun'
+             ].map((tech) => (
+               <Badge key={tech} variant="secondary" className="text-sm px-3 py-1">
+                 {tech}
+               </Badge>
+             ))}
+           </div>
+         </div>
 
-        {/* CTA */}
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-            Готовы начать?
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
-            Присоединяйтесь к тысячам разработчиков, которые уже используют LND Boilerplate
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/docs" className="inline-block">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Начать изучение
-              </button>
-            </a>
-            <a href="https://github.com/GTFB/lnd-boilerplate" target="_blank" rel="noopener noreferrer" className="inline-block">
-              <button className="border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg font-medium transition-colors">
-                GitHub
-              </button>
-            </a>
-          </div>
-        </div>
+         {/* CTA */}
+         <div className="text-center">
+           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+             Ready to Get Started?
+           </h2>
+           <p className="text-gray-600 dark:text-gray-300 mb-6">
+             Join thousands of developers who are already using LND Boilerplate
+           </p>
+           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+             <a href="/docs" className="inline-block">
+               <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                 Start Learning
+               </button>
+             </a>
+             <a href="https://github.com/GTFB/lnd-boilerplate" target="_blank" rel="noopener noreferrer" className="inline-block">
+               <button className="border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg font-medium transition-colors">
+                 GitHub
+               </button>
+             </a>
+           </div>
+         </div>
       </div>
     </PageLayout>
   )

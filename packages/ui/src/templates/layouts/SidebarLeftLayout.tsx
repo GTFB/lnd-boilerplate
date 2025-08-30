@@ -5,6 +5,7 @@ import { BaseLayout, BaseLayoutProps } from '../base/BaseLayout'
 import { useDesignSystem } from '../../design-systems'
 import { PageTypeName } from '../../types'
 import { NavigationItem } from '../../types/navigation'
+import { PanelLeftOpen } from 'lucide-react'
 
 export interface SidebarLeftLayoutProps extends BaseLayoutProps {
   showHeader?: boolean
@@ -85,9 +86,7 @@ export const SidebarLeftLayout: React.FC<SidebarLeftLayoutProps> = ({
                   className="lg:hidden p-2 rounded-md hover:bg-accent"
                 >
                   <span className="sr-only">Toggle sidebar</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
+                  <PanelLeftOpen className="w-6 h-6" />
                 </button>
                 <h1 className="text-xl font-bold">LND Boilerplate</h1>
               </div>

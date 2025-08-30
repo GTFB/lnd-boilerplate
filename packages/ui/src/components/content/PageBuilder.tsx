@@ -18,7 +18,7 @@ import {
   Lightbulb
 } from 'lucide-react'
 
-// Типы для секций страницы
+// Types for page sections
 export interface HeroSection {
   type: 'hero'
   title: string
@@ -121,7 +121,7 @@ export interface PageBuilderProps {
   className?: string
 }
 
-// Компоненты для секций
+// Components for sections
 const HeroSectionComponent: React.FC<HeroSection> = ({ 
   title, 
   subtitle, 
@@ -162,19 +162,21 @@ const HeroSectionComponent: React.FC<HeroSection> = ({
             )}
             <div className="flex flex-wrap gap-4">
               {primaryButton && (
-                <Button size="lg" variant={primaryButton.variant || 'default'} asChild>
-                  <a href={primaryButton.href}>
-                    {primaryButton.text}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
-                </Button>
+                <a 
+                  href={primaryButton.href}
+                  className="inline-flex items-center px-6 py-3 text-base font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  {primaryButton.text}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
               )}
               {secondaryButton && (
-                <Button size="lg" variant={secondaryButton.variant || 'outline'} asChild>
-                  <a href={secondaryButton.href}>
-                    {secondaryButton.text}
-                  </a>
-                </Button>
+                <a 
+                  href={secondaryButton.href}
+                  className="inline-flex items-center px-6 py-3 text-base font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  {secondaryButton.text}
+                </a>
               )}
             </div>
           </div>
@@ -298,19 +300,21 @@ const CTASectionComponent: React.FC<CTASection> = ({
           )}
           <div className="flex flex-wrap gap-4 justify-center">
             {primaryButton && (
-              <Button size="lg" variant={primaryButton.variant || 'default'} asChild>
-                <a href={primaryButton.href}>
-                  {primaryButton.text}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
+              <a 
+                href={primaryButton.href}
+                className="inline-flex items-center px-6 py-3 text-base font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                {primaryButton.text}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
             )}
             {secondaryButton && (
-              <Button size="lg" variant={secondaryButton.variant || 'outline'} asChild>
-                <a href={secondaryButton.href}>
-                  {secondaryButton.text}
-                </a>
-              </Button>
+              <a 
+                href={secondaryButton.href}
+                className="inline-flex items-center px-6 py-3 text-base font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                {secondaryButton.text}
+              </a>
             )}
           </div>
         </div>

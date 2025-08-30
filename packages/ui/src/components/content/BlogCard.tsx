@@ -3,9 +3,10 @@
 import React from 'react'
 import { cn } from '@lnd/ui/lib/utils'
 import { Image } from '../ui/Image'
-import { Avatar } from '../ui/Avatar'
+import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Card, CardContent, CardHeader } from '../ui/card'
+import { ArrowRight } from 'lucide-react'
 
 export interface BlogPost {
   id: string
@@ -124,9 +125,7 @@ export function BlogCard({ post, variant = 'default', className }: BlogCardProps
           className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors"
         >
           Читать далее
-          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <ArrowRight className="w-4 h-4 ml-1" />
         </a>
       </CardContent>
     </Card>

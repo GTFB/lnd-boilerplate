@@ -3,6 +3,7 @@
 import { PublicLayout } from '@lnd/ui/templates'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 interface ExpertPageProps {
   params: {
@@ -20,7 +21,14 @@ export default function ExpertPage({ params }: ExpertPageProps) {
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     expertise: ['JavaScript', 'React', 'Node.js'],
     joined: '2023-01-01',
-    location: 'Remote'
+    location: 'Remote',
+    social: {
+      twitter: 'https://twitter.com/expert',
+      linkedin: 'https://linkedin.com/in/expert',
+      github: 'https://github.com/expert',
+      dribbble: 'https://dribbble.com/expert',
+      behance: 'https://behance.net/expert'
+    }
   }
 
   return (
@@ -32,9 +40,7 @@ export default function ExpertPage({ params }: ExpertPageProps) {
             href="/experts" 
             className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Experts
           </Link>
 

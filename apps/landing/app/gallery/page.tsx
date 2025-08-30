@@ -7,7 +7,7 @@ import { BlogCard } from '@lnd/ui/components/content/BlogCard'
 import { ExpertCard } from '@lnd/ui/components/content/ExpertCard'
 
 export default function GalleryPage() {
-  // Пример изображений для галереи
+  // Example images for gallery
   const galleryImages = [
     {
       src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
@@ -47,7 +47,7 @@ export default function GalleryPage() {
     }
   ]
 
-  // Пример блог-постов
+  // Example blog posts
   const blogPosts = [
     {
       id: "getting-started",
@@ -79,7 +79,7 @@ export default function GalleryPage() {
     }
   ]
 
-  // Пример экспертов
+  // Example experts
   const experts = [
     {
       id: "john-smith",
@@ -89,9 +89,13 @@ export default function GalleryPage() {
       bio: "John is a creative UI/UX designer with 8 years of experience in creating beautiful, user-centered designs.",
       expertise: ["UI/UX Design", "Design Systems", "Figma", "Accessibility"],
       social: {
+        github: '',
         linkedin: "https://linkedin.com/in/johnsmith",
+        twitter: '',
+        behance: "https://behance.net/johnsmith",
         dribbble: "https://dribbble.com/johnsmith",
-        behance: "https://behance.net/johnsmith"
+        stackoverflow: '',
+        medium: ''
       },
       location: "New York, NY",
       joined: "2021-03-20"
@@ -104,9 +108,13 @@ export default function GalleryPage() {
       bio: "Jane is a seasoned frontend architect with over 10 years of experience building scalable and performant web applications.",
       expertise: ["Next.js", "React", "TypeScript", "Performance", "Architecture"],
       social: {
+        github: "https://github.com/janedoe",
         linkedin: "https://linkedin.com/in/janedoe",
         twitter: "https://twitter.com/janedoe_dev",
-        github: "https://github.com/janedoe"
+        behance: '',
+        dribbble: '',
+        stackoverflow: '',
+        medium: ''
       },
       location: "San Francisco, CA",
       joined: "2020-01-15"
@@ -114,12 +122,9 @@ export default function GalleryPage() {
   ]
 
   return (
-    <PageLayout
-      title="Галерея изображений"
-      description="Демонстрация работы с изображениями в LND Boilerplate"
-    >
+    <PageLayout>
       <div className="space-y-16">
-        {/* Галерея изображений */}
+        {/* Image Gallery */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -138,7 +143,7 @@ export default function GalleryPage() {
           />
         </section>
 
-        {/* Блог-посты */}
+        {/* Blog Posts */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -156,7 +161,7 @@ export default function GalleryPage() {
           </div>
         </section>
 
-        {/* Эксперты */}
+        {/* Experts */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">

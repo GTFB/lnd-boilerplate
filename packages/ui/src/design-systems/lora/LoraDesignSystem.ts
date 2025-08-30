@@ -32,22 +32,22 @@ export class LoraDesignSystem extends BaseDesignSystem {
       'color-muted': this.colors.muted,
       'color-border': this.colors.border,
       
-      // Дополнительные цвета для Lora
+      // Additional colors for Lora
       'color-primary-light': '#2d5a87',
       'color-primary-dark': '#0f2029',
       'color-accent-light': '#63b3ed',
       'color-accent-dark': '#2c5282',
       
-      // Градиенты
+      // Gradients
       'gradient-primary': `linear-gradient(135deg, ${this.colors.primary}, ${this.colors.accent})`,
       'gradient-secondary': `linear-gradient(135deg, ${this.colors.secondary}, ${this.colors.muted})`,
       
-      // Тени
+      // Shadows
       'shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       'shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       'shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       
-      // Скругления
+      // Border radius
       'radius-sm': '0.25rem',
       'radius-md': '0.5rem',
       'radius-lg': '1rem',
@@ -107,7 +107,7 @@ export class LoraDesignSystem extends BaseDesignSystem {
     }
   }
 
-  // Специфичные для Lora методы
+  // Lora-specific methods
   getElegantTransitions(): Record<string, string> {
     return {
       'transition-elegant': `all ${this.animations.duration} ${this.animations.easing}`,

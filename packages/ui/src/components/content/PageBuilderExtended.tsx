@@ -35,7 +35,7 @@ import {
   SkipBack
 } from 'lucide-react'
 
-// Расширенные типы для секций
+// Extended types for sections
 export interface StatsSection {
   type: 'stats'
   title?: string
@@ -158,7 +158,7 @@ export interface GallerySection {
   showLightbox?: boolean
 }
 
-// Обновленный тип PageSection
+// Updated PageSection type
 export type ExtendedPageSection = 
   | HeroSection 
   | FeaturesSection 
@@ -172,10 +172,10 @@ export type ExtendedPageSection =
   | PricingSection
   | TeamSection
   | TimelineSection
-  | GallerySection
+  |   GallerySection
 
-// Импортируем существующие типы
-import { 
+// Import existing types
+import {  
   HeroSection, 
   FeaturesSection, 
   CTASection, 
@@ -184,7 +184,7 @@ import {
   ContentSection 
 } from './PageBuilder'
 
-// Компоненты для новых секций
+// Components for new sections
 const StatsSectionComponent: React.FC<StatsSection> = ({ 
   title, 
   subtitle, 
@@ -540,15 +540,12 @@ const PricingSectionComponent: React.FC<PricingSection> = ({
                   ))}
                 </ul>
                 
-                <Button
-                  variant={plan.buttonVariant || 'default'}
-                  className="w-full"
-                  asChild
+                <a 
+                  href={plan.buttonHref}
+                  className="w-full inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
-                  <a href={plan.buttonHref}>
-                    {plan.buttonText}
-                  </a>
-                </Button>
+                  {plan.buttonText}
+                </a>
               </CardContent>
             </Card>
           ))}
@@ -810,11 +807,14 @@ const GallerySectionComponent: React.FC<GallerySection> = ({
                       </p>
                     )}
                     {image.link && (
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={image.link} target="_blank" rel="noopener noreferrer">
-                          View
-                        </a>
-                      </Button>
+                      <a 
+                        href={image.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-1.5 text-sm border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+                      >
+                        View
+                      </a>
                     )}
                   </div>
                 </div>
@@ -827,7 +827,7 @@ const GallerySectionComponent: React.FC<GallerySection> = ({
   )
 }
 
-// Основной компонент PageBuilderExtended
+// Main PageBuilderExtended component
 export interface PageBuilderExtendedProps {
   sections: ExtendedPageSection[]
   className?: string
@@ -841,7 +841,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
 
   const renderSection = (section: ExtendedPageSection, index: number) => {
     switch (section.type) {
-      // Существующие секции
+      // Existing sections
       case 'hero':
         return <HeroSectionComponent key={index} {...section} />
       case 'features':
@@ -855,7 +855,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
       case 'content':
         return <ContentSectionComponent key={index} {...section} />
       
-      // Новые секции
+      // New sections
       case 'stats':
         return <StatsSectionComponent key={index} {...section} />
       case 'contact-form':
@@ -883,7 +883,7 @@ export const PageBuilderExtended: React.FC<PageBuilderExtendedProps> = ({
   )
 }
 
-// Импортируем существующие компоненты секций
+// Import existing section components
 import { 
   HeroSectionComponent,
   FeaturesSectionComponent,

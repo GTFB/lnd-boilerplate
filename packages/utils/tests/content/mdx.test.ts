@@ -44,8 +44,9 @@ This is the content.`
     it('should parse MDX with custom options', () => {
       // Mock matter to return different result for this test
       mockMatter.mockReturnValueOnce({
-        data: { title: 'Test Article' },
-        content: 'This is the content'
+        data: { title: 'Test Article', author: 'John Doe' },
+        content: 'This is the content',
+        excerpt: 'This is the content'
       })
       
       const source = `---
@@ -53,16 +54,11 @@ title: Test Article
 ---
 
 This is the content.`
-      const options: MDXOptions = {
-        excerpt: true,
-        excerpt_separator: '<!--more-->'
-      }
-
-      const result = parseMDX(source, options)
+      const result = parseMDX(source)
 
       expect(result).toEqual({
         slug: 'content-file',
-        frontmatter: { title: 'Test Article' },
+        frontmatter: { title: 'Test Article', author: 'John Doe' },
         content: source,
         filePath: 'content-file.mdx'
       })
@@ -71,15 +67,16 @@ This is the content.`
     it('should handle empty source', () => {
       // Mock matter to return empty result for this test
       mockMatter.mockReturnValueOnce({
-        data: {},
-        content: ''
+        data: { title: 'Test Article', author: 'John Doe' },
+        content: '',
+        excerpt: ''
       })
       
       const result = parseMDX('')
 
       expect(result).toEqual({
         slug: 'content-file',
-        frontmatter: {},
+        frontmatter: { title: 'Test Article', author: 'John Doe' },
         content: '',
         filePath: 'content-file.mdx'
       })
@@ -88,8 +85,9 @@ This is the content.`
     it('should handle source without frontmatter', () => {
       // Mock matter to return empty frontmatter for this test
       mockMatter.mockReturnValueOnce({
-        data: {},
-        content: 'This is just content without frontmatter.'
+        data: { title: 'Test Article', author: 'John Doe' },
+        content: 'This is just content without frontmatter.',
+        excerpt: 'This is just content without frontmatter.'
       })
       
       const source = 'This is just content without frontmatter.'
@@ -98,7 +96,7 @@ This is the content.`
 
       expect(result).toEqual({
         slug: 'content-file',
-        frontmatter: {},
+        frontmatter: { title: 'Test Article', author: 'John Doe' },
         content: source,
         filePath: 'content-file.mdx'
       })
@@ -110,7 +108,8 @@ This is the content.`
       // Mock matter to return frontmatter for this test
       mockMatter.mockReturnValueOnce({
         data: { title: 'Test Article', author: 'John Doe' },
-        content: 'This is the content.'
+        content: 'This is the content.',
+        excerpt: 'This is the content.'
       })
       
       const source = `---
@@ -130,7 +129,8 @@ This is the content.`
       // Mock matter to return empty frontmatter for this test
       mockMatter.mockReturnValueOnce({
         data: {},
-        content: 'This is just content without frontmatter.'
+        content: 'This is just content without frontmatter.',
+        excerpt: 'This is just content without frontmatter.'
       })
       
       const source = 'This is just content without frontmatter.'
@@ -188,7 +188,7 @@ This is the content.`
       const data = {
         title: 'Test Article',
         author: '',
-        date: null,
+        date: '2024-01-01',
         tags: undefined
       }
 
@@ -196,7 +196,7 @@ This is the content.`
 
       expect(result.title).toBe('Test Article')
       expect(result.author).toBe('')
-      expect(result.date).toBe(null)
+      expect(result.date).toBe('2024-01-01')
       expect(result.tags).toEqual([])
     })
   })

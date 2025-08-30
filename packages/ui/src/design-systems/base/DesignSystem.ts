@@ -20,23 +20,23 @@ export abstract class BaseDesignSystem implements IDesignSystem {
     this.animations = config.animations
   }
 
-  // Метод для применения плагинов
+  // Method for applying plugins
   addPlugin(plugin: IDesignSystemPlugin): void {
     this.plugins.push(plugin)
     plugin.apply(this)
   }
 
-  // Метод для получения всех плагинов
+  // Method for getting all plugins
   getPlugins(): IDesignSystemPlugin[] {
     return this.plugins
   }
 
-  // Абстрактные методы, которые должны реализовать наследники
+  // Abstract methods that must be implemented by inheritors
   abstract getCSSVariables(): Record<string, string>
   abstract getTailwindConfig(): Record<string, any>
   abstract getAnimationClasses(): Record<string, string>
 
-  // Метод для применения дизайн-системы к DOM
+  // Method for applying design system to DOM
   applyToDOM(): void {
     const root = document.documentElement
     const cssVars = this.getCSSVariables()
@@ -45,14 +45,14 @@ export abstract class BaseDesignSystem implements IDesignSystem {
       root.style.setProperty(`--${key}`, value)
     })
 
-    // Применяем анимации
+    // Apply animations
     const animationClasses = this.getAnimationClasses()
     Object.entries(animationClasses).forEach(([key, value]) => {
       root.style.setProperty(`--animation-${key}`, value)
     })
   }
 
-  // Метод для получения CSS переменных в формате для Tailwind
+  // Method for getting CSS variables in Tailwind format
   getTailwindCSSVariables(): string {
     const cssVars = this.getCSSVariables()
     return Object.entries(cssVars)

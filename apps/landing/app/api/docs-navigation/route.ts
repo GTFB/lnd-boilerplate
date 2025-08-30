@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { readJSONFile } from '@lnd/utils/content/server'
+import { readJSONFile } from '@lnd/utils/content/readers'
 import path from 'path'
 
 export async function GET() {

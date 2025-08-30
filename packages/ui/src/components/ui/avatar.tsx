@@ -33,8 +33,9 @@ export function Avatar({
   size = 'md',
   fallback,
   className,
-  fallbackSrc = '/images/avatar-placeholder.jpg'
-}: AvatarProps) {
+  fallbackSrc = '/images/avatar-placeholder.jpg',
+  children
+}: AvatarProps & { children?: React.ReactNode }) {
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -42,6 +43,14 @@ export function Avatar({
       .join('')
       .toUpperCase()
       .slice(0, 2)
+  }
+
+  if (children) {
+    return (
+      <div className={cn('rounded-full overflow-hidden', sizeClasses[size], className)}>
+        {children}
+      </div>
+    )
   }
 
   if (!src) {
@@ -70,5 +79,42 @@ export function Avatar({
         priority
       />
     </div>
+  )
+}
+
+export interface AvatarFallbackProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export function AvatarFallback({ children, className }: AvatarFallbackProps) {
+  return (
+    <div
+      className={cn(
+        'bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium',
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+
+export interface AvatarImageProps {
+  src: string
+  alt: string
+  className?: string
+  fallbackSrc?: string
+}
+
+export function AvatarImage({ src, alt, className, fallbackSrc = '/images/avatar-placeholder.jpg' }: AvatarImageProps) {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fallbackSrc={fallbackSrc}
+      className={cn('w-full h-full object-cover', className)}
+      priority
+    />
   )
 }

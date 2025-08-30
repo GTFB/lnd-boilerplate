@@ -4,7 +4,7 @@ import React from 'react'
 import { PageLayout } from '@lnd/ui/templates'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
 import { Button } from '@lnd/ui/components/ui/button'
-import { Badge } from '@lnd/ui/components/ui/badge'
+
 import { Mail, MessageSquare, Phone, MapPin, Clock, Globe } from 'lucide-react'
 
 export default function ContactPage() {

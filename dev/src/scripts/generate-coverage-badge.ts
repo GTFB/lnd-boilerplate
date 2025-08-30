@@ -134,7 +134,7 @@ async function generateCoverageBadge(): Promise<void> {
   </g>
 </svg>`;
     
-    // Сохраняем badge в docs/assets/
+    // Save badge to docs/assets/
     const badgePath = join(process.cwd(), 'docs', 'assets', 'coverage-badge.svg');
     await writeFile(badgePath, badgeSvg, 'utf-8');
     
@@ -148,5 +148,5 @@ async function generateCoverageBadge(): Promise<void> {
   }
 }
 
-// Запускаем скрипт
+// Run script
 generateCoverageBadge();

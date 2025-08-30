@@ -5,7 +5,7 @@ import { useDesignSystem } from '../../design-systems'
 import { Button, Input } from '../ui'
 import { CookieConsent } from '../ui/CookieConsent'
 import { TwitterIcon, GitHubIcon, LinkedInIcon } from '../ui/icons'
-import { MapPin, Mail, Phone } from 'lucide-react'
+import { MapPin, Mail, Phone, ArrowUp } from 'lucide-react'
 
 export interface FooterProps {
   showLogo?: boolean
@@ -266,14 +266,7 @@ export const Footer: React.FC<FooterProps> = ({
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
-        <CookieConsent
-          onAccept={(preferences) => {
-            console.log('Cookie preferences accepted:', preferences)
-          }}
-          onDecline={() => {
-            console.log('Cookies declined, only necessary cookies enabled')
-          }}
-        />
+        <CookieConsent />
       )}
 
       {/* Back to Top Button with smooth animations */}
@@ -287,9 +280,7 @@ export const Footer: React.FC<FooterProps> = ({
           }`}
           aria-label="Back to top"
         >
-          <svg className="w-5 h-5 transition-transform duration-300 ease-out hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
+          <ArrowUp size={24} />
         </button>
       )}
     </>

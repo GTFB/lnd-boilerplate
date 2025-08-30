@@ -96,4 +96,4 @@ export type LayoutName = 'single-column' | 'sidebar-left' | 'sidebar-right' | 's
 export type PageTypeName = 'documentation' | 'blogPost' | 'landingPage'
 
 // Re-export design system types
-export type { DesignSystemName } from './design-systems'
+// export type { DesignSystemName } from './design-systems'

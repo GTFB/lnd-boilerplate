@@ -1,5 +1,5 @@
 import React from 'react'
-import { PublicLayout } from './PublicLayout'
+import { PublicLayout } from './layouts/PublicLayout'
 
 /**
  * ApplicationLayout - Optimized for application-driven pages

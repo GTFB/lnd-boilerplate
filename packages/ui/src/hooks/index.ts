@@ -1,1 +1,5 @@
-export { useSearchDocuments } from './useSearchDocuments'
+export * from './useSearchDocuments'
+export * from './useTranslations'
+export { useLocale as useUILocale } from './useLocale'
+export { useAnalytics } from './useAnalytics'
+export { useMarketing } from './useMarketing'
