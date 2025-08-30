@@ -1,12 +1,12 @@
 ---
-title: "Getting Started with LND Boilerplate"
-description: "Learn how to set up and use the LND Boilerplate for your next landing page project."
-date: "2025-01-25"
-authorId: "jane-doe"
-tags: ["Tutorial", "Getting Started", "Setup"]
-category: "Tutorials"
-image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop"
-coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop"
+title: 'Getting Started with LND Boilerplate'
+description: 'Learn how to set up and use the LND Boilerplate for your next landing page project.'
+date: '2025-01-25'
+authorId: 'jane-doe'
+tags: ['Tutorial', 'Getting Started', 'Setup']
+category: 'Tutorials'
+image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop'
+coverImage: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop'
 draft: false
 featured: true
 ---
@@ -82,8 +82,8 @@ High-level page skeletons that define the overall structure. We provide PublicLa
 Let's create a simple page using our component library:
 
 ```tsx
-import { PublicLayout } from '@lnd/ui/templates'
-import { Hero } from '@lnd/ui/components/marketing'
+import { PublicLayout } from '@lnd/ui/templates';
+import { Hero } from '@lnd/ui/components/marketing';
 
 export default function MyPage() {
   return (
@@ -92,12 +92,10 @@ export default function MyPage() {
         title="Welcome to My Site"
         subtitle="Built with LND Boilerplate"
         description="This is my amazing landing page."
-        ctaButtons={[
-          { text: 'Get Started', variant: 'default' }
-        ]}
+        ctaButtons={[{ text: 'Get Started', variant: 'default' }]}
       />
     </PublicLayout>
-  )
+  );
 }
 ```
 

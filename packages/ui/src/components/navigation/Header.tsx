@@ -5,7 +5,6 @@ import { Menu, X, Search } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '../../lib/utils'
-import { ThemeToggle } from '../ui/ThemeToggle'
 import { SearchModal } from '../ui/SearchModal'
 import { useSearchDocuments } from '../../hooks/useSearchDocuments'
 import { useSiteConfig } from '../../providers/SiteConfigProvider'
@@ -117,8 +116,7 @@ export function Header({ className }: HeaderProps) {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Theme Toggle */}
-              <ThemeToggle />
+                              {/* Theme Toggle - moved to landing app */}
 
               {/* Mobile menu button */}
               <button

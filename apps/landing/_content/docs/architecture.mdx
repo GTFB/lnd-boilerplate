@@ -1,6 +1,6 @@
 ---
-title: "System Architecture"
-description: "Understanding the architecture and design decisions behind LND Boilerplate."
+title: 'System Architecture'
+description: 'Understanding the architecture and design decisions behind LND Boilerplate.'
 ---
 
 # System Architecture
@@ -24,6 +24,7 @@ lnd-boilerplate/
 ```
 
 **Benefits:**
+
 - Shared code between applications
 - Consistent tooling and dependencies
 - Simplified development workflow
@@ -34,12 +35,15 @@ lnd-boilerplate/
 Our component system follows a three-tier architecture:
 
 #### Primitives
+
 Basic building blocks that provide fundamental functionality.
 
 #### Compositions
+
 Complex components assembled from primitives.
 
 #### Templates
+
 High-level page skeletons that define overall structure.
 
 ### 3. Content-Driven Architecture
@@ -47,12 +51,14 @@ High-level page skeletons that define overall structure.
 LND Boilerplate supports both content-driven and application-driven pages:
 
 #### Content-Driven Pages
+
 - Static content with MDX
 - SEO-optimized
 - Fast loading
 - Perfect for blogs, documentation, marketing pages
 
 #### Application-Driven Pages
+
 - Dynamic, interactive content
 - Real-time data
 - User authentication
@@ -61,12 +67,14 @@ LND Boilerplate supports both content-driven and application-driven pages:
 ## Technology Stack
 
 ### Frontend
+
 - **Next.js 14** - React framework with App Router
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first CSS framework
 - **MDX** - Markdown with JSX components
 
 ### Development Tools
+
 - **Bun** - Fast JavaScript runtime and package manager
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
@@ -100,8 +108,8 @@ MDX files are processed and rendered as React components:
 
 ```mdx
 ---
-title: "My Blog Post"
-date: "2025-01-25"
+title: 'My Blog Post'
+date: '2025-01-25'
 ---
 
 # My Blog Post
@@ -120,11 +128,13 @@ This is **markdown** with <CustomComponent /> support.
 ## Performance Optimizations
 
 ### Static Generation
+
 - Pre-render pages at build time
 - Generate static HTML for content pages
 - Optimize for Core Web Vitals
 
 ### Code Splitting
+
 - Automatic code splitting by route
 - Dynamic imports for heavy components
 - Lazy loading for non-critical features
@@ -132,6 +142,7 @@ This is **markdown** with <CustomComponent /> support.
 ## Security Considerations
 
 ### Content Security Policy
+
 - Configured security headers
 - XSS protection
 - Input validation with ZOD schemas
@@ -139,6 +150,7 @@ This is **markdown** with <CustomComponent /> support.
 ## Development Workflow
 
 ### Local Development
+
 ```bash
 # Install dependencies
 bun install
@@ -151,6 +163,7 @@ bun run build
 ```
 
 ### Code Quality
+
 - ESLint for code linting
 - Prettier for code formatting
 - TypeScript for type safety

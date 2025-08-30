@@ -1,3 +1,5 @@
+const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
@@ -38,6 +40,6 @@ const nextConfig = {
   devIndicators: {
     buildActivity: false,
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig);

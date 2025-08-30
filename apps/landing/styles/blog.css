@@ -161,28 +161,28 @@
   .blog-content {
     @apply max-w-full px-4;
   }
-  
+
   .blog-content-h1 {
     @apply text-3xl mb-6 mt-8;
   }
-  
+
   .blog-content-h2 {
     @apply text-2xl mb-4 mt-6;
   }
-  
+
   .blog-content-h3 {
     @apply text-xl mb-3 mt-5;
   }
-  
+
   .blog-content-p {
     @apply text-base leading-7;
   }
-  
+
   .blog-content-ul,
   .blog-content-ol {
     @apply ml-6;
   }
-  
+
   .carousel-preview .grid {
     @apply grid-cols-1 gap-3;
   }
@@ -192,19 +192,19 @@
   .blog-content-h1 {
     @apply text-2xl;
   }
-  
+
   .blog-content-h2 {
     @apply text-xl;
   }
-  
+
   .blog-content-h3 {
     @apply text-lg;
   }
-  
+
   .blog-content-pre {
     @apply p-4;
   }
-  
+
   .carousel-preview .grid {
     @apply gap-2;
   }

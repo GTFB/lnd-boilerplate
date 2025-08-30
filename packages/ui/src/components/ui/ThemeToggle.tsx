@@ -1,64 +1,53 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { cn } from '../../lib/utils'
-import { useTheme } from '../../contexts/ThemeContext'
+import * as React from "react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "./button";
 
+// Safe useTheme hook
+const useSafeTheme = () => {
+  try {
+    const theme = useTheme();
+    // Check if theme is properly initialized
+    if (theme && typeof theme.setTheme === 'function') {
+      return theme;
+    }
+    throw new Error('Theme not properly initialized');
+  } catch (error) {
+    console.warn('ThemeProvider not available, using fallback:', error);
+    // Return default theme values if context is not available
+    return {
+      theme: 'system',
+      resolvedTheme: 'light',
+      setTheme: () => {},
+      systemTheme: 'light'
+    };
+  }
+};
 
-// Custom theme toggle icon
-function ThemeToggleIcon({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="24" 
-      height="24" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-      <path d="M12 3l0 18"></path>
-      <path d="M12 9l4.65 -4.65"></path>
-      <path d="M12 14.3l7.37 -7.37"></path>
-      <path d="M12 19.6l8.85 -8.85"></path>
-    </svg>
-  )
-}
+export function ThemeToggle() {
+  const { setTheme, resolvedTheme, theme } = useSafeTheme();
 
-export interface ThemeToggleProps {
-  className?: string
-}
+  const toggleTheme = () => {
+    const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+    console.log('ThemeToggle: switching from', resolvedTheme, 'to', newTheme);
+    setTheme(newTheme);
+  };
 
-export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { toggleTheme } = useTheme()
-
-  // State to prevent hydration
-  const [isDark, setIsDark] = React.useState(false)
-
-  // Update state after mounting
-  React.useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'))
-  }, [])
+  console.log('ThemeToggle: current theme:', theme, 'resolved:', resolvedTheme);
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={toggleTheme}
-      className={cn(
-        'p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors',
-        'focus:outline-none',
-        className
-      )}
-      aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
-      suppressHydrationWarning
+      aria-label="Toggle theme"
+      data-theme-toggle
     >
-             <div className="w-5 h-5 flex items-center justify-center" suppressHydrationWarning>
-         <ThemeToggleIcon className="w-5 h-5 text-foreground" />
-       </div>
-    </button>
-  )
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
 }

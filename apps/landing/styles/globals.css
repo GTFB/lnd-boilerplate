@@ -4,32 +4,108 @@
 @tailwind utilities;
 /* stylelint-enable at-rule-no-unknown */
 
-/* Blog styles */
 @import './blog.css';
 
-/* Prevent horizontal overflow */
-html, body {
-  overflow-x: auto; /* FIXED: don't block sticky */
-  max-width: 100vw;
-}
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
 
-/* Global sticky rules - must be at the beginning */
-header {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 50 !important;
-}
-
-@media (min-width: 1024px) {
-  .left-sidebar > div:first-child,
-  .right-sidebar > div:first-child {
-    position: sticky !important;
-    top: 6rem !important;
-    z-index: 10 !important;
+  .dark {
+    --background: 0 0% 0% !important;
+    --foreground: 0 0% 98% !important;
+    --card: 0 0% 3.9% !important;
+    --card-foreground: 0 0% 98% !important;
+    --popover: 0 0% 3.9% !important;
+    --popover-foreground: 0 0% 98% !important;
+    --primary: 0 0% 98% !important;
+    --primary-foreground: 0 0% 9% !important;
+    --secondary: 0 0% 14.9% !important;
+    --secondary-foreground: 0 0% 98% !important;
+    --muted: 0 0% 14.9% !important;
+    --muted-foreground: 0 0% 63.9% !important;
+    --accent: 0 0% 14.9% !important;
+    --accent-foreground: 0 0% 98% !important;
+    --destructive: 0 62.8% 30.6% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    --border: 0 0% 14.9% !important;
+    --input: 0 0% 14.9% !important;
+    --ring: 0 0% 83.1% !important;
   }
 }
 
-/* Default 3-column layout exactly as in HTML template */
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  *, *::before, *::after {
+    max-width: 100%;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus,
+  *[class*="ring"] {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  input:focus,
+  input:focus-visible,
+  textarea:focus,
+  textarea:focus-visible,
+  select:focus,
+  select:focus-visible {
+    border-color: hsl(var(--ring)) !important;
+  }
+  
+  svg, [class*="icon"], [class*="Icon"], [class*="flag"], [class*="Flag"] {
+    background-color: transparent !important;
+  }
+
+  /* Theme toggle hover effects */
+  [data-theme-toggle]:hover {
+    background-color: transparent !important;
+  }
+
+  [data-theme-toggle] svg {
+    color: hsl(var(--muted-foreground));
+    transition: color 0.2s ease;
+  }
+
+  [data-theme-toggle]:hover svg {
+    color: hsl(var(--foreground));
+  }
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: 270px 1fr 208px;
@@ -38,244 +114,86 @@ header {
   transition: grid-template-columns 0.4s ease-in-out;
 }
 
-.left-sidebar {
-  grid-area: left-sidebar;
-  transition: opacity 0.4s, transform 0.4s;
-}
+.left-sidebar { grid-area: left-sidebar; }
+.content { grid-area: content; }
+.right-sidebar { grid-area: right-sidebar; }
 
 .content {
-  grid-area: content;
-  margin-left: -20px; /* compensate px-5 left */
-  margin-right: -20px; /* compensate px-5 right */
+  margin-left: -20px;
+  margin-right: -20px;
   padding-left: 20px;
   padding-right: 20px;
-  transition: margin-left 0.4s ease-in-out;
+  min-width: 0;
 }
-
-.right-sidebar {
-  grid-area: right-sidebar;
-  transition: all 0.4s ease-in-out;
-}
-
-/* Hidden sidebar: return as in layout */
-.grid-container.sidebar-hidden {
-  grid-template-columns: 0 1fr 208px;
-  gap: 0 0;
-}
-
-.grid-container.sidebar-hidden .left-sidebar { 
-  opacity: 0;
-  transform: translateX(-20px);
-  pointer-events: none;
-}
-
-.grid-container.sidebar-hidden #show-sidebar-btn { 
-  display: inline-block; 
-}
-
-.grid-container.sidebar-hidden .content { 
-  margin-left: -20px; /* compensate px-5 left */
-  margin-right: -20px; /* compensate px-5 right */
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-/* Content also shouldn't overflow - but without affecting siblings */
 .content > * {
-  overflow-x: hidden !important;
-  min-width: 0 !important;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* Ensure all elements don't go beyond viewport */
-*,
-*::before,
-*::after {
-  max-width: 100%;
-}
-
-/* Sidebar control styles like in template */
-#show-sidebar-btn { 
-  display: inline-flex; /* Remove !important so React can control visibility */
-}
-
-
-
-/* Hide scrollbars */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Prevent overflow in components - NOT on sidebars themselves (breaks sticky) */
-.left-sidebar > *, .right-sidebar > * {
-  overflow-x: auto; /* FIXED: don't block sticky */
   min-width: 0;
 }
 
-/* TOC and sidebar text with truncation */
-.left-sidebar a, .right-sidebar a {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+.grid-container.sidebar-hidden {
+  grid-template-columns: 0 1fr 208px;
+  gap: 0;
 }
 
-/* DON'T add overflow to grid-container - this breaks sticky! */
+.grid-container.sidebar-hidden .left-sidebar {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s;
+}
 
-/* Fix sticky positioning */
-.sticky {
+html, body, .grid-container, [class*="flex"] {
+  overflow: visible;
+  contain: none;
+  transform: none;
+  filter: none;
+}
+html, body {
+  overflow-x: hidden;
+}
+
+header,
+.left-sidebar > div:first-child,
+.right-sidebar > div:first-child {
   position: sticky !important;
 }
 
-/* KEY FIXES for sticky */
-/* Remove overflow: hidden from all parent containers */
-.min-h-screen, 
-.min-h-full,
-.h-screen,
-.h-full,
-html,
-body {
-  overflow: visible;
-  contain: none;
-  height: auto;
-}
-
-/* Ensure grid-container doesn't block sticky */
-.grid-container {
-  min-height: 100vh;
-  contain: none;
-  overflow: visible;
-  transform: none;
-  filter: none;
-}
-
-/* Ensure flex containers don't block sticky */
-.flex,
-.flex-1,
-.flex-col,
-.flex-row {
-  overflow: visible;
-  contain: none;
-  transform: none;
-  filter: none;
-}
-
-/* Remove everything that can block sticky, BUT preserve offcanvas */
-*:not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]) {
-  contain: none;
-}
-
-/* Exclude only necessary elements from global reset */
-*:not(.sticky):not(.offcanvas):not(.offcanvas-overlay):not([class*="offcanvas"]):not([class*="transform"]):not([class*="transition"]):not([class*="bg-primary"]):not([class*="h-full"]):not(.scroll-progress-container):not(.scroll-progress-bar):not([class*="scroll-progress"]) {
-  transform: none;
-  filter: none;
-}
-
-/* Ensure sufficient content height for sticky to work */
-.content {
-  min-height: auto; /* Natural content height */
-}
-
-/* Ensure ScrollProgress Bar works */
-[class*="fixed bottom-0 left-0"],
-.fixed.bottom-0.left-0.w-full,
-.fixed.bottom-0 {
-  position: fixed;
-  z-index: 60;
-  transform: none;
-  contain: none;
-  filter: none;
-}
-
-/* ScrollProgress elements - DON'T block their animations */
-.scroll-progress-container,
-.scroll-progress-bar,
-[class*="scroll-progress"] {
-  transform: none;
-  contain: none;
-  filter: none;
-  position: fixed;
-  z-index: 60;
-}
-
-/* ScrollProgress inner element */
-[class*="h-full bg-primary"],
-[class*="bg-primary transition-all"],
-[style*="width:"] {
-  transform: none !important;
-  transition: width 0.3s ease-out !important;
-  contain: none !important;
-  filter: none !important;
-}
-
-/* Test element removed - sticky works! */
-
-/* Fix sidebars for sticky */
-.left-sidebar, .right-sidebar {
-  overflow: visible !important;
-  contain: none !important;
-  height: auto !important;
-  min-height: 100vh !important;
-}
-
-/* FORCE elements to be sticky */
-.left-sidebar > div, .right-sidebar > div {
-  position: sticky !important;
-  top: 6rem !important;
-  z-index: 10 !important;
-}
-
-/* Header forced sticky - MAXIMUM SPECIFICITY */
 header {
   position: sticky !important;
   top: 0 !important;
   z-index: 50 !important;
+  background: hsl(var(--background)) !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-/* All possible selectors for header */
-.sticky.top-0,
-nav.sticky,
-header.sticky,
-[data-sticky],
-.header-sticky {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 50 !important;
+@media (min-width: 1024px) {
+  .left-sidebar > div:first-child,
+  .right-sidebar > div:first-child {
+    top: 6rem !important;
+    z-index: 10 !important;
+  }
 }
 
-/* Specific selectors for sidebars */
-.left-sidebar .sticky,
-.right-sidebar .sticky,
-aside .sticky,
-.left-sidebar > .sticky,
-.right-sidebar > .sticky {
-  position: sticky !important;
-  top: 6rem !important;
-  z-index: 10 !important;
+.left-sidebar > *, .right-sidebar > * {
+  min-width: 0;
+  overflow-x: auto;
 }
 
-/* Offcanvas animations and styles */
+.left-sidebar a, .right-sidebar a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
 .offcanvas-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   z-index: 1999;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.4s, visibility 0.4s;
 }
 
 .offcanvas-menu {
@@ -284,26 +202,50 @@ aside .sticky,
   right: 0;
   width: 320px;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: hsl(var(--background));
   border-left: 1px solid hsl(var(--border));
   z-index: 2000;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -4px 0 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.offcanvas-menu.is-open {
+  transform: translateX(0);
 }
 
 .offcanvas-header {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid hsl(var(--border));
+  flex-shrink: 0;
+  background: hsl(var(--background));
 }
 
 .offcanvas-content {
   padding: 1.5rem;
-  height: calc(100vh - 80px);
-  overflow-y: auto;
-  overflow-x: visible;
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.offcanvas-content::-webkit-scrollbar {
+  display: none;
+}
+
+.offcanvas-header .LanguageSelector,
+.mobile-sidebar .LanguageSelector,
+.left-sidebar.mobile-expanded .LanguageSelector {
+  position: relative;
+  z-index: 51;
 }
 
 /* Fix language selector dropdown in offcanvas */
@@ -361,8 +303,6 @@ aside .sticky,
 .offcanvas-content .LanguageSelector [class*="dropdown"],
 .offcanvas-content .LanguageSelector [class*="menu"] {
   max-width: calc(100vw - 40px) !important;
-  right: 0 !important;
-  transform: translateX(100px) !important;
 }
 
 /* Additional fix for language selector positioning in offcanvas */
@@ -451,1252 +391,115 @@ aside .sticky,
   color: hsl(var(--foreground)) !important;
 }
 
-/* Add flex direction to new offcanvas-menu */
-.offcanvas-menu {
-  display: flex;
-  flex-direction: column;
+/* Global language selector dropdown width fix */
+.LanguageSelector .language-selector-dropdown {
+  min-width: 200px !important;
+  width: max-content !important;
+  max-width: calc(100vw - 40px) !important;
 }
 
-/* Active states with improved animations */
-.offcanvas-overlay.is-open {
-  opacity: 1;
-  visibility: visible;
+.LanguageSelector [class*="dropdown"] {
+  min-width: 200px !important;
+  width: max-content !important;
+  max-width: calc(100vw - 40px) !important;
 }
 
-.offcanvas-menu.is-open {
-  transform: translateX(0);
+/* Center language selector dropdown */
+.LanguageSelector .language-selector-dropdown {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
 }
 
-/* Old styles removed - use new ones above */
+.LanguageSelector [class*="dropdown"] {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
 
-/* Body scroll lock when offcanvas is open */
-body.no-scroll {
+/* Center language selector dropdown in offcanvas */
+.offcanvas-content .LanguageSelector .language-selector-dropdown {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
+.offcanvas-content .LanguageSelector [class*="dropdown"],
+.offcanvas-content .LanguageSelector [class*="menu"] {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
+body.no-scroll, body.modal-open {
   overflow: hidden;
-}
-
-/* Scroll lock for modals (without blur) */
-body.modal-open {
-  overflow: hidden;
-  /* Prevent window movement when hiding scrollbar */
   padding-right: var(--scrollbar-width, 0px) !important;
 }
 
-/* Prevent cookie banner movement when scrollbar appears */
-body.modal-open [data-cookie-banner] {
-  padding-right: var(--scrollbar-width, 0px) !important;
-}
-
-/* Forced width of search modal window */
-.search-modal .max-w-2xl {
-  max-width: 42rem !important;
-  width: 100% !important;
-  min-width: 32rem !important;
-}
-
-
-
-/* Prevent cookie banner movement when sidebar changes */
-[data-cookie-banner] {
-  transition: padding-right 0.4s ease-in-out;
-}
-
-/* Compensation for cookie banner when sidebar is hidden */
-.grid-container.sidebar-hidden ~ [data-cookie-banner],
-.grid-container.sidebar-hidden [data-cookie-banner] {
-  margin-left: 0;
-  margin-right: 0;
-  width: 100%;
-  left: 0;
-  right: 0;
-}
-
-/* Cookie banner stabilization - prevent any movement */
-[data-cookie-banner] {
+[data-cookie-banner], .scroll-progress-container {
   position: fixed !important;
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
   width: 100vw !important;
-  max-width: 100vw !important;
+  z-index: 60;
   transform: none !important;
+}
+[data-cookie-banner] {
   transition: opacity 0.3s ease, padding-right 0.4s ease-in-out !important;
 }
 
-/* Search modal window stabilization - prevent movement when sidebar changes */
-body.modal-open {
-  overflow: hidden;
-  /* Prevent window movement when hiding scrollbar */
-  padding-right: var(--scrollbar-width, 0px) !important;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Improve content spacing */
-.content-header {
-  margin-bottom: 24px;
-  align-items: center; /* Center elements vertically */
-  display: flex;
-  flex-direction: row; /* By default icon on left, breadcrumbs on right */
-  padding-top: 38px; /* Lowered 16px down (22px + 16px) */
-  gap: 16px; /* Spacing between icon and breadcrumbs */
-}
-
-.content-header .breadcrumbs {
-  line-height: 16px; /* Matches icon height */
-  display: flex;
-  align-items: center;
-  margin-top: 0; /* Remove margin, use general alignment */
-}
-
-.content h1, .content h2 {
-  margin-top: 0 !important;
-}
-
-.content .prose h1:first-child, 
-.content .prose h2:first-child,
-.content h1:first-child,
-.content h2:first-child {
-  margin-top: 0 !important;
-}
-
-/* Desktop: hide mobile icons and restore sticky */
-@media (min-width: 1024px) {
-  .mobile-show {
-    display: none !important;
-  }
-  
-  .mobile-hide {
-    display: inline-block !important;
-  }
-  
-  /* Force restore sticky on desktop */
-  header {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 50 !important;
-  }
-  
-  .left-sidebar > div,
-  .right-sidebar > div,
-  .left-sidebar .sticky,
-  .right-sidebar .sticky {
-    position: sticky !important;
-    top: 6rem !important;
-    z-index: 10 !important;
-  }
-}
-
-/* Responsive breakpoints based on site.config.json */
-/* tablet: 1280px - hide right sidebar, 2 columns remain */
-@media (max-width: 1280px) {
-  .grid-container {
-    grid-template-columns: 270px 1fr !important;
-    grid-template-areas: "left-sidebar content" !important;
-    transition: grid-template-columns 0.4s ease-in-out !important;
-  }
-  
-  .grid-container.sidebar-hidden {
-    grid-template-columns: 0 1fr !important;
-    gap: 0 !important;
-  }
-  
-  .grid-container.sidebar-hidden .left-sidebar {
-    opacity: 0 !important;
-    transform: translateX(-20px) !important;
-    pointer-events: none !important;
-  }
-  
-  .right-sidebar {
-    display: none !important;
-  }
-  
-  /* Content takes full available width + padding compensation */
-  .content {
-    grid-area: content !important;
-    margin-left: -20px !important; /* compensate px-5 left */
-    margin-right: -20px !important; /* compensate px-5 right */
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  
-  .grid-container.sidebar-hidden .content {
-    margin-left: -20px !important; /* compensate px-5 left */
-    margin-right: -20px !important; /* compensate px-5 right */
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-}
-
-/* mobile: 1023px - restructure to 1 column, sidebars are moved */
-@media (max-width: 1023px) {
-  .grid-container {
-    grid-template-columns: 1fr !important;
-    grid-template-areas: 
-      "content" 
-      "left-sidebar" 
-      "right-sidebar" !important;
-    gap: 1rem 0 !important;
-  }
-  
-  .left-sidebar {
-    order: 2 !important;
-    max-height: 0 !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: max-height 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s ease-out, padding 0.4s ease-out !important;
-    overflow: visible !important; /* FIXED: don't block sticky */
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  
-  .left-sidebar.mobile-expanded {
-    max-height: 400px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-  }
-  
-  /* Disable sticky only on mobile - only inside sidebars */
-  .left-sidebar > div,
-  .right-sidebar > div,
-  .left-sidebar .sticky,
-  .right-sidebar .sticky {
-    position: static !important;
-  }
-  
-  /* BUT header should remain sticky even on mobile */
-  header {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 50 !important;
-  }
-  
-
-  
-
-  
-  .content, .right-sidebar {
-    margin-left: -20px !important; /* compensate parent px-5 */
-    margin-right: -20px !important; /* compensate parent px-5 */
-    padding-left: 20px !important; /* custom padding 20px */
-    padding-right: 20px !important; /* custom padding 20px */
-  }
-  
-  .right-sidebar {
-    display: block !important;
-    grid-area: auto !important;
-    order: 3;
-  }
-  
-  /* Move burger icon to right on mobile */
-  .content-header {
-    flex-direction: row-reverse !important;
-  }
-  
-  .content-header .breadcrumbs {
-    text-align: left !important;
-  }
-  
-  /* Hide desktop icons on mobile */
-  .mobile-hide {
-    display: none !important;
-  }
-  
-  .mobile-show {
-    display: inline-block !important;
-  }
-
-  .grid-container.sidebar-hidden {
-    grid-template-areas: "content" !important;
-    grid-template-columns: 1fr !important;
-    gap: var(--gap, 20px) !important;
-  }
-  
-  .grid-container.sidebar-hidden .left-sidebar {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border: none;
-    opacity: 0;
-    visibility: hidden;
-    display: none;
-  }
-  
-  .grid-container.sidebar-hidden .content {
-    margin-left: 0 !important; /* remove negative margins on mobile */
-    margin-right: 0 !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-}
-
-/* Additional styles for mobile sidebar */
-.mobile-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 400px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0 0 8px 8px;
-  z-index: 50;
-  transform: translateY(-100%);
-  transition: transform 0.3s ease-in-out;
-  padding: 20px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  overflow: visible;
-}
-
-/* Fix language selector in mobile sidebar */
-.mobile-sidebar .LanguageSelector {
-  position: relative;
-  z-index: 51;
-}
-
-.mobile-sidebar .LanguageSelector [class*="dropdown"],
-.mobile-sidebar .LanguageSelector [class*="menu"],
-.mobile-sidebar .language-selector-dropdown {
-  position: absolute !important;
-  top: 100% !important;
-  right: 0 !important;
-  z-index: 52 !important;
-  max-height: 250px !important;
-  overflow-y: auto !important;
-  margin-top: 8px !important;
-}
-
-.mobile-sidebar.open {
-  transform: translateY(0);
-}
-
-/* Styles for mobile sidebar with correct spacing */
-.left-sidebar.mobile-expanded {
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  overflow: visible;
-  position: relative;
-}
-
-/* Fix language selector in mobile expanded sidebar */
-.left-sidebar.mobile-expanded .LanguageSelector {
-  position: relative;
-  z-index: 51;
-}
-
-.left-sidebar.mobile-expanded .LanguageSelector [class*="dropdown"],
-.left-sidebar.mobile-expanded .LanguageSelector [class*="menu"],
-.left-sidebar.mobile-expanded .language-selector-dropdown {
-  position: absolute !important;
-  top: 100% !important;
-  right: 0 !important;
-  z-index: 52 !important;
-  max-height: 250px !important;
-  overflow-y: auto !important;
-  margin-top: 8px !important;
-}
-
-/* Remove extra spacing on mobile */
-@media (max-width: 1024px) {
-  .content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  
-  .right-sidebar {
-    display: none !important;
-  }
-}
-
-/* Import custom animations - temporarily disabled */
-/* @import '../../../packages/ui/src/styles/animations.css'; */
-
-@layer base {
-  /* --- Light Theme --- */
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --code: 0 0% 98%;
-    --code-foreground: 240 5.9% 10%;
-    --code-highlight: 0 0% 96%;
-    --code-number: 240 3.8% 46.1%;
-  }
-
-  /* --- Dark Theme --- */
-  .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --sidebar-background: 0 0% 2%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 14.9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 14.9%;
-    --sidebar-ring: 0 0% 83.1%;
-    --code: 0 0% 3.9%;
-    --code-foreground: 0 0% 98%;
-    --code-highlight: 0 0% 14.9%;
-    --code-number: 0 0% 63.9%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  
-  /* AGGRESSIVE flicker prevention when switching pages in dark theme */
-  html {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Force dark background for ALL elements in dark theme */
-  .dark,
-  .dark *,
-  .dark html,
-  .dark body,
-  .dark #__next,
-  .dark [data-nextjs-page-router-viewport],
-  .dark main,
-  .dark div[role="main"],
-  .dark div,
-  .dark section,
-  .dark article,
-  .dark aside,
-  .dark header,
-  .dark footer,
-  .dark nav {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* EXCLUDE backdrop elements from forced dark background */
-  .dark [class*="backdrop-blur"],
-  .dark [class*="bg-background/"],
-  .dark [class*="backdrop-filter"],
-  .dark .search-modal [class*="bg-background/"],
-  .dark [class*="bg-background/80"],
-  .dark [class*="bg-background/20"] {
-    background-color: rgba(0, 0, 0, 0.9) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-  }
-  
-  /* Prevent flicker when navigating between pages - ALL containers */
-  .dark #__next,
-  .dark [data-nextjs-page-router-viewport],
-  .dark [data-nextjs-page-router-viewport] *,
-  .dark [data-nextjs-page-router-viewport] > *,
-  .dark [data-nextjs-page-router-viewport] > div,
-  .dark [data-nextjs-page-router-viewport] > main,
-  .dark [data-nextjs-page-router-viewport] > section {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Ensure all page containers have correct background */
-  .dark main,
-  .dark div[role="main"],
-  .dark main *,
-  .dark div[role="main"] * {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Force background for all possible page containers */
-  .dark [class*="page"],
-  .dark [class*="Page"],
-  .dark [class*="layout"],
-  .dark [class*="Layout"],
-  .dark [class*="container"],
-  .dark [class*="Container"] {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Prevent flicker at viewport level and all possible containers */
-  .dark [data-nextjs-page-router-viewport],
-  .dark [data-nextjs-page-router-viewport] *,
-  .dark [data-nextjs-page-router-viewport] > div,
-  .dark [data-nextjs-page-router-viewport] > main,
-  .dark [data-nextjs-page-router-viewport] > section,
-  .dark [data-nextjs-page-router-viewport] > article,
-  .dark [data-nextjs-page-router-viewport] > aside {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Force background for all elements with specific classes */
-  .dark [class*="bg-"],
-  .dark [class*="text-"],
-  .dark [class*="border-"] {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Prevent flicker for all possible Next.js selectors */
-  .dark [data-nextjs-page-router-viewport] [class*="page"],
-  .dark [data-nextjs-page-router-viewport] [class*="Page"],
-  .dark [data-nextjs-page-router-viewport] [class*="layout"],
-  .dark [data-nextjs-page-router-viewport] [class*="Layout"] {
-    background-color: hsl(var(--background)) !important;
-    color: hsl(var(--foreground)) !important;
-  }
-  
-  /* Fast transitions for theme CSS variables */
-  :root {
-    transition: none;
-  }
-  
-  /* Instant theme switching without delays */
-  .dark,
-  .light {
-    transition: none;
-  }
-  
-  /* Force CSS variables to prevent flicker */
-  .dark {
-    --background: 0 0% 0% !important;
-    --foreground: 0 0% 98% !important;
-    --card: 0 0% 3.9% !important;
-    --card-foreground: 0 0% 98% !important;
-    --popover: 0 0% 3.9% !important;
-    --popover-foreground: 0 0% 98% !important;
-    --primary: 0 0% 98% !important;
-    --primary-foreground: 0 0% 9% !important;
-    --secondary: 0 0% 14.9% !important;
-    --secondary-foreground: 0 0% 98% !important;
-    --muted: 0 0% 14.9% !important;
-    --muted-foreground: 0 0% 63.9% !important;
-    --accent: 0 0% 14.9% !important;
-    --accent-foreground: 0 0% 98% !important;
-    --destructive: 0 62.8% 30.6% !important;
-    --destructive-foreground: 0 0% 98% !important;
-    --border: 0 0% 14.9% !important;
-    --input: 0 0% 14.9% !important;
-    --ring: 0 0% 83.1% !important;
-  }
-  
-  /* Prevent black background on icons during theme transitions */
-  .dark svg,
-  .dark [class*="icon"],
-  .dark [class*="Icon"],
-  .dark [class*="flag"],
-  .dark [class*="Flag"],
-  .dark .w-4,
-  .dark .w-5,
-  .dark .w-6,
-  .dark .h-4,
-  .dark .h-5,
-  .dark .h-6 {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Ensure all icons maintain transparency */
-  svg,
-  [class*="icon"],
-  [class*="Icon"],
-  [class*="flag"],
-  [class*="Flag"] {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Fix buttons in dark theme */
-  .dark .bg-primary {
-    background-color: hsl(0 0% 98%) !important;
-    color: hsl(0 0% 9%) !important;
-  }
-  
-  .dark .text-primary-foreground {
-    color: hsl(0 0% 9%) !important;
-  }
-  
-  .dark .bg-primary.text-primary-foreground {
-    background-color: hsl(0 0% 98%) !important;
-    color: hsl(0 0% 9%) !important;
-  }
-  
-  /* Fast theme switching - only essential transitions */
-  * {
-    transition: none;
-  }
-  
-  /* Only apply transitions to specific elements that need them */
-  .bg-background,
-  .bg-card,
-  .bg-popover,
-  .bg-primary,
-  .bg-secondary,
-  .bg-muted,
-  .bg-accent,
-  .bg-destructive,
-  .text-foreground,
-  .text-primary,
-  .text-secondary,
-  .text-muted,
-  .text-accent,
-  .text-destructive,
-  .border-border,
-  .border-input,
-  .border-ring {
-    transition: background-color 0.1s ease-out, 
-                color 0.1s ease-out, 
-                border-color 0.1s ease-out !important;
-  }
-  
-  /* Special transitions for important elements */
-  body, 
-  header, 
-  nav, 
-  main, 
-  aside, 
-  footer,
-  .bg-background,
-  .bg-card,
-  .bg-popover,
-  .bg-primary,
-  .bg-secondary,
-  .bg-muted,
-  .bg-accent,
-  .bg-destructive,
-  .text-foreground,
-  .text-primary,
-  .text-secondary,
-  .text-muted,
-  .text-accent,
-  .text-destructive,
-  .border-border,
-  .border-input,
-  .border-ring {
-    transition: background-color 0.15s ease-out, 
-                color 0.15s ease-out, 
-                border-color 0.15s ease-out, 
-                box-shadow 0.15s ease-out !important;
-  }
-  
-  /* Language selector button - fast theme transitions */
-  button[class*="LanguageSelector"],
-  .LanguageSelector button,
-  [class*="language-selector"] button,
-  button[class*="language"],
-  .language-selector-button {
-    transition: background-color 0.1s ease-out, 
-                color 0.1s ease-out, 
-                border-color 0.1s ease-out !important;
-  }
-  
-  /* Language dropdown - fast theme transitions */
-  [class*="language"] [class*="dropdown"],
-  [class*="language"] [class*="menu"],
-  .LanguageSelector [class*="dropdown"],
-  .LanguageSelector [class*="menu"],
-  .language-selector-dropdown {
-    transition: background-color 0.1s ease-out, 
-                color 0.1s ease-out, 
-                border-color 0.1s ease-out !important;
-  }
-  
-  /* Fix icon backgrounds in language selector during theme transitions */
-  .LanguageSelector svg,
-  .LanguageSelector [class*="flag"],
-  .LanguageSelector .w-4,
-  .LanguageSelector .w-6,
-  .LanguageSelector .h-4,
-  .LanguageSelector .h-6,
-  .language-selector-button svg,
-  .language-selector-button [class*="flag"],
-  .language-selector-dropdown svg,
-  .language-selector-dropdown [class*="flag"] {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Ensure flag icons don't get dark background */
-  .LanguageSelector span[style*="width: 24px"],
-  .LanguageSelector span[style*="minWidth: 24px"],
-  .language-selector-button span[style*="width: 24px"],
-  .language-selector-button span[style*="minWidth: 24px"] {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Fix ChevronDown icon specifically */
-  .LanguageSelector .w-4.h-4,
-  .language-selector-button .w-4.h-4 {
-    background-color: transparent !important;
-    background: transparent !important;
-    color: inherit !important;
-  }
-  
-  /* Specific classes for language selector icons */
-  .language-flag-container,
-  .language-flag-item,
-  .language-chevron-icon,
-  .language-check-icon {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Ensure flag containers don't get background */
-  .language-flag-container svg,
-  .language-flag-item svg {
-    background-color: transparent !important;
-    background: transparent !important;
-  }
-  
-  /* Remove blue glow from form elements */
-  input:focus,
-  textarea:focus,
-  select:focus,
-  button:focus {
-    outline: none;
-    box-shadow: none;
-  }
-  
-  /* Custom focus styles */
-  input:focus,
-  textarea:focus,
-  select:focus {
-    border-color: hsl(var(--ring));
-  }
-  
-  /* AGGRESSIVELY remove all rings and shadows from Tailwind CSS */
-  .focus\:ring-2,
-  .focus\:ring-4,
-  .focus\:ring,
-  .focus\:ring-blue-500,
-  .focus\:ring-offset-2,
-  .focus\:ring-offset-0,
-  .focus\:ring-offset-white,
-  .focus\:ring-offset-background,
-  .focus-visible\:ring-2,
-  .focus-visible\:ring-4,
-  .focus-visible\:ring,
-  .focus-visible\:ring-blue-500,
-  .focus-visible\:ring-offset-2,
-  .focus-visible\:ring-offset-0,
-  .focus-visible\:ring-offset-white,
-  .focus-visible\:ring-offset-background {
-    box-shadow: none !important;
-    outline: none !important;
-  }
-  
-  /* Remove ALL rings from ALL elements with any rings */
-  *[class*="ring"] {
-    box-shadow: none !important;
-    outline: none !important;
-  }
-  
-  /* Remove ALL rings from ALL elements in any state */
-  *[class*="ring"]:focus,
-  *[class*="ring"]:focus-visible,
-  *[class*="ring"]:focus-within,
-  *[class*="ring"]:active,
-  *[class*="ring"]:hover {
-    box-shadow: none !important;
-    outline: none !important;
-  }
-  
-  /* FORCE remove all rings from inputs */
-  input,
-  input:focus,
-  input:focus-visible,
-  input:focus-within,
-  input:active,
-  input:hover {
-    outline: none !important;
-    box-shadow: none !important;
-    border: 1px solid hsl(var(--border)) !important;
-  }
-  
-  /* On focus change ONLY border color */
-  input:focus,
-  input:focus-visible,
-  input:focus-within {
-    border-color: hsl(var(--ring)) !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  /* FORCE remove all rings from buttons */
-  button,
-  button:focus,
-  button:focus-visible,
-  button:focus-within,
-  button:active,
-  button:hover {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  /* On button focus change ONLY border color */
-  button:focus,
-  button:focus-visible,
-  button:focus-within {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  /* FORCE remove all rings from Button component buttons */
-  .Button,
-  [class*="Button"],
-  button[class*="Button"],
-  button[class*="button"] {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  /* On Button component focus */
-  .Button:focus,
-  .Button:focus-visible,
-  .Button:focus-within,
-  [class*="Button"]:focus,
-  [class*="Button"]:focus-visible,
-  [class*="Button"]:focus-within,
-  button[class*="Button"]:focus,
-  button[class*="Button"]:focus-visible,
-  button[class*="Button"]:focus-within {
-    outline: none !important;
-    box-shadow: none !important;
-  }
+.search-modal .max-w-2xl {
+  max-width: 42rem !important;
+  width: 100% !important;
 }
 
 @layer components {
   .prose {
-    /* Reset default prose styles */
-    width: 100% !important;
-    max-width: none !important;
-    
-    h1, h2, h3, h4, h5, h6 {
-      @apply font-heading;
-    }
-    
-    /* Headings */
-    h1 {
-      @apply text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 mt-8 tracking-tight;
-    }
-    
-    h2 {
-      @apply text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 tracking-tight;
-    }
-    
-    h3 {
-      @apply text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-6 tracking-tight;
-    }
-    
-    h4 {
-      @apply text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 mt-4 tracking-tight;
-    }
-    
-    h5 {
-      @apply text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 mt-4 tracking-tight;
-    }
-    
-    h6 {
-      @apply text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 mt-4 tracking-tight;
-    }
-    
-    /* Next.js style typography - clean and minimal */
-    p {
-      @apply text-gray-700 dark:text-gray-300 leading-7 mb-4;
-    }
-    
-    /* Links */
-    a {
-      @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline underline-offset-2 transition-colors;
-    }
-    
-    /* Inline code */
-    code:not(pre code) {
-      @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
-    }
-    
-    /* Code blocks */
-    pre {
-      @apply bg-gray-100 dark:bg-gray-900 rounded-lg p-4 overflow-x-auto mb-6;
-    }
-    
-    pre code {
-      @apply bg-transparent p-0 text-sm font-mono leading-relaxed;
-    }
-    
-    /* Lists */
-    ul, ol {
-      @apply mb-6 space-y-2 pl-6;
-    }
-    
-    ul {
-      @apply list-disc;
-    }
-    
-    ol {
-      @apply list-decimal;
-    }
-    
-    li {
-      @apply text-gray-700 dark:text-gray-300 leading-7;
-    }
-    
-    /* Nested lists */
-    ul ul, ol ol, ul ol, ol ul {
-      @apply mt-2 mb-0;
-    }
-    
-    /* Task lists */
-    input[type="checkbox"] {
-      @apply mr-2 accent-blue-600;
-    }
-    
-    /* Blockquotes */
-    blockquote {
-      @apply border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20 pl-4 py-2 my-6 rounded-r-lg;
-    }
-    
-    blockquote p {
-      @apply mb-0 text-gray-700 dark:text-gray-300;
-    }
-    
-    /* Tables */
-    table {
-      @apply w-full border-collapse border border-gray-200 dark:border-gray-700 mb-6 rounded-lg overflow-hidden;
-    }
-    
-    th, td {
-      @apply border border-gray-200 dark:border-gray-700 px-4 py-3 text-left;
-    }
-    
-    th {
-      @apply bg-gray-50 dark:bg-gray-800 font-semibold text-gray-900 dark:text-gray-100;
-    }
-    
-    td {
-      @apply text-gray-700 dark:text-gray-300;
-    }
-    
-    /* Strong and emphasis */
-    strong {
-      @apply font-semibold text-gray-900 dark:text-gray-100;
-    }
-    
-    em {
-      @apply italic;
-    }
-    
-    /* Strikethrough */
-    del {
-      @apply line-through text-gray-500 dark:text-gray-400;
-    }
-    
-    /* Highlight */
-    mark {
-      @apply bg-yellow-200 dark:bg-yellow-800 px-1 rounded;
-    }
-    
-    /* Horizontal rules */
-    hr {
-      @apply border-0 border-t border-gray-200 dark:border-gray-700 my-8;
-    }
-    
-    /* Images */
-    img {
-      @apply rounded-lg shadow-sm max-w-full h-auto mb-6;
-    }
-    
-    /* Definition lists */
-    dl {
-      @apply mb-6;
-    }
-    
-    dt {
-      @apply font-semibold text-gray-900 dark:text-gray-100 mb-1;
-    }
-    
-    dd {
-      @apply text-gray-700 dark:text-gray-300 ml-4 mb-2;
-    }
-    
-    /* Abbreviations */
-    abbr {
-      @apply border-b border-dotted border-gray-400 dark:border-gray-500 cursor-help;
-    }
-    
-    /* Footnotes */
-    .footnote-ref {
-      @apply text-blue-600 dark:text-blue-400 no-underline;
-    }
-    
-    .footnotes {
-      @apply border-t border-gray-200 dark:border-gray-700 pt-4 mt-8;
-    }
-    
-    .footnotes ol {
-      @apply text-sm;
-    }
-    
-    /* Details/Summary */
-    details {
-      @apply mb-6 border border-gray-200 dark:border-gray-700 rounded-lg;
-    }
-    
-    summary {
-      @apply p-4 cursor-pointer font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800;
-    }
-    
-    details[open] summary {
-      @apply border-b border-gray-200 dark:border-gray-700;
-    }
-    
-    details > *:not(summary) {
-      @apply p-4 pt-0;
-    }
-    
-    /* Callouts with emojis - different colors */
-    blockquote:has(strong:first-child) {
-      @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-blue-500 bg-blue-50 dark:bg-blue-950/20;
-    }
-    
-    /* Specific callout classes for different colors */
-    .callout-info {
-      @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-blue-500 bg-blue-50 dark:bg-blue-950/20;
-    }
-    
-    .callout-warning {
-      @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20;
-    }
-    
-    .callout-danger {
-      @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-red-500 bg-red-50 dark:bg-red-950/20;
-    }
-    
-    .callout-tip {
-      @apply border-l-4 pl-4 py-3 my-6 rounded-r-lg border-green-500 bg-green-50 dark:bg-green-950/20;
-    }
-  }
-  
-  /* Force override all prose sizes */
-  .prose, .prose-lg, .prose-xl {
     width: 100% !important;
     max-width: none !important;
   }
-  
-  /* Override possible Tailwind prose styles */
-  .prose-lg {
-    max-width: none !important;
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply font-heading;
   }
-  
-  /* MDX content should take full width */
-  .mdx-content {
-    width: 100% !important;
-    max-width: none !important;
+  .prose h1 { @apply text-4xl font-bold mb-6 mt-8 tracking-tight; }
+  .prose h2 { @apply text-3xl font-semibold mb-4 mt-8 tracking-tight; }
+  .prose h3 { @apply text-2xl font-semibold mb-3 mt-6 tracking-tight; }
+  .prose p { @apply leading-7 mb-4; }
+  .prose a { @apply text-blue-600 dark:text-blue-400 hover:underline underline-offset-2; }
+  .prose code:not(pre code) { @apply bg-muted text-foreground px-1.5 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-muted rounded-lg p-4 overflow-x-auto mb-6; }
+  .prose pre code { @apply bg-transparent p-0; }
+  .prose blockquote { @apply border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/20 pl-4 py-2 my-6 rounded-r-lg; }
+  .prose ul, .prose ol { @apply mb-6 space-y-2 pl-6; }
+  .prose ul { @apply list-disc; }
+  .prose ol { @apply list-decimal; }
+  .prose img { @apply rounded-lg max-w-full h-auto mb-6; }
+
+  .content h1:first-child, .content h2:first-child,
+  .prose h1:first-child, .prose h2:first-child {
+    margin-top: 0 !important;
   }
-  
-  .mdx-content > * {
-    max-width: none !important;
+
+  .content-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 38px;
+    margin-bottom: 24px;
   }
 }
 
-@layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-
-/* Shiki syntax highlighting styles */
 .shiki {
   @apply bg-muted text-foreground rounded-lg p-4 overflow-x-auto !important;
-  background-color: hsl(var(--muted)) !important;
-  color: hsl(var(--foreground)) !important;
 }
-
-.shiki pre {
-  @apply bg-transparent p-0 m-0 overflow-visible !important;
+.shiki pre, .shiki code {
   background-color: transparent !important;
 }
-
-.shiki code {
-  @apply text-sm font-mono leading-relaxed !important;
-  color: hsl(var(--foreground)) !important;
+.shiki *, .shiki code {
+  color: inherit !important;
 }
 
-/* Force override Shiki's default colors */
-.shiki .line {
-  @apply text-foreground !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-.shiki .line .highlighted {
-  @apply bg-accent/20 !important;
-  background-color: hsl(var(--accent) / 0.2) !important;
-}
-
-/* Override all Shiki background colors */
-.shiki,
-.shiki *,
-.shiki pre,
-.shiki code,
-.shiki .line,
-.shiki .line * {
-  background-color: hsl(var(--muted)) !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-/* Dark theme adjustments for Shiki */
-.dark .shiki,
-.dark .shiki *,
-.dark .shiki pre,
-.dark .shiki code,
-.dark .shiki .line,
-.dark .shiki .line * {
-  background-color: hsl(var(--muted)) !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-/* Light theme adjustments for Shiki */
-.light .shiki,
-.light .shiki *,
-.light .shiki pre,
-.light .shiki code,
-.light .shiki .line,
-.light .shiki .line * {
-  background-color: hsl(var(--muted)) !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-/* Hide scrollbar but keep functionality */
-.scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-.scrollbar-hide::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
-}
-
-/* Fast animations for language selector */
-.language-selector-dropdown {
-  transition: all 0.1s ease-out;
-}
-
-.language-selector-dropdown-enter {
-  opacity: 0;
-  transform: scale(0.98) translateY(4px);
-}
-
-.language-selector-dropdown-enter-active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-/* Styles for backdrop blur */
-.backdrop-blur {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Fix backdrop blur for dark theme */
-.dark .backdrop-blur,
-.dark [class*="backdrop-blur"],
-.dark [class*="bg-background/"] {
-  background-color: rgba(0, 0, 0, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* Special rules for modal windows in dark theme */
-.dark .search-modal .bg-background\/20 {
-  background-color: rgba(0, 0, 0, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* Fix backdrop for Sheet components */
-.dark [class*="bg-background/80"] {
-  background-color: rgba(0, 0, 0, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* Fast animations */
-.transition-all {
-  transition: all 0.1s ease-out;
-}
-
-/* Styles for "back to top" button */
 .back-to-top {
   position: fixed;
   bottom: 2rem;
@@ -1704,50 +507,114 @@ body.modal-open {
   z-index: 40;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: opacity 0.3s, visibility 0.3s;
 }
-
 .back-to-top.visible {
   opacity: 1;
   visibility: visible;
 }
 
-/* Fix back to top button colors in dark theme */
-.dark button[aria-label="Back to top"],
-.dark .back-to-top {
-  background-color: hsl(var(--background)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  color: hsl(var(--foreground)) !important;
+@layer base {
+  html.dark, body.dark {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark [class*="backdrop-blur"],
+  .dark [class*="bg-background/"] {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  .dark .bg-primary { background-color: hsl(var(--primary)) !important; }
+  .dark .text-primary-foreground { color: hsl(var(--primary-foreground)) !important; }
 }
 
-.dark button[aria-label="Back to top"]:hover,
-.dark .back-to-top:hover {
-  background-color: hsl(var(--accent)) !important;
-  color: hsl(var(--accent-foreground)) !important;
+* {
+  transition: none;
 }
 
-/* Light theme back to top button */
-.light button[aria-label="Back to top"],
-.light .back-to-top {
-  background-color: hsl(var(--background)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  color: hsl(var(--foreground)) !important;
+body, header, nav, main, aside, footer, .button,
+[class*="bg-"], [class*="text-"], [class*="border-"] {
+  transition: background-color 0.15s ease-out,
+              color 0.15s ease-out,
+              border-color 0.15s ease-out !important;
 }
 
-.light button[aria-label="Back to top"]:hover,
-.light .back-to-top:hover {
-  background-color: hsl(var(--accent)) !important;
-  color: hsl(var(--accent-foreground)) !important;
+@layer utilities {
+  .line-clamp-2, .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-2 { -webkit-line-clamp: 2; }
+  .line-clamp-3 { -webkit-line-clamp: 3; }
 }
 
-/* Styles for progress bar */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  z-index: 9999;
-  transition: width 0.1s ease;
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .grid-container {
+    grid-template-columns: 270px 1fr !important;
+    grid-template-areas: "left-sidebar content" !important;
+  }
+  .grid-container.sidebar-hidden {
+    grid-template-columns: 0 1fr !important;
+  }
+  .right-sidebar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .left-sidebar > div, .right-sidebar > div {
+    position: static !important;
+  }
+
+  .grid-container {
+    display: block !important;
+  }
+
+  .left-sidebar, .right-sidebar, .content {
+    margin: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .right-sidebar {
+    display: block !important;
+  }
+
+  .mobile-hide { display: none !important; }
+  .mobile-show { display: inline-block !important; }
+
+  .content-header {
+    flex-direction: row-reverse !important;
+  }
+
+  .left-sidebar {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 1rem !important;
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out !important;
+  }
+  .left-sidebar.mobile-expanded {
+    max-height: 500px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    padding: 1rem !important;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
 }

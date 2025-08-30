@@ -1,0 +1,15 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "docs": "Documentación",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "common": {
+    "search": "Buscar",
+    "language": "Idioma",
+    "theme": "Tema",
+    "getStarted": "Comenzar"
+  }
+}

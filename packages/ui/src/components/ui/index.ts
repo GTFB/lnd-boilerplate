@@ -16,9 +16,9 @@ export * from './CookieConsent'
 export * from './skeleton'
 export * from './tabs'
 export * from './textarea'
-export * from './ThemeToggle'
 export * from './tooltip'
 export * from './LanguageSelector'
+export * from './ThemeToggle'
 
 // Image components
 export { Image } from './Image'

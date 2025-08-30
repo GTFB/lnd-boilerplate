@@ -18,7 +18,13 @@
   "seo": {
     "title": "LND Boilerplate - Modern Web Platform",
     "description": "A modern, performant web platform built with Next.js, TypeScript, and Tailwind CSS",
-    "keywords": ["nextjs", "typescript", "tailwind", "boilerplate", "web platform"],
+    "keywords": [
+      "nextjs",
+      "typescript",
+      "tailwind",
+      "boilerplate",
+      "web platform"
+    ],
     "ogImage": null,
     "twitterCard": "summary_large_image",
     "twitterHandle": "@gtfb_dev",
@@ -318,7 +324,12 @@
   },
   "layouts": {
     "default": "sidebar-both",
-    "available": ["single-column", "sidebar-left", "sidebar-right", "sidebar-both"],
+    "available": [
+      "single-column",
+      "sidebar-left",
+      "sidebar-right",
+      "sidebar-both"
+    ],
     "breakpoints": {
       "mobile": "1024px",
       "tablet": "1280px",
@@ -343,7 +354,13 @@
       "sidebar-both": {
         "name": "Sidebar Both",
         "description": "Layout with both sidebars",
-        "structure": ["header", "left-sidebar", "content", "right-sidebar", "footer"]
+        "structure": [
+          "header",
+          "left-sidebar",
+          "content",
+          "right-sidebar",
+          "footer"
+        ]
       }
     }
   },

@@ -9,13 +9,13 @@
           "file": "introduction.mdx"
         },
         {
-          "title": "Installation Guide", 
+          "title": "Installation Guide",
           "href": "/docs/installation",
           "file": "installation.mdx"
         },
         {
           "title": "System Architecture",
-          "href": "/docs/architecture", 
+          "href": "/docs/architecture",
           "file": "architecture.mdx"
         }
       ]
@@ -30,7 +30,7 @@
         },
         {
           "title": "First Steps",
-          "href": "/docs/getting-started/first-steps", 
+          "href": "/docs/getting-started/first-steps",
           "file": "getting-started/first-steps.mdx"
         }
       ]

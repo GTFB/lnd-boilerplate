@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
 export default function GlobalError({
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   return (
     <html>
@@ -17,10 +17,11 @@ export default function GlobalError({
                 Global Error
               </h2>
               <p className="text-gray-600 mb-8">
-                A critical error occurred. Please refresh the page or contact support.
+                A critical error occurred. Please refresh the page or contact
+                support.
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <button
                 onClick={reset}
@@ -28,7 +29,7 @@ export default function GlobalError({
               >
                 Try again
               </button>
-              
+
               <button
                 onClick={() => window.location.reload()}
                 className="w-full bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors"
@@ -40,5 +41,5 @@ export default function GlobalError({
         </div>
       </body>
     </html>
-  )
+  );
 }

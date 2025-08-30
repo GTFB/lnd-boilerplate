@@ -7,9 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
     "@lnd/ui": "workspace:*",
     "@lnd/utils": "workspace:*",
     "@mdx-js/loader": "^3.0.0",
@@ -27,9 +30,11 @@
     "next": "^14.0.0",
     "next-intl": "^3.0.0",
     "next-mdx-remote": "^4.4.0",
+    "next-themes": "^0.4.6",
     "postcss": "^8.4.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.62.0",
     "react-intersection-observer": "^9.16.0",
     "shiki": "^3.11.0",
     "tailwindcss": "^3.3.0",
@@ -43,6 +48,7 @@
     "@types/react-dom": "^18.0.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
+    "prettier": "^3.6.2",
     "typescript": "^5.0.0"
   }
 }

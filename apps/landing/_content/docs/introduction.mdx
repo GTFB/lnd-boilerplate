@@ -1,6 +1,6 @@
 ---
-title: "Introduction"
-description: "Welcome to LND Boilerplate - a modern web development platform with comprehensive examples."
+title: 'Introduction'
+description: 'Welcome to LND Boilerplate - a modern web development platform with comprehensive examples.'
 ---
 
 # Introduction
@@ -12,15 +12,20 @@ Welcome to LND Boilerplate, a comprehensive and modern web development platform 
 ### Headings
 
 # H1 Heading
-## H2 Heading  
+
+## H2 Heading
+
 ### H3 Heading
+
 #### H4 Heading
+
 ##### H5 Heading
+
 ###### H6 Heading
 
 ### Text Formatting
 
-This is **bold text** and this is *italic text*. You can also use ***bold and italic*** together.
+This is **bold text** and this is _italic text_. You can also use **_bold and italic_** together.
 
 Here's some `inline code` and here's a [link to Google](https://google.com).
 
@@ -29,6 +34,7 @@ Here's some `inline code` and here's a [link to Google](https://google.com).
 ### Lists
 
 #### Unordered List
+
 - First item
 - Second item
   - Nested item
@@ -36,6 +42,7 @@ Here's some `inline code` and here's a [link to Google](https://google.com).
 - Third item
 
 #### Ordered List
+
 1. First step
 2. Second step
    1. Sub-step A
@@ -43,6 +50,7 @@ Here's some `inline code` and here's a [link to Google](https://google.com).
 3. Third step
 
 #### Task List
+
 - [x] Completed task
 - [ ] Incomplete task
 - [x] Another completed task
@@ -50,6 +58,7 @@ Here's some `inline code` and here's a [link to Google](https://google.com).
 ## Code Examples
 
 ### Inline Code
+
 Use `console.log()` to output messages to the browser console.
 
 ### Code Blocks
@@ -61,7 +70,7 @@ function greetUser(name) {
   return `Welcome to LND Boilerplate, ${name}`;
 }
 
-const user = "Developer";
+const user = 'Developer';
 const message = greetUser(user);
 ```
 
@@ -77,7 +86,7 @@ interface User {
 const createUser = (userData: Omit<User, 'id'>): User => {
   return {
     id: Math.random(),
-    ...userData
+    ...userData,
   };
 };
 ```
@@ -109,14 +118,14 @@ npm run test
 
 ## Tables
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| Next.js 14 | Latest React framework | ✅ Complete |
-| TypeScript | Type-safe JavaScript | ✅ Complete |
-| Tailwind CSS | Utility-first CSS | ✅ Complete |
-| MDX Support | Rich content creation | ✅ Complete |
-| SEO Optimization | Built-in SEO utilities | ✅ Complete |
-| Performance | Core Web Vitals optimized | ✅ Complete |
+| Feature          | Description               | Status      |
+| ---------------- | ------------------------- | ----------- |
+| Next.js 14       | Latest React framework    | ✅ Complete |
+| TypeScript       | Type-safe JavaScript      | ✅ Complete |
+| Tailwind CSS     | Utility-first CSS         | ✅ Complete |
+| MDX Support      | Rich content creation     | ✅ Complete |
+| SEO Optimization | Built-in SEO utilities    | ✅ Complete |
+| Performance      | Core Web Vitals optimized | ✅ Complete |
 
 ## Blockquotes
 
@@ -125,7 +134,7 @@ npm run test
 > **Important Note**: This is a blockquote with bold text. It's perfect for highlighting important information or quotes from other sources.
 
 > ### Blockquote with Heading
-> 
+>
 > This blockquote contains a heading and multiple paragraphs. It's useful for callouts and important notices.
 
 ## Horizontal Rules
@@ -149,14 +158,15 @@ Term 2
 
 The HTML specification is maintained by the W3C.
 
-*[HTML]: HyperText Markup Language
-*[W3C]: World Wide Web Consortium
+_[HTML]: HyperText Markup Language
+_[W3C]: World Wide Web Consortium
 
 ## Footnotes
 
 Here's a sentence with a footnote[^1]. And here's another one[^2].
 
 [^1]: This is the first footnote.
+
 [^2]: This is the second footnote with more details.
 
 ## Math Examples
@@ -164,6 +174,7 @@ Here's a sentence with a footnote[^1]. And here's another one[^2].
 Inline math: E = mc²
 
 Block math:
+
 ```
 ∫[-∞,∞] e^(-x²) dx = √π
 ```
@@ -171,19 +182,23 @@ Block math:
 ## Callouts/Admonitions
 
 <div className="callout-info">
-> **ℹ️ Info**: This is an info callout. Use it to provide helpful information to users.
+  > **ℹ️ Info**: This is an info callout. Use it to provide helpful information
+  to users.
 </div>
 
 <div className="callout-warning">
-> **⚠️ Warning**: This is a warning callout. Use it to alert users about potential issues.
+  > **⚠️ Warning**: This is a warning callout. Use it to alert users about
+  potential issues.
 </div>
 
 <div className="callout-danger">
-> **🚨 Danger**: This is a danger callout. Use it for critical warnings or error messages.
+  > **🚨 Danger**: This is a danger callout. Use it for critical warnings or
+  error messages.
 </div>
 
 <div className="callout-tip">
-> **💡 Tip**: This is a tip callout. Use it to provide helpful tips and best practices.
+  > **💡 Tip**: This is a tip callout. Use it to provide helpful tips and best
+  practices.
 </div>
 
 ## Details/Summary
@@ -195,16 +210,27 @@ This content is hidden by default and can be expanded by clicking the summary. I
 
 ```javascript
 // Code can be inside details too
-const example = "This works!";
+const example = 'This works!';
 console.log(example);
 ```
+
 </details>
 
 ## HTML Elements
 
-<div style={{background: '#f3f4f6', padding: '1rem', borderRadius: '0.5rem', margin: '1rem 0'}}>
+<div
+  style={{
+    background: '#f3f4f6',
+    padding: '1rem',
+    borderRadius: '0.5rem',
+    margin: '1rem 0',
+  }}
+>
   <h4>Custom HTML Block</h4>
-  <p>This is a custom HTML div with inline styles. It demonstrates that raw HTML works in MDX.</p>
+  <p>
+    This is a custom HTML div with inline styles. It demonstrates that raw HTML
+    works in MDX.
+  </p>
 </div>
 
 ## Complex Example
@@ -218,11 +244,11 @@ import React, { useState } from 'react';
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  
+
   return (
     <div className="p-4 border rounded">
       <p>Count: {count}</p>
-      <button 
+      <button
         onClick={() => setCount(count + 1)}
         className="px-4 py-2 bg-blue-500 text-white rounded"
       >
@@ -248,7 +274,7 @@ const Counter = () => {
       },
       {
         "id": 2,
-        "name": "Jane Smith", 
+        "name": "Jane Smith",
         "email": "jane@example.com",
         "isActive": false
       }

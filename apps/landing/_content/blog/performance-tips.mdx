@@ -1,12 +1,12 @@
 ---
-title: "Performance Optimization Tips"
-description: "Learn how to optimize your LND Boilerplate application for maximum performance."
-date: "2025-01-15"
-authorId: "jane-doe"
-tags: ["Performance", "Optimization", "Web Vitals"]
-category: "Performance"
-image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
-coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
+title: 'Performance Optimization Tips'
+description: 'Learn how to optimize your LND Boilerplate application for maximum performance.'
+date: '2025-01-15'
+authorId: 'jane-doe'
+tags: ['Performance', 'Optimization', 'Web Vitals']
+category: 'Performance'
+image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop'
+coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop'
 draft: false
 ---
 
@@ -19,16 +19,19 @@ Performance is crucial for user experience and SEO. Here are essential tips to o
 Focus on these key metrics:
 
 ### Largest Contentful Paint (LCP)
+
 - **Target**: < 2.5 seconds
 - **Optimization**: Use Next.js Image component, optimize images
 - **Monitoring**: Use Google PageSpeed Insights
 
 ### First Input Delay (FID)
+
 - **Target**: < 100 milliseconds
 - **Optimization**: Minimize JavaScript execution time
 - **Monitoring**: Use Chrome DevTools Performance tab
 
 ### Cumulative Layout Shift (CLS)
+
 - **Target**: < 0.1
 - **Optimization**: Set image dimensions, avoid dynamic content insertion
 - **Monitoring**: Use Chrome DevTools Performance tab
@@ -38,7 +41,7 @@ Focus on these key metrics:
 ### Use Next.js Image Component
 
 ```tsx
-import Image from 'next/image'
+import Image from 'next/image';
 
 export default function OptimizedImage() {
   return (
@@ -51,7 +54,7 @@ export default function OptimizedImage() {
       placeholder="blur"
       blurDataURL="data:image/jpeg;base64,..."
     />
-  )
+  );
 }
 ```
 
@@ -70,18 +73,18 @@ Next.js automatically splits code by routes:
 ```tsx
 // This component is automatically code-split
 const DynamicComponent = dynamic(() => import('./HeavyComponent'), {
-  loading: () => <p>Loading...</p>
-})
+  loading: () => <p>Loading...</p>,
+});
 ```
 
 ### Component-based Splitting
 
 ```tsx
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
 const LazyComponent = dynamic(() => import('./LazyComponent'), {
-  ssr: false // Disable server-side rendering if needed
-})
+  ssr: false, // Disable server-side rendering if needed
+});
 ```
 
 ## Caching Strategies
@@ -91,11 +94,11 @@ const LazyComponent = dynamic(() => import('./LazyComponent'), {
 ```tsx
 // Generate static pages at build time
 export async function getStaticProps() {
-  const data = await fetchData()
+  const data = await fetchData();
   return {
     props: { data },
-    revalidate: 3600 // Revalidate every hour
-  }
+    revalidate: 3600, // Revalidate every hour
+  };
 }
 ```
 
@@ -104,13 +107,13 @@ export async function getStaticProps() {
 ```tsx
 // Cache API responses
 export async function GET() {
-  const data = await fetchData()
-  
+  const data = await fetchData();
+
   return new Response(JSON.stringify(data), {
     headers: {
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
-    }
-  })
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+    },
+  });
 }
 ```
 
@@ -147,7 +150,7 @@ const pool = new Pool({
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
-})
+});
 ```
 
 ### Query Optimization
@@ -164,18 +167,18 @@ CREATE INDEX idx_posts_status ON posts(status);
 
 ```typescript
 // Track Core Web Vitals
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 
 function sendToAnalytics(metric) {
   // Send to your analytics service
-  console.log(metric)
+  console.log(metric);
 }
 
-getCLS(sendToAnalytics)
-getFID(sendToAnalytics)
-getFCP(sendToAnalytics)
-getLCP(sendToAnalytics)
-getTTFB(sendToAnalytics)
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getFCP(sendToAnalytics);
+getLCP(sendToAnalytics);
+getTTFB(sendToAnalytics);
 ```
 
 ## Best Practices

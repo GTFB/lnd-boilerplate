@@ -74,7 +74,12 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 export const useDesignSystem = (): DesignSystemContextType => {
   const context = useContext(DesignSystemContext)
   if (!context) {
-    throw new Error('useDesignSystem must be used within a DesignSystemProvider')
+    // Return default values instead of throwing error
+    return {
+      currentSystem: 'lora' as DesignSystemName,
+      switchSystem: () => {},
+      getCurrentSystem: () => new LoraDesignSystem()
+    }
   }
   return context
 }

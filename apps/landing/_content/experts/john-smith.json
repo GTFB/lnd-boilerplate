@@ -4,7 +4,13 @@
   "title": "Senior UI/UX Designer",
   "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
   "bio": "John is a creative UI/UX designer with 8 years of experience in creating beautiful, user-centered designs. He has a strong background in design systems and component libraries, helping teams build consistent and accessible interfaces.",
-  "expertise": ["UI/UX Design", "Design Systems", "Figma", "Accessibility", "Component Libraries"],
+  "expertise": [
+    "UI/UX Design",
+    "Design Systems",
+    "Figma",
+    "Accessibility",
+    "Component Libraries"
+  ],
   "social": {
     "linkedin": "https://linkedin.com/in/johnsmith",
     "dribbble": "https://dribbble.com/johnsmith",

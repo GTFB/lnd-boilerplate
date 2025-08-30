@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDesignSystem } from '../../design-systems'
-import { ThemeToggle } from '../ui'
 import { SearchModal } from '../ui'
 import { LanguageSelector } from '../ui/LanguageSelector'
+import { ThemeToggle } from '../ui/ThemeToggle'
 import { Search, Menu, X } from 'lucide-react'
 
 export interface HeaderProps {
@@ -173,6 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
         className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${
           isScrolled ? 'shadow-lg' : ''
         } ${className}`}
+        style={{ position: 'sticky', top: 0, zIndex: 50 }}
       >
         <div className="max-w-1480 px-5 py-4 ml-0" style={{ margin: '0 auto' }}>
           <div className="flex items-center justify-between">
@@ -268,19 +269,23 @@ export const Header: React.FC<HeaderProps> = ({
           aria-hidden={!isOffCanvasOpen}
         >
           <div className="offcanvas-header">
+            <div className="flex items-center space-x-2">
+              <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-sm">L</span>
+              </div>
+              <h2 className="text-lg font-bold font-heading">LND Boilerplate</h2>
+            </div>
             <button 
               onClick={closeOffCanvas} 
               className="p-2 rounded-md hover:bg-accent transition-colors" 
               aria-label="Close menu"
             >
-                              <X className="w-5 h-5" />
+              <X className="w-5 h-5" />
             </button>
           </div>
           
           <div className="offcanvas-content">
-            <h2 id="offcanvas-title" className="text-lg font-semibold mb-4">Mobile Navigation</h2>
-            
-            <nav aria-label="Mobile Navigation">
+            <nav aria-label="Mobile Navigation" className="flex-shrink-0">
               <ul className="space-y-3 list-none p-0 m-0">
                 <li><a href="/" className="block text-sm font-medium hover:text-primary transition-colors">Home</a></li>
                 <li><a href="/docs" className="block text-sm font-medium hover:text-primary transition-colors">Documentation</a></li>
@@ -290,19 +295,18 @@ export const Header: React.FC<HeaderProps> = ({
               </ul>
             </nav>
             
-            <div className="mt-6 space-y-4">
-                             {/* Search Button for Mobile */}
-               <button 
-                 onClick={(e) => { 
-                   e.preventDefault();
-                   e.stopPropagation();
-                   handleSearchClick(e); 
-                   // Delay for smooth transition between modals
-                   setTimeout(() => closeOffCanvas(), 100);
-                 }} 
-                 className="w-full flex items-center space-x-2 py-1 px-1 rounded-md hover:bg-accent transition-colors text-left" 
-                 aria-label="Open search"
-               >
+            <div className="mt-6 space-y-4 flex-shrink-0">
+              {/* Search Button for Mobile */}
+              <button 
+                onClick={(e) => { 
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleSearchClick(e); 
+                  setTimeout(() => closeOffCanvas(), 100);
+                }} 
+                className="w-full flex items-center space-x-2 py-1 px-1 rounded-md hover:bg-accent transition-colors text-left" 
+                aria-label="Open search"
+              >
                 <Search className="w-5 h-5" />
                 <span className="text-sm font-medium">Search</span>
               </button>
@@ -311,12 +315,12 @@ export const Header: React.FC<HeaderProps> = ({
               <a href="/docs" className="block w-full text-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
                 Get Started
               </a>
-              
-              {/* Theme and Language Controls */}
-              <div className="flex items-center justify-center space-x-4 pt-4 border-t">
-                <LanguageSelector />
-                <ThemeToggle />
-              </div>
+            </div>
+            
+            {/* Theme and Language Controls - Fixed at bottom */}
+            <div className="flex items-center justify-center space-x-4 pt-4 border-t mt-auto">
+              <LanguageSelector />
+              <ThemeToggle />
             </div>
           </div>
         </div>

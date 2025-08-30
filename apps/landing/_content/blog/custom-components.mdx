@@ -1,12 +1,12 @@
 ---
-title: "Building Custom Components"
-description: "A comprehensive guide to creating and customizing components in the LND UI library."
-date: "2025-01-24"
-authorId: "john-smith"
-tags: ["Components", "UI Library", "Development"]
-category: "Tutorials"
-image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
-coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
+title: 'Building Custom Components'
+description: 'A comprehensive guide to creating and customizing components in the LND UI library.'
+date: '2025-01-24'
+authorId: 'john-smith'
+tags: ['Components', 'UI Library', 'Development']
+category: 'Tutorials'
+image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
 draft: false
 featured: false
 ---
@@ -29,15 +29,15 @@ Let's start by creating a simple primitive component:
 
 ```tsx
 // packages/ui/src/components/ui/CustomButton.tsx
-import React from 'react'
-import { cn } from '../../lib/utils'
+import React from 'react';
+import { cn } from '../../lib/utils';
 
 interface CustomButtonProps {
-  children: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'outline'
-  size?: 'sm' | 'md' | 'lg'
-  className?: string
-  onClick?: () => void
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  onClick?: () => void;
 }
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
@@ -48,19 +48,21 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   onClick,
   ...props
 }) => {
-  const baseClasses = 'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2'
-  
+  const baseClasses =
+    'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500'
-  }
-  
+    outline:
+      'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500',
+  };
+
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg'
-  }
+    lg: 'px-6 py-3 text-lg',
+  };
 
   return (
     <button
@@ -75,8 +77,8 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};
 ```
 
 ## Creating a Composition Component
@@ -85,17 +87,17 @@ Now let's create a more complex component that uses our primitive:
 
 ```tsx
 // packages/ui/src/components/marketing/FeatureCard.tsx
-import React from 'react'
-import { CustomButton } from '../ui/CustomButton'
-import { cn } from '../../lib/utils'
+import React from 'react';
+import { CustomButton } from '../ui/CustomButton';
+import { cn } from '../../lib/utils';
 
 interface FeatureCardProps {
-  title: string
-  description: string
-  icon?: React.ReactNode
-  ctaText?: string
-  ctaHref?: string
-  className?: string
+  title: string;
+  description: string;
+  icon?: React.ReactNode;
+  ctaText?: string;
+  ctaHref?: string;
+  className?: string;
 }
 
 export const FeatureCard: React.FC<FeatureCardProps> = ({
@@ -104,24 +106,25 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
   icon,
   ctaText,
   ctaHref,
-  className
+  className,
 }) => {
   return (
-    <div className={cn('bg-white rounded-lg shadow-md p-6 border border-gray-200', className)}>
+    <div
+      className={cn(
+        'bg-white rounded-lg shadow-md p-6 border border-gray-200',
+        className
+      )}
+    >
       {icon && (
         <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
           {icon}
         </div>
       )}
-      
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        {title}
-      </h3>
-      
-      <p className="text-gray-600 mb-4">
-        {description}
-      </p>
-      
+
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+
+      <p className="text-gray-600 mb-4">{description}</p>
+
       {ctaText && ctaHref && (
         <CustomButton
           variant="outline"
@@ -132,8 +135,8 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         </CustomButton>
       )}
     </div>
-  )
-}
+  );
+};
 ```
 
 ## Styling Guidelines
@@ -177,6 +180,7 @@ import { cn } from '../../lib/utils'
 Creating custom components in LND Boilerplate is straightforward when you follow the established patterns and guidelines. Start with primitives, build compositions, and always test your components thoroughly.
 
 Remember to:
+
 - Follow the three-tier architecture
 - Use Tailwind CSS for styling
 - Write TypeScript interfaces

@@ -1,6 +1,6 @@
 ---
-title: "Performance Optimization"
-description: "Tips and techniques for optimizing LND Boilerplate performance"
+title: 'Performance Optimization'
+description: 'Tips and techniques for optimizing LND Boilerplate performance'
 ---
 
 # Performance Optimization
@@ -14,7 +14,7 @@ This guide covers performance optimization techniques for LND Boilerplate.
 Always use the `next/image` component for optimized images:
 
 ```jsx
-import Image from 'next/image'
+import Image from 'next/image';
 
 <Image
   src="/path/to/image.jpg"
@@ -22,7 +22,7 @@ import Image from 'next/image'
   width={800}
   height={600}
   priority={isAboveFold}
-/>
+/>;
 ```
 
 ### Image Formats
@@ -38,11 +38,11 @@ import Image from 'next/image'
 Use dynamic imports for code splitting:
 
 ```jsx
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
 const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
-  loading: () => <p>Loading...</p>
-})
+  loading: () => <p>Loading...</p>,
+});
 ```
 
 ### Route-based Splitting
@@ -61,10 +61,10 @@ Ensure your imports are tree-shakeable:
 
 ```jsx
 // Good
-import { Button } from '@lnd/ui/components'
+import { Button } from '@lnd/ui/components';
 
 // Avoid
-import * as UI from '@lnd/ui/components'
+import * as UI from '@lnd/ui/components';
 ```
 
 ### Bundle Analysis
@@ -92,7 +92,7 @@ export async function generateStaticParams() {
 For dynamic content that doesn't change frequently:
 
 ```jsx
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600; // Revalidate every hour
 ```
 
 ## Monitoring

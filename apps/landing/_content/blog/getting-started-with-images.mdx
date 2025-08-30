@@ -1,12 +1,12 @@
 ---
-title: "Работа с изображениями в LND Boilerplate"
-description: "Полное руководство по использованию системы изображений в проекте"
-date: "2025-01-25"
-authorId: "john-smith"
-tags: ["Images", "UI", "Components", "Tutorial"]
-category: "Development"
-image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
-coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
+title: 'Работа с изображениями в LND Boilerplate'
+description: 'Полное руководство по использованию системы изображений в проекте'
+date: '2025-01-25'
+authorId: 'john-smith'
+tags: ['Images', 'UI', 'Components', 'Tutorial']
+category: 'Development'
+image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
+coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop'
 draft: false
 ---
 
@@ -21,7 +21,7 @@ LND Boilerplate предоставляет мощную и гибкую сист
 Базовый компонент для отображения изображений с поддержкой fallback:
 
 ```tsx
-import { Image } from '@lnd/ui/components/ui/Image'
+import { Image } from '@lnd/ui/components/ui/Image';
 
 <Image
   src="https://images.unsplash.com/photo-1234567890"
@@ -30,7 +30,7 @@ import { Image } from '@lnd/ui/components/ui/Image'
   height={400}
   fallbackSrc="/images/placeholder.jpg"
   priority={true}
-/>
+/>;
 ```
 
 ### Avatar Component
@@ -38,14 +38,14 @@ import { Image } from '@lnd/ui/components/ui/Image'
 Компонент для отображения аватаров пользователей:
 
 ```tsx
-import { Avatar } from '@lnd/ui/components/ui/Avatar'
+import { Avatar } from '@lnd/ui/components/ui/Avatar';
 
 <Avatar
   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
   alt="John Smith"
   size="lg"
   fallback="JS"
-/>
+/>;
 ```
 
 ### ImageGallery Component
@@ -81,31 +81,37 @@ const images = [
 ### Генерация Unsplash URL
 
 ```tsx
-import { generateUnsplashUrl } from '@lnd/utils/images'
+import { generateUnsplashUrl } from '@lnd/utils/images';
 
 const imageUrl = generateUnsplashUrl('1234567890', {
   width: 800,
   height: 400,
   fit: 'cover',
   crop: 'center',
-  quality: 80
-})
+  quality: 80,
+});
 ```
 
 ### Генерация placeholder изображений
 
 ```tsx
-import { generatePlaceholderUrl } from '@lnd/utils/images'
+import { generatePlaceholderUrl } from '@lnd/utils/images';
 
-const placeholderUrl = generatePlaceholderUrl(800, 400, 'Loading...', '#f3f4f6', '#6b7280')
+const placeholderUrl = generatePlaceholderUrl(
+  800,
+  400,
+  'Loading...',
+  '#f3f4f6',
+  '#6b7280'
+);
 ```
 
 ### Responsive изображения
 
 ```tsx
-import { generateSrcSet } from '@lnd/utils/images'
+import { generateSrcSet } from '@lnd/utils/images';
 
-const srcSet = generateSrcSet('https://images.unsplash.com/photo-1234567890')
+const srcSet = generateSrcSet('https://images.unsplash.com/photo-1234567890');
 ```
 
 ## Интеграция с контентом
@@ -116,9 +122,9 @@ const srcSet = generateSrcSet('https://images.unsplash.com/photo-1234567890')
 
 ```yaml
 ---
-title: "Заголовок статьи"
-coverImage: "https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop"
-image: "https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop"
+title: 'Заголовок статьи'
+coverImage: 'https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop'
+image: 'https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop'
 ---
 ```
 
@@ -150,13 +156,16 @@ image: "https://images.unsplash.com/photo-1234567890?w=800&h=400&fit=crop"
 
 ```tsx
 // Square image for avatar
-const avatarUrl = "https://images.unsplash.com/photo-1234567890?w=400&h=400&fit=crop&crop=face"
+const avatarUrl =
+  'https://images.unsplash.com/photo-1234567890?w=400&h=400&fit=crop&crop=face';
 
 // Wide image for hero section
-const heroUrl = "https://images.unsplash.com/photo-1234567890?w=1200&h=600&fit=cover"
+const heroUrl =
+  'https://images.unsplash.com/photo-1234567890?w=1200&h=600&fit=cover';
 
 // Small image for preview
-const previewUrl = "https://images.unsplash.com/photo-1234567890?w=300&h=200&fit=crop"
+const previewUrl =
+  'https://images.unsplash.com/photo-1234567890?w=300&h=200&fit=crop';
 ```
 
 ## Fallback изображения

@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Application error:', error)
-  }, [error])
+    console.error('Application error:', error);
+  }, [error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -23,10 +23,11 @@ export default function Error({
             Something went wrong!
           </h2>
           <p className="text-gray-600 mb-8">
-            An unexpected error occurred. Please try again or contact support if the problem persists.
+            An unexpected error occurred. Please try again or contact support if
+            the problem persists.
           </p>
         </div>
-        
+
         <div className="space-y-4">
           <button
             onClick={reset}
@@ -34,15 +35,15 @@ export default function Error({
           >
             Try again
           </button>
-          
+
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => (window.location.href = '/')}
             className="w-full bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors"
           >
             Go to homepage
           </button>
         </div>
-        
+
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-8 text-left">
             <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
@@ -56,5 +57,5 @@ export default function Error({
         )}
       </div>
     </div>
-  )
+  );
 }

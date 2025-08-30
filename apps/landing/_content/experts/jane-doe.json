@@ -4,7 +4,13 @@
   "title": "Lead Frontend Architect",
   "avatar": "https://images.unsplash.com/photo-1592621385612-4d7129426394?w=400&h=400&fit=crop&crop=face",
   "bio": "Jane is a seasoned frontend architect with over 10 years of experience building scalable and performant web applications. She specializes in the Next.js ecosystem and is passionate about user experience and web performance.",
-  "expertise": ["Next.js", "React", "TypeScript", "Performance", "Architecture"],
+  "expertise": [
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Performance",
+    "Architecture"
+  ],
   "social": {
     "linkedin": "https://linkedin.com/in/janedoe",
     "twitter": "https://twitter.com/janedoe_dev",
