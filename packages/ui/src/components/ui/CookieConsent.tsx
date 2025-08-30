@@ -16,10 +16,10 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
   const [showSettings, setShowSettings] = React.useState(false)
   const [localPreferences, setLocalPreferences] = React.useState({
     necessary: true,
-    analytics: false,
-    marketing: false,
-    preferences: false,
-    functional: false
+    analytics: true,
+    marketing: true,
+    preferences: true,
+    functional: true
   })
 
   React.useEffect(() => {
@@ -158,14 +158,11 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                 </div>
               </div>
 
-              <div className="flex space-x-2 pt-2">
-                <Button variant="outline" size="sm" onClick={decline}>
-                  Decline All
-                </Button>
-                <Button size="sm" onClick={handleSavePreferences}>
-                  Save Preferences
-                </Button>
-              </div>
+                             <div className="flex justify-end pt-2">
+                 <Button size="sm" onClick={handleSavePreferences}>
+                   Save Preferences
+                 </Button>
+               </div>
             </div>
           )}
         </div>
@@ -330,14 +327,11 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                  </div>
                </div>
 
-              <div className="flex space-x-2 pt-2">
-                <Button variant="outline" size="sm" onClick={handleDecline}>
-                  Decline All
-                </Button>
-                <Button size="sm" onClick={handleSavePreferences}>
-                  Save Preferences
-                </Button>
-              </div>
+                             <div className="flex justify-end pt-2">
+                 <Button size="sm" onClick={handleSavePreferences}>
+                   Save Preferences
+                 </Button>
+               </div>
             </div>
           )}
         </div>
