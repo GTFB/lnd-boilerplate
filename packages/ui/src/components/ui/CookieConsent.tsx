@@ -79,7 +79,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                 </Button>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-2">
                 <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
                   <Checkbox
                     checked={localPreferences.necessary}
@@ -251,7 +251,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
                 </Button>
               </div>
               
-                             <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-2">
                  <div className="flex items-center space-x-2 p-2 bg-muted/50 rounded-lg">
                    <Checkbox
                      checked={localPreferences.necessary}
