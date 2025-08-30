@@ -15,7 +15,9 @@ interface CookieContextType {
   setShowBanner: (show: boolean) => void
   acceptAll: () => void
   decline: () => void
+  savePreferences: (preferences: CookiePreferences) => void
   preferences: CookiePreferences | null
+  hasConsent: (type: keyof CookiePreferences) => boolean
 }
 
 const CookieContext = createContext<CookieContextType | undefined>(undefined)
@@ -70,6 +72,20 @@ export function CookieProvider({ children }: { children: ReactNode }) {
     setShowBanner(false)
   }
 
+  const savePreferences = (newPreferences: CookiePreferences) => {
+    localStorage.setItem('cookiePreferences', JSON.stringify(newPreferences))
+    localStorage.setItem('cookiesAccepted', 'true')
+    setPreferences(newPreferences)
+    setShowBanner(false)
+  }
+
+  const hasConsent = (type: keyof CookiePreferences) => {
+    if (!preferences) {
+      return false;
+    }
+    return preferences[type];
+  };
+
   // Don't render context on server
   if (!mounted) {
     return <>{children}</>
@@ -81,7 +97,9 @@ export function CookieProvider({ children }: { children: ReactNode }) {
       setShowBanner,
       acceptAll,
       decline,
-      preferences
+      savePreferences,
+      preferences,
+      hasConsent
     }}>
       {children}
     </CookieContext.Provider>
