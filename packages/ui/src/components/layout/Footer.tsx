@@ -273,9 +273,9 @@ export const Footer: React.FC<FooterProps> = ({
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-6 right-6 p-3 bg-primary text-primary-foreground rounded-full shadow-lg z-40 transition-all duration-500 ease-out transform ${
+          className={`fixed bottom-6 right-6 p-3 bg-background border border-border text-foreground rounded-full shadow-lg z-40 transition-all duration-500 ease-out transform hover:bg-accent hover:text-accent-foreground ${
             showBackToTopButton 
-              ? 'opacity-100 scale-100 translate-y-0 hover:scale-110 hover:shadow-xl hover:bg-primary/90' 
+              ? 'opacity-100 scale-100 translate-y-0 hover:scale-110 hover:shadow-xl' 
               : 'opacity-0 scale-75 translate-y-4 pointer-events-none'
           }`}
           aria-label="Back to top"

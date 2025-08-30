@@ -63,44 +63,70 @@ export const LanguageSelector: React.FC = () => {
           variant="ghost"
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-center px-2 py-0"
-          style={{ width: '80px', minWidth: '80px' }}
+          className="flex items-center justify-center px-2 py-0 language-selector-button"
+          style={{ 
+            width: '80px', 
+            minWidth: '80px',
+            backgroundColor: 'hsl(var(--card))',
+            border: '1px solid hsl(var(--border))',
+            color: 'hsl(var(--foreground))'
+          }}
         >
          <span className="flex items-center justify-center mr-1" style={{ width: '24px', minWidth: '24px' }}>
            {currentLanguage?.flag || currentLanguage?.fallback}
          </span>
          <span className="hidden sm:inline mr-1">{currentLanguage?.code}</span>
          <ChevronDown 
-           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+           className={`w-4 h-4 transition-transform duration-150 ease-out language-chevron-icon ${isOpen ? 'rotate-180' : ''}`} 
          />
        </Button>
 
-            {/* Overlay - starts below header */}
-      <div 
-        className={`fixed top-16 left-0 right-0 bottom-0 z-30 transition-opacity duration-300 ease-out ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setIsOpen(false)}
-      />
+                                                   {/* Overlay - only covers the dropdown area, not the entire offcanvas */}
+        <div 
+          className={`absolute inset-0 z-30 transition-opacity duration-100 ease-out ${
+            isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={() => setIsOpen(false)}
+          style={{
+            zIndex: isOpen ? 2002 : 30,
+            position: 'absolute',
+            top: '100%',
+            left: '0',
+            right: '0',
+            bottom: 'auto',
+            height: '100vh'
+          }}
+        />
       
-      {/* Dropdown */}
-      <div 
-        className={`absolute right-0 mt-2 w-[200px] bg-background border rounded-md shadow-lg z-40 transition-all duration-300 ease-out transform ${
-          isOpen 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
-        }`}
-        style={{ minWidth: '200px', maxWidth: '250px' }}
-      >
+             {/* Dropdown */}
+       <div 
+         className={`absolute left-0 mt-2 w-[200px] bg-background border rounded-md shadow-lg z-40 transition-all duration-100 ease-out transform language-selector-dropdown ${
+           isOpen 
+             ? 'opacity-100 scale-100 translate-y-0' 
+             : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+         }`}
+         style={{ 
+           minWidth: '200px', 
+           maxWidth: '250px',
+           transform: isOpen ? 'translateX(100px)' : 'translateX(100px) scale(0.95) translateY(-8px)',
+           backgroundColor: 'hsl(var(--card))',
+           border: '1px solid hsl(var(--border))',
+           color: 'hsl(var(--foreground))'
+         }}
+       >
         <div className="py-1">
           {languages.map((language) => (
-            <button
-              key={language.code}
-              onClick={() => handleLanguageChange(language.code)}
-              className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors flex items-center space-x-3 ${
-                currentLang === language.code ? 'bg-accent text-accent-foreground' : ''
-              }`}
-            >
+                         <button
+               key={language.code}
+               onClick={() => handleLanguageChange(language.code)}
+               className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors flex items-center space-x-3 language-selector-item ${
+                 currentLang === language.code ? 'bg-accent text-accent-foreground' : ''
+               }`}
+               style={{
+                 color: 'hsl(var(--foreground))',
+                 backgroundColor: currentLang === language.code ? 'hsl(var(--accent))' : 'transparent'
+               }}
+             >
               <span className="flex items-center justify-center h-4" style={{ width: '24px', minWidth: '24px' }}>
                 {language.flag || language.fallback}
               </span>

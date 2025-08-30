@@ -64,8 +64,21 @@ export const Header: React.FC<HeaderProps> = ({
   }, [])
 
   const toggleSearch = useCallback(() => {
-    setIsSearchOpen(!isSearchOpen)
+    // Prevent rapid clicking that could cause issues
+    if (isSearchOpen) {
+      // If already open, just close it
+      setIsSearchOpen(false)
+    } else {
+      // If closed, open it
+      setIsSearchOpen(true)
+    }
   }, [isSearchOpen])
+
+  const handleSearchClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggleSearch()
+  }, [toggleSearch])
 
   // Detect OS for keyboard shortcut display
   useEffect(() => {
@@ -198,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
             {showControls && (
               <div className="hidden lg:flex items-center space-x-2 h-10">
                 <button 
-                  onClick={toggleSearch} 
+                  onClick={handleSearchClick} 
                   className="flex items-center gap-2 px-2 py-1 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-md border transition-colors" 
                   aria-label="Open search"
                 >
@@ -280,8 +293,10 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="mt-6 space-y-4">
                              {/* Search Button for Mobile */}
                <button 
-                 onClick={() => { 
-                   toggleSearch(); 
+                 onClick={(e) => { 
+                   e.preventDefault();
+                   e.stopPropagation();
+                   handleSearchClick(e); 
                    // Delay for smooth transition between modals
                    setTimeout(() => closeOffCanvas(), 100);
                  }} 
