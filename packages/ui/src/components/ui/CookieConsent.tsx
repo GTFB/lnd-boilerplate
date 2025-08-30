@@ -27,7 +27,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
 
     return (
       <div className={`fixed bottom-0 left-0 right-0 bg-background border-t p-4 z-20 transition-all duration-300 ${className}`} data-cookie-banner suppressHydrationWarning>
-        <div className="mx-auto max-w-[1480px]" style={{ padding: '0 0.25rem' }}>
+        <div className="mx-auto max-w-[1480px] px-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div className="flex-1">
               <h3 className="text-sm font-semibold text-foreground mb-2">
@@ -89,7 +89,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
 
     return (
       <div className={`fixed bottom-0 left-0 right-0 bg-background border-t p-4 z-20 transition-all duration-300 ${className}`} data-cookie-banner suppressHydrationWarning>
-        <div className="mx-auto max-w-[1480px]" style={{ padding: '0 0.25rem' }}>
+        <div className="mx-auto max-w-[1480px] px-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
             <div className="flex-1">
               <h3 className="text-sm font-semibold text-foreground mb-2">
