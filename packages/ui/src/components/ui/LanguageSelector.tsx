@@ -31,14 +31,20 @@ const languageSelectorStyles = `
     cursor: pointer !important;
     user-select: none;
     transition: all 0.2s ease-in-out;
-    width: 100%;
+    width: 100% !important;
     display: flex;
     align-items: center;
+    position: relative;
   }
   
   .language-selector-button:hover {
     background-color: hsl(var(--primary) / 0.1);
     color: hsl(var(--primary));
+  }
+  
+  .language-selector-button * {
+    cursor: pointer !important;
+    pointer-events: none;
   }
 `
 import { Button } from './button'
@@ -177,14 +183,13 @@ export const LanguageSelector: React.FC = () => {
          onClick={() => {
            setIsOpen(!isOpen)
          }}
-         className="flex items-center justify-center px-2 py-0 language-selector-button hover:bg-primary/10 hover:text-primary transition-colors w-full cursor-pointer select-none"
-         style={{ 
-           width: '80px', 
-           minWidth: '80px',
-           backgroundColor: 'hsl(var(--card))',
-           border: '1px solid hsl(var(--border))',
-           color: 'hsl(var(--foreground))'
-         }}
+                   className="flex items-center justify-center px-2 py-0 language-selector-button hover:bg-primary/10 hover:text-primary transition-colors w-full cursor-pointer select-none"
+          style={{ 
+            minWidth: '80px',
+            backgroundColor: 'hsl(var(--card))',
+            border: '1px solid hsl(var(--border))',
+            color: 'hsl(var(--foreground))'
+          }}
        >
         <span className="flex items-center justify-center mr-1" style={{ width: '24px', minWidth: '24px' }}>
           {currentLanguage?.flag || currentLanguage?.fallback}
