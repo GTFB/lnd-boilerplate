@@ -117,8 +117,7 @@ const analyticsSchema = z.object({
 const i18nSchema = z.object({
   enabled: z.boolean(),
   defaultLocale: z.string(),
-  locales: z.array(z.string()),
-  pathnames: z.record(z.string())
+  locales: z.array(z.string())
 });
 
 const pwaSchema = z.object({
@@ -400,6 +399,78 @@ const devAgentSchema = z.object({
   })
 });
 
+// Navigation schema
+const navigationItemSchema = z.object({
+  title: z.string(),
+  href: z.string(),
+  children: z.array(z.object({
+    title: z.string(),
+    href: z.string(),
+    description: z.string().optional()
+  })).optional(),
+  badge: z.string().optional()
+});
+
+const navigationSchema = z.object({
+  main: z.array(navigationItemSchema)
+});
+
+// Header schema
+const headerLayoutSchema = z.object({
+  left: z.array(z.string()),
+  center: z.array(z.string()),
+  right: z.array(z.string())
+});
+
+const headerLogoSchema = z.object({
+  enabled: z.boolean(),
+  text: z.string(),
+  image: z.string().nullable(),
+  href: z.string()
+});
+
+const headerMobileMenuSchema = z.object({
+  enabled: z.boolean()
+});
+
+const headerSearchSchema = z.object({
+  enabled: z.boolean(),
+  placeholder: z.string()
+});
+
+const headerLanguageSchema = z.object({
+  enabled: z.boolean(),
+  showFlag: z.boolean(),
+  showName: z.boolean()
+});
+
+const headerThemeSchema = z.object({
+  enabled: z.boolean(),
+  default: z.enum(['light', 'dark', 'system'])
+});
+
+const headerNotificationsSchema = z.object({
+  enabled: z.boolean(),
+  count: z.number()
+});
+
+const headerUserMenuSchema = z.object({
+  enabled: z.boolean(),
+  showAvatar: z.boolean(),
+  showName: z.boolean()
+});
+
+const headerSchema = z.object({
+  layout: headerLayoutSchema,
+  logo: headerLogoSchema,
+  mobileMenu: headerMobileMenuSchema,
+  search: headerSearchSchema,
+  language: headerLanguageSchema,
+  theme: headerThemeSchema,
+  notifications: headerNotificationsSchema,
+  userMenu: headerUserMenuSchema
+});
+
 // Global schema
 const globalSchema = z.object({
   maxWidth: z.string(),
@@ -414,6 +485,8 @@ export const siteConfigSchema = z.object({
   site: siteSchema,
   features: featuresSchema,
   global: globalSchema,
+  navigation: navigationSchema,
+  header: headerSchema,
   designSystems: designSystemsSchema,
   layouts: layoutsSchema,
   pageTypes: pageTypesSchema,

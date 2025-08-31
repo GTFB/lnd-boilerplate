@@ -6,17 +6,43 @@
     "blog": "Blog",
     "contact": "Contact"
   },
+  "home": {
+    "features": {
+      "title": "Features"
+    }
+  },
+  "docs": {
+    "sections": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "description": "Quick start guide for new projects"
+      },
+      "components": {
+        "title": "Components",
+        "description": "UI components and their usage"
+      },
+      "apiReference": {
+        "title": "API Reference",
+        "description": "Complete API documentation"
+      }
+    }
+  },
   "common": {
     "search": "Search",
     "language": "Language",
     "theme": "Theme",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "new": "New",
+    "selectLanguage": "Select Language"
   },
   "home": {
     "title": "LND Boilerplate",
     "subtitle": "Modern Web Development Framework",
     "description": "Build scalable web applications with our comprehensive boilerplate including TypeScript, Next.js, and modern tooling.",
+    "badge": "Modern Web Platform",
     "features": {
+      "title": "Why Choose LND Boilerplate?",
+      "subtitle": "Everything you need to build modern web applications",
       "typescript": {
         "title": "TypeScript Support",
         "description": "Built with TypeScript for type safety and better developer experience."
@@ -28,7 +54,26 @@
       "monorepo": {
         "title": "Monorepo Structure",
         "description": "Clean separation of concerns with shared packages for UI components and utilities."
+      },
+      "typeSafety": {
+        "title": "Type Safety",
+        "description": "End-to-end TypeScript with strict type checking"
+      },
+      "teamReady": {
+        "title": "Team Ready",
+        "description": "Built for teams with comprehensive tooling"
+      },
+      "performance": {
+        "title": "Performance",
+        "description": "Optimized for speed with modern best practices"
       }
+    },
+    "cta": {
+      "primary": "Get Started",
+      "secondary": "View Documentation",
+      "title": "Ready to Build Something Amazing?",
+      "description": "Start your next project with LND Boilerplate and experience the power of modern web development.",
+      "button": "Start Building"
     }
   },
   "docs": {

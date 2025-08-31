@@ -41,13 +41,7 @@
     "i18n": {
       "enabled": true,
       "defaultLocale": "en",
-      "locales": ["ru", "en", "es", "fr", "de"],
-      "pathnames": {  
-        "/": "/",
-        "/blog": "/blog",
-        "/about": "/about",
-        "/contact": "/contact"
-      }
+      "locales": ["ru", "en", "es", "fr", "de"]
     },
     "pwa": {
       "enabled": true,
@@ -80,6 +74,94 @@
     "primaryColor": "#1a365d",
     "secondaryColor": "#2d3748",
     "accentColor": "#3182ce"
+  },
+  "navigation": {
+    "main": [
+      {
+        "title": "navigation.home",
+        "href": "/",
+        "children": [
+          {
+            "title": "navigation.home",
+            "href": "/",
+            "description": "home.description"
+          },
+          {
+            "title": "home.features.title",
+            "href": "/#features",
+            "description": "home.features.subtitle"
+          }
+        ]
+      },
+      {
+        "title": "navigation.docs",
+        "href": "/docs",
+        "children": [
+          {
+            "title": "docs.sections.gettingStarted.title",
+            "href": "/docs/getting-started",
+            "description": "docs.sections.gettingStarted.description"
+          },
+          {
+            "title": "docs.sections.components.title",
+            "href": "/docs/components",
+            "description": "docs.sections.components.description"
+          },
+          {
+            "title": "docs.sections.apiReference.title",
+            "href": "/docs/api",
+            "description": "docs.sections.apiReference.description"
+          }
+        ]
+      },
+      {
+        "title": "navigation.blog",
+        "href": "/blog",
+        "badge": "common.new"
+      },
+      {
+        "title": "navigation.about",
+        "href": "/about"
+      }
+    ]
+  },
+  "header": {
+    "layout": {
+      "left": ["logo", "mobileMenu"],
+      "center": ["navigation"],
+      "right": ["search", "language", "theme", "notifications", "userMenu"]
+    },
+    "logo": {
+      "enabled": true,
+      "text": "LND",
+      "image": null,
+      "href": "/"
+    },
+    "mobileMenu": {
+      "enabled": true
+    },
+    "search": {
+      "enabled": true,
+      "placeholder": "common.search"
+    },
+    "language": {
+      "enabled": true,
+      "showFlag": false,
+      "showName": true
+    },
+    "theme": {
+      "enabled": true,
+      "default": "light"
+    },
+    "notifications": {
+      "enabled": false,
+      "count": 0
+    },
+    "userMenu": {
+      "enabled": false,
+      "showAvatar": true,
+      "showName": true
+    }
   },
   "designSystems": {
     "default": "lora",
