@@ -9,7 +9,7 @@ import { SearchModal } from '../ui/SearchModal'
 import { useSearchDocuments } from '../../hooks/useSearchDocuments'
 import { useSiteConfig } from '../../providers/SiteConfigProvider'
 import { useSidebar } from '../../contexts/SidebarContext'
-import { useLocalizedLink } from '../../hooks/useLocalizedLink'
+
 
 export interface HeaderProps {
   className?: string
@@ -21,7 +21,7 @@ export function Header({ className }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { documents: searchDocuments, isLoading: isSearchLoading, error: searchError } = useSearchDocuments()
   const { config: siteConfig } = useSiteConfig()
-  const { createLocalizedHref } = useLocalizedLink()
+
   
   // Get search state from sidebar context for docs pages
   const sidebarContext = pathname.startsWith('/docs') ? useSidebar() : null
@@ -51,6 +51,14 @@ export function Header({ className }: HeaderProps) {
       { name: 'Contacts', href: '/contact' }
     ]
   })() || []
+
+  // Check if a page is active by comparing paths without locale
+  const isPageActive = (pageHref: string) => {
+    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(\/|$)/, '$1') || '/';
+    const pagePathWithoutLocale = pageHref === '/' ? '/' : pageHref;
+    
+    return pathWithoutLocale === pagePathWithoutLocale;
+  };
 
   // Log search loading state for debugging
   useEffect(() => {
@@ -97,15 +105,18 @@ export function Header({ className }: HeaderProps) {
               {navigationItems?.map((item) => (
                 <Link
                   key={item.name}
-                  href={createLocalizedHref(item.href)}
-                  className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  href={item.href}
+                  className={cn(
+                    "font-sans text-sm font-medium transition-colors",
+                    isPageActive(item.href) 
+                      ? "text-foreground" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   {item.name}
                 </Link>
               ))}
             </nav>
-
-
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">
@@ -118,7 +129,7 @@ export function Header({ className }: HeaderProps) {
                 <Search className="w-5 h-5" />
               </button>
 
-                              {/* Theme Toggle - moved to landing app */}
+              {/* Theme Toggle - moved to landing app */}
 
               {/* Mobile menu button */}
               <button
@@ -138,9 +149,14 @@ export function Header({ className }: HeaderProps) {
                 {navigationItems?.map((item) => (
                   <Link
                     key={item.name}
-                    href={createLocalizedHref(item.href)}
+                    href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 font-sans text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                    className={cn(
+                      "block px-4 py-2 font-sans text-sm font-medium rounded-md transition-colors",
+                      isPageActive(item.href)
+                        ? "text-foreground bg-accent"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    )}
                   >
                     {item.name}
                   </Link>

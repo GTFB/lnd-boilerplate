@@ -11,9 +11,70 @@
       "email": "contact@gtfb.dev",
       "url": "https://gtfb.dev"
     },
-    "language": "en",
-    "locale": "en-US",
     "timezone": "UTC"
+  },
+  "features": {
+    "blog": {
+      "enabled": true,
+      "path": "/blog",
+      "postsPerPage": 10,
+      "enableComments": false,
+      "enableTags": true,
+      "enableCategories": true,
+      "lazyLoad": {
+        "enabled": true,
+        "loadNextOnScrollUp": true,
+        "preloadAdjacent": true,
+        "scrollThreshold": 0.8
+      }
+    },
+    "search": {
+      "enabled": true,
+      "provider": "local",
+      "indexPath": "/search",
+      "enableFilters": true
+    },
+    "analytics": {
+      "enabled": false,
+      "provider": "google",
+      "trackingId": null
+    },
+    "i18n": {
+      "enabled": true,
+      "defaultLocale": "en",
+      "locales": ["ru", "en", "es", "fr", "de"],
+      "pathnames": {
+        "/": "/",
+        "/blog": "/blog",
+        "/about": "/about",
+        "/contact": "/contact"
+      }
+    },
+    "pwa": {
+      "enabled": true,
+      "offlineSupport": true,
+      "installPrompt": true
+    },
+    "documentation": {
+      "enabled": true,
+      "path": "/docs",
+      "navigation": {
+        "enabled": true,
+        "position": "left",
+        "showProgress": true,
+        "showBreadcrumbs": true
+      },
+      "search": {
+        "enabled": true,
+        "provider": "local",
+        "placeholder": "Search documentation..."
+      },
+      "layout": {
+        "sidebar": true,
+        "toc": true,
+        "footer": true
+      }
+    }
   },
   "global": {
     "maxWidth": "1480px",
@@ -430,69 +491,6 @@
       "../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}",
       "./src/**/*.{js,ts,jsx,tsx,mdx}"
     ]
-  },
-  "features": {
-    "blog": {
-      "enabled": true,
-      "path": "/blog",
-      "postsPerPage": 10,
-      "enableComments": false,
-      "enableTags": true,
-      "enableCategories": true,
-      "lazyLoad": {
-        "enabled": true,
-        "loadNextOnScrollUp": true,
-        "preloadAdjacent": true,
-        "scrollThreshold": 0.8
-      }
-    },
-    "search": {
-      "enabled": true,
-      "provider": "local",
-      "indexPath": "/search",
-      "enableFilters": true
-    },
-    "analytics": {
-      "enabled": false,
-      "provider": "google",
-      "trackingId": null
-    },
-    "i18n": {
-      "enabled": true,
-      "defaultLocale": "en",
-      "locales": ["en", "ru"],
-      "pathnames": {
-        "/": "/",
-        "/blog": "/blog",
-        "/about": "/about",
-        "/contact": "/contact"
-      }
-    },
-    "pwa": {
-      "enabled": true,
-      "offlineSupport": true,
-      "installPrompt": true
-    },
-    "documentation": {
-      "enabled": true,
-      "path": "/docs",
-      "navigation": {
-        "enabled": true,
-        "position": "left",
-        "showProgress": true,
-        "showBreadcrumbs": true
-      },
-      "search": {
-        "enabled": true,
-        "provider": "local",
-        "placeholder": "Search documentation..."
-      },
-      "layout": {
-        "sidebar": true,
-        "toc": true,
-        "footer": true
-      }
-    }
   },
   "environment": {
     "development": {

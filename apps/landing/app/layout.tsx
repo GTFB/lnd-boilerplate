@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import '../styles/blog.css';
 import { Inter, Inter_Tight } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,26 +24,18 @@ export default function RootLayout({
     <html className={`${inter.variable} ${interTight.variable}`} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'system';
-                  var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                  if (isDark) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
       </head>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        {children}
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="light"
+          storageKey="theme"
+          enableSystem={false}
+          themes={['light', 'dark']}
+          suppressHydrationWarning
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

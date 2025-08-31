@@ -4,6 +4,7 @@ import React from 'react'
 import { cn } from '../../lib/utils'
 import { NavigationItem } from '../../types/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 
 export interface PreviousNextProps {
   previous?: NavigationItem
@@ -20,6 +21,7 @@ export function PreviousNext({
   showExcerpts = true,
   showImages = true
 }: PreviousNextProps) {
+
   if (!previous && !next) {
     return null
   }
@@ -39,7 +41,7 @@ export function PreviousNext({
               <span className="text-sm text-gray-500 dark:text-gray-400">Предыдущая статья</span>
             </div>
             
-            <a
+            <Link
               href={previous.href}
               className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
             >
@@ -66,7 +68,7 @@ export function PreviousNext({
                   )}
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         )}
 
@@ -78,7 +80,7 @@ export function PreviousNext({
               <ChevronRight className="w-4 h-4 text-gray-400" />
             </div>
             
-            <a
+            <Link
               href={next.href}
               className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
             >

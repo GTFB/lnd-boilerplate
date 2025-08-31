@@ -1,5 +1,3 @@
-const withNextIntl = require('next-intl/plugin')('./i18n.ts');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
@@ -18,6 +16,14 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  // Rewrites to serve default locale content without prefix
+  // These will be handled by middleware for dynamic locale support
+  async rewrites() {
+    return [
+      // Note: Dynamic rewrites are handled by middleware.ts
+      // This ensures the default locale can be changed without rebuilding
+    ];
   },
   // Settings to eliminate Fast Refresh warnings
   webpack: (config, { dev, isServer }) => {
@@ -42,4 +48,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextIntl(nextConfig);
+module.exports = nextConfig;

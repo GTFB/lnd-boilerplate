@@ -7,6 +7,7 @@ import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 export interface BlogPost {
   id: string
@@ -31,6 +32,7 @@ export interface BlogCardProps {
 }
 
 export function BlogCard({ post, variant = 'default', className }: BlogCardProps) {
+  
   const imageSrc = post.coverImage || post.image || '/images/blog-placeholder.jpg'
   
   const variants = {
@@ -120,13 +122,13 @@ export function BlogCard({ post, variant = 'default', className }: BlogCardProps
           </div>
         )}
         
-        <a
+        <Link
           href={post.href}
           className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors"
         >
           Читать далее
           <ArrowRight className="w-4 h-4 ml-1" />
-        </a>
+        </Link>
       </CardContent>
     </Card>
   )

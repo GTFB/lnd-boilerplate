@@ -5,6 +5,7 @@ import { useDesignSystem } from '../../design-systems'
 import { Button, Input } from '../ui'
 import { CookieConsent } from '../ui/CookieConsent'
 import { TwitterIcon, GitHubIcon, LinkedInIcon } from '../ui/icons'
+import { LocalizedLink } from '../ui/LocalizedLink'
 import { MapPin, Mail, Phone, ArrowUp } from 'lucide-react'
 
 export interface FooterProps {
@@ -126,20 +127,20 @@ export const Footer: React.FC<FooterProps> = ({
                 <div>
                   <h4 className="font-semibold mb-4 text-foreground">Product</h4>
                   <ul className="space-y-2">
-                    <li><a href="/docs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Documentation</a></li>
-                    <li><a href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</a></li>
-                    <li><a href="/examples" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Examples</a></li>
-                    <li><a href="/templates" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Templates</a></li>
+                    <li><LocalizedLink href="/docs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Documentation</LocalizedLink></li>
+                    <li><LocalizedLink href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</LocalizedLink></li>
+                    <li><LocalizedLink href="/examples" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Examples</LocalizedLink></li>
+                    <li><LocalizedLink href="/templates" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Templates</LocalizedLink></li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-4 text-foreground">Company</h4>
                   <ul className="space-y-2">
-                    <li><a href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a></li>
-                    <li><a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</a></li>
-                    <li><a href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</a></li>
-                    <li><a href="/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</a></li>
+                    <li><LocalizedLink href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</LocalizedLink></li>
+                    <li><LocalizedLink href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</LocalizedLink></li>
+                    <li><LocalizedLink href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</LocalizedLink></li>
+                    <li><LocalizedLink href="/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</LocalizedLink></li>
                   </ul>
                 </div>
 

@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@lnd/ui/components/ui/card';
 import { Badge } from '@lnd/ui/components/ui/badge';
+import { LocalizedLink } from '@lnd/ui/components/ui/LocalizedLink';
 import { Rocket, Code, Palette, Zap, Users, Target } from 'lucide-react';
 import { NavigationTest } from '../../../components/NavigationTest';
 
@@ -167,11 +168,11 @@ export default function AboutPage() {
             Join thousands of developers who are already using LND Boilerplate
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/docs" className="inline-block">
+            <LocalizedLink href="/docs" className="inline-block">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                 Start Learning
               </button>
-            </a>
+            </LocalizedLink>
             <a
               href="https://github.com/GTFB/lnd-boilerplate"
               target="_blank"

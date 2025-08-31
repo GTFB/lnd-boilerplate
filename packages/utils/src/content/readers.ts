@@ -33,8 +33,12 @@ export interface DocsMeta {
  */
 export function readMDXFile(filePath: string): MDXFile {
   try {
+    console.log('readMDXFile: Reading file:', filePath)
     const fileContent = readFileSync(filePath, 'utf-8')
+    console.log('readMDXFile: File content length:', fileContent.length)
+    
     const { data: frontmatter, content } = matter(fileContent)
+    console.log('readMDXFile: Frontmatter:', frontmatter)
     
     // Extract just the filename without extension
     const fileName = filePath.split(/[/\\]/).pop() || ''
@@ -47,6 +51,7 @@ export function readMDXFile(filePath: string): MDXFile {
       filePath
     }
   } catch (error) {
+    console.error('readMDXFile: Error reading file:', error)
     throw new Error(`Failed to read MDX file ${filePath}: ${error}`)
   }
 }
@@ -302,14 +307,23 @@ export async function getDocsPage(slug: string): Promise<MDXFile | null> {
   const docsPath = join(contentPath, 'docs')
   const filePath = join(docsPath, `${slug}.mdx`)
   
+  console.log('getDocsPage debug:', { slug, contentPath, docsPath, filePath, exists: existsSync(filePath) })
+  
   if (!existsSync(filePath)) {
+    console.log('File does not exist:', filePath)
     return null
   }
   
-  const mdxFile = readMDXFile(filePath)
-  return {
-    ...mdxFile,
-    slug
+  try {
+    const mdxFile = readMDXFile(filePath)
+    console.log('Successfully read MDX file:', { slug: mdxFile.slug, title: mdxFile.frontmatter.title })
+    return {
+      ...mdxFile,
+      slug
+    }
+  } catch (error) {
+    console.error('Error reading MDX file:', error)
+    return null
   }
 }
 

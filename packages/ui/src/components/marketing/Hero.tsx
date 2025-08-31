@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { Button } from '../../primitives/Button'
 import { Heading } from '../../primitives/Heading'
 import { Text } from '../../primitives/Text'
@@ -56,17 +57,27 @@ export const Hero: React.FC<HeroProps> = ({
           
           {ctaButtons.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button, index) => (
-                <Button
-                  key={index}
-                  variant={button.variant || 'default'}
-                  size="lg"
-                  onClick={button.onClick}
-                  className="min-w-[140px]"
-                >
-                  {button.text}
-                </Button>
-              ))}
+              {ctaButtons.map((button, index) => {
+                const buttonElement = (
+                  <Button
+                    key={index}
+                    variant={button.variant || 'default'}
+                    size="lg"
+                    onClick={button.onClick}
+                    className="min-w-[140px]"
+                  >
+                    {button.text}
+                  </Button>
+                );
+
+                return button.href ? (
+                  <Link key={index} href={button.href}>
+                    {buttonElement}
+                  </Link>
+                ) : (
+                  buttonElement
+                );
+              })}
             </div>
           )}
         </div>

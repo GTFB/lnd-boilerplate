@@ -1,29 +1,26 @@
-import { SidebarProvider } from '@lnd/ui/contexts';
-import { DesignSystemProvider } from '@lnd/ui/design-systems/DesignSystemProvider';
-import { ThemeProvider } from 'next-themes';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
 
 export default async function LocaleLayout({
-  children
+  children,
+  params
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const messages = await getMessages();
+  console.log('LocaleLayout called with params:', params);
+  
+  try {
+    // Load messages for the current locale
+    const messages = await import(`../../public/locales/${params.locale}.json`);
 
-  return (
-    <NextIntlClientProvider messages={messages}>
-      <ThemeProvider 
-        attribute="class" 
-        defaultTheme="system"
-        enableSystem
-        storageKey="theme"
-      >
-        <DesignSystemProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </DesignSystemProvider>
-      </ThemeProvider>
-    </NextIntlClientProvider>
-  );
+    return (
+      <NextIntlClientProvider messages={messages.default}>
+        {children}
+      </NextIntlClientProvider>
+    );
+  } catch (error) {
+    console.error('Error loading messages for locale:', params.locale, error);
+    // Fallback to just rendering children if messages fail to load
+    return <>{children}</>;
+  }
 }

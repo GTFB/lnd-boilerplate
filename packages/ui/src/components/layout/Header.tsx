@@ -5,6 +5,8 @@ import { useDesignSystem } from '../../design-systems'
 import { SearchModal } from '../ui'
 import { LanguageSelector } from '../ui/LanguageSelector'
 import { ThemeToggle } from '../ui/ThemeToggle'
+
+import { LocalizedLink } from '../ui/LocalizedLink'
 import { Search, Menu, X } from 'lucide-react'
 
 export interface HeaderProps {
@@ -190,21 +192,21 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Main Menu - Desktop */}
             {showMenu && (
               <nav className="hidden lg:flex items-center space-x-8 h-10" aria-label="Main Navigation">
-                <a href="/" className="text-sm font-medium hover:text-primary transition-colors">
+                <LocalizedLink href="/" className="text-sm font-medium hover:text-primary transition-colors">
                   Home
-                </a>
-                <a href="/docs" className="text-sm font-medium hover:text-primary transition-colors">
+                </LocalizedLink>
+                <LocalizedLink href="/docs" className="text-sm font-medium hover:text-primary transition-colors">
                   Documentation
-                </a>
-                <a href="/blog" className="text-sm font-medium hover:text-primary transition-colors">
+                </LocalizedLink>
+                <LocalizedLink href="/blog" className="text-sm font-medium hover:text-primary transition-colors">
                   Blog
-                </a>
-                <a href="/experts" className="text-sm font-medium hover:text-primary transition-colors">
+                </LocalizedLink>
+                <LocalizedLink href="/experts" className="text-sm font-medium hover:text-primary transition-colors">
                   Experts
-                </a>
-                <a href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+                </LocalizedLink>
+                <LocalizedLink href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
                   Contact
-                </a>
+                </LocalizedLink>
               </nav>
             )}
 
@@ -223,9 +225,9 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
                 <LanguageSelector />
                 <ThemeToggle />
-                <a href="/docs" className="hidden md:inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors h-10">
+                <LocalizedLink href="/docs" className="hidden md:inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors h-10">
                   Get Started
-                </a>
+                </LocalizedLink>
               </div>
             )}
 
@@ -287,11 +289,11 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="offcanvas-content">
             <nav aria-label="Mobile Navigation" className="flex-shrink-0">
               <ul className="space-y-3 list-none p-0 m-0">
-                <li><a href="/" className="block text-sm font-medium hover:text-primary transition-colors">Home</a></li>
-                <li><a href="/docs" className="block text-sm font-medium hover:text-primary transition-colors">Documentation</a></li>
-                <li><a href="/blog" className="block text-sm font-medium hover:text-primary transition-colors">Blog</a></li>
-                <li><a href="/experts" className="block text-sm font-medium hover:text-primary transition-colors">Experts</a></li>
-                <li><a href="/contact" className="block text-sm font-medium hover:text-primary transition-colors">Contact</a></li>
+                <li><LocalizedLink href="/" className="block text-sm font-medium hover:text-primary transition-colors">Home</LocalizedLink></li>
+                <li><LocalizedLink href="/docs" className="block text-sm font-medium hover:text-primary transition-colors">Documentation</LocalizedLink></li>
+                <li><LocalizedLink href="/blog" className="block text-sm font-medium hover:text-primary transition-colors">Blog</LocalizedLink></li>
+                <li><LocalizedLink href="/experts" className="block text-sm font-medium hover:text-primary transition-colors">Experts</LocalizedLink></li>
+                <li><LocalizedLink href="/contact" className="block text-sm font-medium hover:text-primary transition-colors">Contact</LocalizedLink></li>
               </ul>
             </nav>
             
@@ -312,9 +314,9 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               
               {/* Get Started Button for Mobile */}
-              <a href="/docs" className="block w-full text-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+              <LocalizedLink href="/docs" className="block w-full text-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
                 Get Started
-              </a>
+              </LocalizedLink>
             </div>
             
             {/* Theme and Language Controls - Fixed at bottom */}

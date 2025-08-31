@@ -53,20 +53,27 @@ export const LanguageSelector: React.FC = () => {
   
   // Store selected language to persist across page changes
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null)
+  const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
+    setIsClient(true)
     setForceUpdate(prev => prev + 1)
   }, [pathname])
 
   const languages = useMemo(() => [
-    { code: 'en', name: 'English', flag: <GBFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇬🇧' },
     { code: 'ru', name: 'Русский', flag: <RUFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇷🇺' },
+    { code: 'en', name: 'English', flag: <GBFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇬🇧' },
     { code: 'es', name: 'Español', flag: <ESFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇪🇸' },
     { code: 'fr', name: 'Français', flag: <FRFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇫🇷' },
     { code: 'de', name: 'Deutsch', flag: <DEFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />, fallback: '🇩🇪' }
   ], []);
   
   const currentLanguage = useMemo(() => {
+    // Don't process during SSR
+    if (!isClient) {
+      return languages[0] // Default to Russian during SSR (index 0)
+    }
+
     // First check if we have a stored selected language
     if (selectedLanguage) {
       const storedLang = languages.find(lang => lang.code === selectedLanguage)
@@ -110,22 +117,42 @@ export const LanguageSelector: React.FC = () => {
       }
     }
     
-    // If no locale in path, it's English (default)
+    // If no locale in path, check if we're on the root path
+    if (!pathnameLocale) {
+      // If we're on the root path, it's Russian (default)
+      if (pathname === '/') {
+        if (!selectedLanguage) {
+          setSelectedLanguage('ru')
+          if (typeof window !== 'undefined' && typeof document !== 'undefined' && document.body) {
+            try {
+              localStorage.setItem('selectedLanguage', 'ru')
+            } catch {
+              // Ignore localStorage errors
+            }
+          }
+        }
+        return languages[0] // Russian is first in the array (index 0)
+      }
+    }
+    
+    // If no locale in path and not on root, it's Russian (default)
     if (!selectedLanguage) {
-      setSelectedLanguage('en')
+      setSelectedLanguage('ru')
       if (typeof window !== 'undefined' && typeof document !== 'undefined' && document.body) {
         try {
-          localStorage.setItem('selectedLanguage', 'en')
+          localStorage.setItem('selectedLanguage', 'ru')
         } catch {
           // Ignore localStorage errors
         }
       }
     }
-    return languages[0] // English is first in the array
-  }, [pathname, languages, selectedLanguage])
+    return languages[0] // Russian is first in the array (index 0)
+  }, [pathname, languages, selectedLanguage, isClient])
 
   // Click outside component and Escape key handler
   useEffect(() => {
+    if (!isClient) return
+
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false)
@@ -147,9 +174,11 @@ export const LanguageSelector: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [isOpen])
+  }, [isOpen, isClient])
 
   const handleLanguageChange = (langCode: string) => {
+    if (!isClient) return
+
     setIsOpen(false)
     
     // Store the selected language in state and localStorage
@@ -170,10 +199,10 @@ export const LanguageSelector: React.FC = () => {
       pathWithoutLocale = ''
     }
     
-    // For English (default locale), don't add the locale prefix
+    // For Russian (default locale), don't add the locale prefix
     let newPath
-    if (langCode === 'en') {
-      // For English, use the path without locale prefix
+    if (langCode === 'ru') {
+      // For Russian, use the path without locale prefix
       newPath = pathWithoutLocale || '/'
     } else {
       // For other languages, add the locale prefix
@@ -187,6 +216,24 @@ export const LanguageSelector: React.FC = () => {
     setTimeout(() => {
       setForceUpdate(prev => prev + 1)
     }, 100)
+  }
+
+  // Don't render during SSR
+  if (!isClient) {
+    return (
+      <div className="relative">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center justify-center px-2 py-0 language-selector-button hover:bg-primary/10 hover:text-primary transition-colors w-full cursor-pointer select-none"
+          disabled
+        >
+          <RUFlag className="w-6 h-4" style={{ minWidth: '24px', width: '24px' }} />
+          <span className="ml-2 text-sm font-medium">Русский</span>
+          <ChevronDown className="ml-2 h-4 w-4" />
+        </Button>
+      </div>
+    )
   }
 
   return (

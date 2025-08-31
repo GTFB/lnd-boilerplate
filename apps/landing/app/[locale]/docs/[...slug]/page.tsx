@@ -35,12 +35,24 @@ function extractHeadings(
 }
 
 export default async function DocsPage({ params }: DocsPageProps) {
+  console.log('DocsPage: Starting with params:', params);
+  
   const slug = params.slug.join('/');
+  console.log('DocsPage: Slug:', slug);
+  
   const page = await getDocsPage(slug);
-  if (!page) return notFound();
+  console.log('DocsPage: Page result:', page ? 'found' : 'not found');
+  
+  if (!page) {
+    console.log('DocsPage: Returning notFound()');
+    return notFound();
+  }
 
+  console.log('DocsPage: Extracting headings');
   const headings = extractHeadings(page.content);
+  console.log('DocsPage: Headings count:', headings.length);
 
+  console.log('DocsPage: Rendering page');
   return (
     <SiteConfigProvider>
       <PublicLayout>
