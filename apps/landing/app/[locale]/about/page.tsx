@@ -23,7 +23,7 @@ export default function LocalizedAboutPage({ params: { locale } }: { params: { l
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold mb-3">{t('about.sections.features.title')}</h3>
                 <ul className="text-gray-600 space-y-2">
-                  {t('about.sections.features.items').map((item: string, index: number) => (
+                  {(t('about.sections.features.items') as string[]).map((item: string, index: number) => (
                     <li key={index}>• {item}</li>
                   ))}
                 </ul>
@@ -31,7 +31,7 @@ export default function LocalizedAboutPage({ params: { locale } }: { params: { l
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold mb-3">{t('about.sections.technologies.title')}</h3>
                 <ul className="text-gray-600 space-y-2">
-                  {t('about.sections.technologies.items').map((item: string, index: number) => (
+                  {(t('about.sections.technologies.items') as string[]).map((item: string, index: number) => (
                     <li key={index}>• {item}</li>
                   ))}
                 </ul>

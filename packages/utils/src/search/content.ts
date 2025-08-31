@@ -73,20 +73,20 @@ export async function loadSearchDocuments(): Promise<SearchDocument[]> {
     const experts = await getExperts()
     for (const expert of experts) {
       documents.push({
-        id: `expert-${expert.id}`,
-        title: expert.name,
-        content: expert.bio,
-        excerpt: `${expert.title} - ${expert.bio.substring(0, 100)}...`,
-        url: `/experts/${expert.id}`,
-        tags: expert.expertise || [],
+        id: `expert-${expert.slug}`,
+        title: expert.frontmatter.name || expert.frontmatter.title,
+        content: expert.frontmatter.bio || expert.content,
+        excerpt: `${expert.frontmatter.title || expert.frontmatter.name} - ${(expert.frontmatter.bio || expert.content).substring(0, 100)}...`,
+        url: `/experts/${expert.slug}`,
+        tags: expert.frontmatter.expertise || [],
         category: 'experts',
         metadata: {
           type: 'expert',
-          id: expert.id,
-          title: expert.title,
-          location: expert.location,
-          joined: expert.joined,
-          social: expert.social
+          id: expert.slug,
+          title: expert.frontmatter.title,
+          location: expert.frontmatter.location,
+          joined: expert.frontmatter.joined,
+          social: expert.frontmatter.social
         }
       })
     }

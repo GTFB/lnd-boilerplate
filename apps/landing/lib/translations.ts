@@ -14,7 +14,7 @@ const translations = {
   de: deTranslations
 }
 
-export function getTranslation(locale: SupportedLocale, path: string): unknown {
+export function getTranslation(locale: SupportedLocale, path: string): string | string[] {
   // Check if locale is supported
   if (!['en', 'ru', 'es', 'fr', 'de'].includes(locale)) {
     locale = 'en'
@@ -39,7 +39,9 @@ export function getTranslation(locale: SupportedLocale, path: string): unknown {
     }
   }
 
-  return result
+  if (typeof result === 'string') return result
+  if (Array.isArray(result)) return result
+  return path
 }
 
 export function getSupportedLocales(): SupportedLocale[] {

@@ -230,3 +230,26 @@ export async function getAvailableFiles(contentType: string, locale: string): Pr
     return []
   }
 }
+
+/**
+ * Читает JSON файл синхронно
+ * @param filePath - Путь к файлу
+ */
+export function readJSONFile(filePath: string): any {
+  try {
+    const content = readFileSync(filePath, 'utf-8')
+    return JSON.parse(content)
+  } catch (error) {
+    console.error(`Failed to read JSON file: ${filePath}`, error)
+    return {}
+  }
+}
+
+/**
+ * Read experts pages
+ */
+export async function getExperts(): Promise<MDXFile[]> {
+  const contentPath = getContentPath()
+  const expertsPath = join(contentPath, 'experts')
+  return readMDXDirectory(expertsPath)
+}
