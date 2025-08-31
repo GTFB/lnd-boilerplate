@@ -1,6 +1,46 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+
+// CSS styles for language selector
+const languageSelectorStyles = `
+  .language-selector-dropdown button {
+    cursor: pointer !important;
+    user-select: none;
+    transition: all 0.2s ease-in-out;
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  
+  .language-selector-dropdown button:hover {
+    background-color: hsl(var(--primary) / 0.1) !important;
+    color: hsl(var(--primary)) !important;
+  }
+  
+  .language-selector-dropdown button.active-language {
+    color: hsl(var(--accent-foreground));
+    font-weight: 500;
+  }
+  
+  .language-selector-button {
+    cursor: pointer !important;
+    user-select: none;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .language-selector-button:hover {
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+`
 import { Button } from './button'
 import { GBFlag } from './icons/GBFlag'
 import { RUFlag } from './icons/RUFlag'
@@ -128,7 +168,9 @@ export const LanguageSelector: React.FC = () => {
   const currentLanguage = getCurrentLanguage()
 
   return (
-    <div className="relative" ref={dropdownRef} key={`language-selector-${forceUpdate}`}>
+    <>
+      <style dangerouslySetInnerHTML={{ __html: languageSelectorStyles }} />
+      <div className="relative" ref={dropdownRef} key={`language-selector-${forceUpdate}`}>
              <Button
          variant="ghost"
          size="sm"
@@ -189,21 +231,15 @@ export const LanguageSelector: React.FC = () => {
       >
         <div className="py-1">
           {languages.map((language) => (
-            <button
-              key={language.code}
-              onClick={() => handleLanguageChange(language.code)}
-                             className={`w-full text-left px-4 py-3 text-sm transition-colors flex items-center space-x-3 language-selector-item cursor-pointer ${
+                         <button
+               key={language.code}
+               onClick={() => handleLanguageChange(language.code)}
+               className={`text-sm ${
                  currentLanguage.code === language.code 
-                   ? '' 
-                   : 'hover:bg-primary/20 hover:text-primary hover:shadow-sm'
+                   ? 'active-language' 
+                   : ''
                }`}
-                             style={{
-                 color: currentLanguage.code === language.code ? 'hsl(var(--accent-foreground))' : 'hsl(var(--foreground))',
-                 backgroundColor: 'transparent',
-                 cursor: 'pointer',
-                 userSelect: 'none'
-               }}
-            >
+             >
               <span className="flex items-center justify-center h-4" style={{ width: '24px', minWidth: '24px' }}>
                 {language.flag || language.fallback}
               </span>
@@ -213,8 +249,9 @@ export const LanguageSelector: React.FC = () => {
               )}
             </button>
           ))}
-        </div>
-      </div>
-    </div>
-  )
-}
+                 </div>
+       </div>
+     </div>
+     </>
+   )
+ }
