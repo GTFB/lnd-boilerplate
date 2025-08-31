@@ -9,6 +9,7 @@ import { SearchModal } from '../ui/SearchModal'
 import { useSearchDocuments } from '../../hooks/useSearchDocuments'
 import { useSiteConfig } from '../../providers/SiteConfigProvider'
 import { useSidebar } from '../../contexts/SidebarContext'
+import { useLocalizedLink } from '../../hooks/useLocalizedLink'
 
 export interface HeaderProps {
   className?: string
@@ -20,6 +21,7 @@ export function Header({ className }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { documents: searchDocuments, isLoading: isSearchLoading, error: searchError } = useSearchDocuments()
   const { config: siteConfig } = useSiteConfig()
+  const { createLocalizedHref } = useLocalizedLink()
   
   // Get search state from sidebar context for docs pages
   const sidebarContext = pathname.startsWith('/docs') ? useSidebar() : null
@@ -95,7 +97,7 @@ export function Header({ className }: HeaderProps) {
               {navigationItems?.map((item) => (
                 <Link
                   key={item.name}
-                  href={item.href}
+                  href={createLocalizedHref(item.href)}
                   className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {item.name}
@@ -136,7 +138,7 @@ export function Header({ className }: HeaderProps) {
                 {navigationItems?.map((item) => (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={createLocalizedHref(item.href)}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 font-sans text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >

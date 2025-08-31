@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@lnd/ui/components/ui/button';
+import { useLocalizedLink } from '@lnd/ui/hooks/useLocalizedLink';
 
 export function NavigationTest() {
   const pathname = usePathname();
+  const { createLocalizedHref } = useLocalizedLink();
 
   const pages = [
     { name: 'Home', href: '/' },
@@ -27,7 +29,7 @@ export function NavigationTest() {
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {pages.map((page) => (
-          <Link key={page.href} href={page.href}>
+          <Link key={page.href} href={createLocalizedHref(page.href)}>
             <Button
               variant={pathname === page.href ? 'default' : 'outline'}
               size="sm"

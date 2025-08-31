@@ -14,12 +14,12 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-              <ThemeProvider 
-          attribute="class" 
-          defaultTheme="system"
-          enableSystem
-          storageKey="theme"
-        >
+      <ThemeProvider 
+        attribute="class" 
+        defaultTheme="system"
+        enableSystem
+        storageKey="theme"
+      >
         <DesignSystemProvider>
           <SidebarProvider>{children}</SidebarProvider>
         </DesignSystemProvider>
