@@ -1,45 +1,51 @@
-import { getTranslation, SupportedLocale } from '../../../lib/translations'
-import Header from '../../components/Header'
+import { getTranslationSync, SupportedLocale } from '@lnd/utils/i18n'
+import { SingleColumnLayout } from '@lnd/ui'
 
 export default function LocalizedAboutPage({ params: { locale } }: { params: { locale: string } }) {
-  const t = (path: string) => getTranslation(locale as SupportedLocale, path)
+  const t = (path: string) => getTranslationSync(locale as SupportedLocale, path)
+  
+  // Mock data for features and technologies
+  const features = [
+    'Modern React with TypeScript',
+    'Next.js 14 with App Router',
+    'Tailwind CSS for styling',
+    'Internationalization support',
+    'Component library architecture'
+  ]
+  
+  const technologies = [
+    'React 18',
+    'Next.js 14',
+    'TypeScript 5',
+    'Tailwind CSS',
+    'Bun runtime'
+  ]
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header locale={locale as SupportedLocale} />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {t('navigation.about')}
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            {t('about.subtitle')}
-          </p>
-          <div className="space-y-4">
-            <p className="text-lg text-gray-700">
-              {t('about.description')}
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-3">{t('about.sections.features.title')}</h3>
-                <ul className="text-gray-600 space-y-2">
-                  {(t('about.sections.features.items') as string[]).map((item: string, index: number) => (
-                    <li key={index}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-3">{t('about.sections.technologies.title')}</h3>
-                <ul className="text-gray-600 space-y-2">
-                  {(t('about.sections.technologies.items') as string[]).map((item: string, index: number) => (
-                    <li key={index}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+    <SingleColumnLayout
+      locale={locale as SupportedLocale}
+      title={t('navigation.about')}
+      subtitle={t('about.subtitle')}
+      description={t('about.description')}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-semibold mb-3">Key Features</h3>
+          <ul className="text-gray-600 space-y-2">
+            {features.map((item: string, index: number) => (
+              <li key={index}>• {item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-semibold mb-3">Technologies</h3>
+          <ul className="text-gray-600 space-y-2">
+            {technologies.map((item: string, index: number) => (
+              <li key={index}>• {item}</li>
+            ))}
+          </ul>
         </div>
       </div>
-    </div>
+    </SingleColumnLayout>
   )
 }

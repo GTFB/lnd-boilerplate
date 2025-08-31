@@ -15,6 +15,7 @@
     "@hookform/resolvers": "^5.2.1",
     "@lnd/ui": "workspace:*",
     "@lnd/utils": "workspace:*",
+    "@lnd/config-schemas": "workspace:*",
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
     "@radix-ui/react-collapsible": "^1.1.12",

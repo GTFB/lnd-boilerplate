@@ -1,34 +1,15 @@
-// Core exports
-export * from './components'
-export * from './templates'
-export * from './design-systems'
-export * from './examples'
-// export * from './contexts' // removed to avoid conflicting exports
-export * from './providers'
+// Primitives (Tier 1)
+export * from './components/ui/button';
+export * from './components/ui/ThemeToggle';
+export * from './components/ui/ModernImageGallery';
 
-// Export config with specific names to avoid conflicts
-export { ConfigManager as UIConfigManager } from './config'
+// Components (Tier 2)
+export { default as Header } from './components/common/Header';
+export * from './components/blog/BlogContent';
 
-// Export lib with specific names to avoid conflicts
-export { 
-  validatePageConfig as UIValidatePageConfig,
-  PageConfigSchema as UIPageConfigSchema
-} from './lib'
+// Templates (Tier 3)
+export * from './templates/SingleColumnLayout';
+export * from './templates/SidebarLeftLayout';
 
-// Export specific components to avoid conflicts
-export { 
-  Sidebar as UISidebar,
-  SidebarContent as UISidebarContent,
-  SidebarFooter as UISidebarFooter,
-  SidebarGroup as UISidebarGroup,
-  SidebarGroupContent as UISidebarGroupContent,
-  SidebarGroupLabel as UISidebarGroupLabel,
-  SidebarHeader as UISidebarHeader,
-  SidebarInset as UISidebarInset,
-  SidebarMenu as UISidebarMenu,
-  SidebarMenuButton as UISidebarMenuButton,
-  SidebarMenuItem as UISidebarMenuItem,
-  SidebarMenuSub as UISidebarMenuSub,
-  SidebarMenuSubButton as UISidebarMenuSubButton,
-  SidebarMenuSubItem as UISidebarMenuSubItem
-} from './components/ui'
+// Utils
+export * from './lib/utils';

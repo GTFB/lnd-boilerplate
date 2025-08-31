@@ -9,6 +9,8 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@lnd/utils": "workspace:*",
+    "@lnd/config-schemas": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.300.0",

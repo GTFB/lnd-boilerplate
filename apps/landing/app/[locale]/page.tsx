@@ -1,42 +1,68 @@
-'use client'
+import { getTranslationSync, SupportedLocale } from '@lnd/utils/i18n'
+import { SingleColumnLayout } from '@lnd/ui'
+import { getValidatedSiteConfig } from '@lnd/utils/config/config-validator'
+import configJson from '../../site.config.json'
 
-import { SupportedLocale, getTranslation, getSupportedLocales } from '../../lib/translations'
-import PageTemplate from '../components/PageTemplate'
-import { usePathname } from 'next/navigation'
-
-export default function LocalizedHomePage({ params: { locale } }: { params: { locale: string } }) {
-  const pathname = usePathname()
-  const t = (path: string) => getTranslation(locale as SupportedLocale, path)
-  
-  // Helper function to generate correct links (same as in Header)
-  const getLink = (path: string) => {
-    const pathSegments = pathname.split('/').filter(Boolean)
-    const supportedLocales = getSupportedLocales()
-    const hasLocalePrefix = supportedLocales.includes(pathSegments[0] as SupportedLocale)
-    
-    if (hasLocalePrefix) {
-      return `/${locale}${path}`
-    } else {
-      return path
-    }
+interface PageProps {
+  params: {
+    locale: SupportedLocale
   }
+}
+
+export default function HomePage({ params }: PageProps) {
+  const { locale } = params
   
+  const t = (path: string) => getTranslationSync(locale, path)
+
   return (
-    <PageTemplate locale={locale as SupportedLocale} pageKey="home">
-      <div className="flex justify-center space-x-4">
-        <a
-          href={getLink('/docs')}
-          className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          {t('navigation.docs')}
-        </a>
-        <a
-          href={getLink('/about')}
-          className="bg-gray-600 text-white px-6 py-3 rounded-md hover:bg-gray-700 transition-colors"
-        >
-          {t('navigation.about')}
-        </a>
+    <SingleColumnLayout
+      locale={locale}
+      title={t('home.title')}
+      subtitle={t('home.subtitle')}
+      description={t('home.description')}
+    >
+      <div className="space-y-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            {t('home.title')}
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            {t('home.description')}
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h3 className="text-lg font-semibold mb-2">{t('home.features.typescript.title')}</h3>
+            <p className="text-gray-600 text-sm">
+              {t('home.features.typescript.description')}
+            </p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h3 className="text-lg font-semibold mb-2">{t('home.features.nextjs.title')}</h3>
+            <p className="text-gray-600 text-sm">
+              {t('home.features.nextjs.description')}
+            </p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h3 className="text-lg font-semibold mb-2">{t('home.features.monorepo.title')}</h3>
+            <p className="text-gray-600 text-sm">
+              {t('home.features.monorepo.description')}
+            </p>
+          </div>
+        </div>
       </div>
-    </PageTemplate>
+    </SingleColumnLayout>
   )
+}
+
+export async function generateStaticParams() {
+  const config = getValidatedSiteConfig(configJson)
+  const locales = config.features.i18n.locales
+  
+  return locales.map((locale) => ({
+    locale: locale as SupportedLocale,
+  }))
 }

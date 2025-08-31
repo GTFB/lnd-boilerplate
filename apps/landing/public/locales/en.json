@@ -15,7 +15,21 @@
   "home": {
     "title": "LND Boilerplate",
     "subtitle": "Modern Web Development Framework",
-    "description": "Build scalable web applications with our comprehensive boilerplate including TypeScript, Next.js, and modern tooling."
+    "description": "Build scalable web applications with our comprehensive boilerplate including TypeScript, Next.js, and modern tooling.",
+    "features": {
+      "typescript": {
+        "title": "TypeScript Support",
+        "description": "Built with TypeScript for type safety and better developer experience."
+      },
+      "nextjs": {
+        "title": "Next.js App Router",
+        "description": "Modern React framework with App Router for optimal performance."
+      },
+      "monorepo": {
+        "title": "Monorepo Structure",
+        "description": "Clean separation of concerns with shared packages for UI components and utilities."
+      }
+    }
   },
   "docs": {
     "subtitle": "Learn how to use LND Boilerplate",

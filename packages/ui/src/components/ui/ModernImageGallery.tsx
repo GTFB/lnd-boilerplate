@@ -98,19 +98,7 @@ export function ModernImageGallery({ images }: ModernImageGalleryProps) {
         counter={true}
         enableDrag={true}
         enableSwipe={true}
-        mousewheel={true}
-        getCaptionFromTitleOrAlt={true}
-        thumbnail={true}
-        zoom={true}
-        fullScreen={true}
-        share={true}
-        allowMediaOverlap={true}
-        mobileSettings={{
-          controls: true,
-          showCloseIcon: true,
-          download: false,
-        }}
-        onInit={detail => {
+        onInit={(detail) => {
           lightGalleryRef.current = detail.instance;
         }}
       />

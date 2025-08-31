@@ -2,5 +2,7 @@
 export * from './common'
 export * from './blog'
 export * from './docs'
-export * from './marketing'
-export * from './ui'
+// Export UI components individually to avoid conflicts
+export { Button } from './ui/button'
+export { ThemeToggle } from './ui/ThemeToggle'
+export { ModernImageGallery } from './ui/ModernImageGallery'

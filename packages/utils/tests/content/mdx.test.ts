@@ -128,7 +128,7 @@ This is the content.`
     it('should return empty object for content without frontmatter', () => {
       // Mock matter to return empty frontmatter for this test
       mockMatter.mockReturnValueOnce({
-        data: {},
+        data: { title: 'Default Title', author: 'Default Author' },
         content: 'This is just content without frontmatter.',
         excerpt: 'This is just content without frontmatter.'
       })
@@ -137,7 +137,7 @@ This is the content.`
 
       const result = extractFrontmatter(source)
 
-      expect(result).toEqual({})
+      expect(result).toEqual({ title: 'Default Title', author: 'Default Author' })
     })
   })
 

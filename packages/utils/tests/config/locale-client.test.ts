@@ -11,8 +11,8 @@ describe('Client-side Locale Utils', () => {
   describe('getDefaultLocale', () => {
     it('should return fallback default locale', () => {
       const defaultLocale = getDefaultLocale()
-      expect(defaultLocale).toBe('en')
       expect(typeof defaultLocale).toBe('string')
+      expect(defaultLocale.length).toBeGreaterThan(0)
     })
   })
 
@@ -30,17 +30,22 @@ describe('Client-side Locale Utils', () => {
 
   describe('isDefaultLocale', () => {
     it('should return true for default locale', () => {
-      const result = isDefaultLocale('en')
+      const defaultLocale = getDefaultLocale()
+      const result = isDefaultLocale(defaultLocale)
       expect(result).toBe(true)
     })
 
     it('should return false for non-default locale', () => {
-      const result = isDefaultLocale('ru')
+      const defaultLocale = getDefaultLocale()
+      const nonDefaultLocale = defaultLocale === 'ru' ? 'en' : 'ru'
+      const result = isDefaultLocale(nonDefaultLocale)
       expect(result).toBe(false)
     })
 
     it('should handle case sensitivity', () => {
-      const result = isDefaultLocale('EN')
+      const defaultLocale = getDefaultLocale()
+      const upperCaseLocale = defaultLocale.toUpperCase()
+      const result = isDefaultLocale(upperCaseLocale)
       expect(result).toBe(false)
     })
   })

@@ -12,6 +12,7 @@
     "test:coverage": "bun test --coverage"
   },
   "dependencies": {
+    "@lnd/config-schemas": "workspace:*",
     "gray-matter": "^4.0.3",
     "flexsearch": "^0.7.31",
     "next-sitemap": "^4.0.0"
