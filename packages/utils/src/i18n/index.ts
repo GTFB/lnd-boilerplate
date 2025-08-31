@@ -13,23 +13,35 @@ export function getDefaultLocale(): SupportedLocale {
 // Cache for loaded translations
 const translationCache: Record<string, any> = {};
 
-// Import translations statically for Next.js
-import enTranslations from '../../../../apps/landing/public/locales/en.json';
-import ruTranslations from '../../../../apps/landing/public/locales/ru.json';
-import esTranslations from '../../../../apps/landing/public/locales/es.json';
-import frTranslations from '../../../../apps/landing/public/locales/fr.json';
-import deTranslations from '../../../../apps/landing/public/locales/de.json';
+// Dynamic translation loading function
+function loadTranslationFile(locale: SupportedLocale): any {
+  // Check cache first
+  if (translationCache[locale]) {
+    return translationCache[locale];
+  }
 
-const translations = {
-  en: enTranslations,
-  ru: ruTranslations,
-  es: esTranslations,
-  fr: frTranslations,
-  de: deTranslations
-};
+  try {
+    // Try to load the translation file dynamically
+    const translation = require(`../../../../apps/landing/public/locales/${locale}.json`);
+    translationCache[locale] = translation;
+    return translation;
+  } catch (error) {
+    // If file doesn't exist, try to load default locale
+    const defaultLocale = getDefaultLocale();
+    if (locale !== defaultLocale) {
+      console.warn(`Warning: ${locale}.json translation file not found, falling back to ${defaultLocale}`);
+      return loadTranslationFile(defaultLocale);
+    }
+    
+    // If even default locale file doesn't exist, return empty object
+    console.warn(`Warning: ${locale}.json translation file not found, using empty object`);
+    translationCache[locale] = {};
+    return {};
+  }
+}
 
 export function getTranslationSync(locale: SupportedLocale, path: string): string {
-  const localeTranslations = translations[locale] || translations.en;
+  const localeTranslations = loadTranslationFile(locale);
   
   // Navigate through the nested object using the path
   const keys = path.split('.');
