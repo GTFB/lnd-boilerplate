@@ -40,9 +40,9 @@
     },
     "i18n": {
       "enabled": true,
-      "defaultLocale": "ru",
+      "defaultLocale": "en",
       "locales": ["ru", "en", "es", "fr", "de"],
-      "pathnames": {
+      "pathnames": {  
         "/": "/",
         "/blog": "/blog",
         "/about": "/about",

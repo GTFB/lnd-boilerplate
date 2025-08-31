@@ -1,7 +1,28 @@
-export type SupportedLocale = 'en' | 'ru' | 'es' | 'fr' | 'de';
+export type SupportedLocale = 
+  | 'en' | 'zh' | 'hi' | 'es' | 'fr' | 'ar' | 'bn' | 'ru' | 'pt' | 'ur'
+  | 'id' | 'de' | 'ja' | 'pcm' | 'mr' | 'te' | 'tr' | 'ta' | 'pa' | 'yue'
+  | 'vi' | 'tl' | 'wuu' | 'ko' | 'fa' | 'ha' | 'arz' | 'jv' | 'it' | 'gu'
+  | 'th' | 'bho' | 'kn' | 'ms' | 'pl' | 'or' | 'mai' | 'my' | 'hak' | 'uk'
+  | 'su' | 'sw' | 'ro' | 'uz' | 'am' | 'ff' | 'om' | 'ig' | 'mg' | 'cs'
+  | 'nl' | 'si' | 'az' | 'yo' | 'ne' | 'as' | 'ku' | 'hu' | 'el' | 'ctg'
+  | 'kk' | 'km' | 'za' | 'so' | 'mad' | 'sv' | 'decc' | 'ny' | 'zu' | 'rw'
+  | 'be' | 'tg' | 'bg' | 'ca' | 'ht' | 'tk' | 'nap' | 'sr' | 'nan' | 'af'
+  | 'ky' | 'sn' | 'tt' | 'fi' | 'sk' | 'no' | 'da' | 'sat' | 'he' | 'hmn'
+  | 'mos' | 'ug' | 'hr' | 'kok' | 'ti' | 'lua' | 'ba' | 'ka' | 'lt' | 'hy';
 
 export function getSupportedLocales(): SupportedLocale[] {
-  return ['en', 'ru', 'es', 'fr', 'de'];
+  return [
+    'en', 'zh', 'hi', 'es', 'fr', 'ar', 'bn', 'ru', 'pt', 'ur',
+    'id', 'de', 'ja', 'pcm', 'mr', 'te', 'tr', 'ta', 'pa', 'yue',
+    'vi', 'tl', 'wuu', 'ko', 'fa', 'ha', 'arz', 'jv', 'it', 'gu',
+    'th', 'bho', 'kn', 'ms', 'pl', 'or', 'mai', 'my', 'hak', 'uk',
+    'su', 'sw', 'ro', 'uz', 'am', 'ff', 'om', 'ig', 'mg', 'cs',
+    'nl', 'si', 'az', 'yo', 'ne', 'as', 'ku', 'hu', 'el', 'ctg',
+    'kk', 'km', 'za', 'so', 'mad', 'sv', 'decc', 'ny', 'zu', 'rw',
+    'be', 'tg', 'bg', 'ca', 'ht', 'tk', 'nap', 'sr', 'nan', 'af',
+    'ky', 'sn', 'tt', 'fi', 'sk', 'no', 'da', 'sat', 'he', 'hmn',
+    'mos', 'ug', 'hr', 'kok', 'ti', 'lua', 'ba', 'ka', 'lt', 'hy'
+  ];
 }
 
 export function getDefaultLocale(): SupportedLocale {
