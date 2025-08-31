@@ -1,48 +1,20 @@
-// UI Components exports
-export * from './Accordion'
-export * from './avatar'
-export * from './badge'
-export * from './button'
-export * from './card'
-export * from './dropdown-menu'
-export * from './Form'
-export * from './input'
-export * from './SearchModal'
-export * from './scroll-area'
-export * from './separator'
-export * from './sheet'
-export * from './checkbox'
-export * from './CookieConsent'
-export * from './skeleton'
-export * from './tabs'
-export * from './textarea'
-export * from './tooltip'
-export * from './LanguageSelector'
-export * from './ThemeToggle'
-
-// Image components
+// UI primitives
+export { Button, buttonVariants } from './button'
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card'
+export { Badge, badgeVariants } from './badge'
+export { LocalizedLink } from './LocalizedLink'
 export { Image } from './Image'
+export { Avatar, AvatarImage, AvatarFallback } from './avatar'
+export { Input } from './input'
+export { ScrollArea, ScrollBar } from './scroll-area'
 export { ImageGallery } from './ImageGallery'
-
-// Export sidebar components with UI prefix to avoid conflicts
-export { 
-  Sidebar as UISidebar,
-  SidebarContent as UISidebarContent,
-  SidebarFooter as UISidebarFooter,
-  SidebarGroup as UISidebarGroup,
-  SidebarGroupContent as UISidebarGroupContent,
-  SidebarGroupLabel as UISidebarGroupLabel,
-  SidebarHeader as UISidebarHeader,
-  SidebarInset as UISidebarInset,
-  SidebarMenu as UISidebarMenu,
-  SidebarMenuButton as UISidebarMenuButton,
-  SidebarMenuItem as UISidebarMenuItem,
-  SidebarMenuSub as UISidebarMenuSub,
-  SidebarMenuSubButton as UISidebarMenuSubButton,
-  SidebarMenuSubItem as UISidebarMenuSubItem,
-  SidebarProvider as UISidebarProvider,
-  SidebarRail as UISidebarRail,
-  SidebarSeparator as UISidebarSeparator,
-  SidebarTrigger as UISidebarTrigger,
-  useSidebar as useUISidebar
-} from './sidebar'
+export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from './dropdown-menu'
+export { CookieConsent } from './CookieConsent'
+export { TwitterIcon, GitHubIcon, LinkedInIcon } from './icons'
+export { LanguageSelector } from './LanguageSelector'
+export { ThemeToggle } from './ThemeToggle'
+export { LanguageSwitcher } from './LanguageSwitcher'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
+export { ScrollProgress } from './ScrollProgress'
+export { SearchModal } from './SearchModal'
+export { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from './dialog'

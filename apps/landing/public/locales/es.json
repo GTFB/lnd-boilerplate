@@ -11,5 +11,54 @@
     "language": "Idioma",
     "theme": "Tema",
     "getStarted": "Comenzar"
+  },
+  "home": {
+    "title": "LND Boilerplate",
+    "subtitle": "Framework moderno de desarrollo web",
+    "description": "Construye aplicaciones web escalables con nuestro boilerplate completo que incluye TypeScript, Next.js y herramientas modernas."
+  },
+  "docs": {
+    "subtitle": "Aprende a usar LND Boilerplate",
+    "description": "Documentación completa para construir aplicaciones web escalables con nuestro framework.",
+    "sections": {
+      "gettingStarted": {
+        "title": "Primeros pasos",
+        "description": "Guía rápida de configuración para nuevos proyectos"
+      },
+      "components": {
+        "title": "Componentes",
+        "description": "Componentes UI y su uso"
+      },
+      "apiReference": {
+        "title": "Referencia API",
+        "description": "Documentación completa de la API"
+      }
+    }
+  },
+  "about": {
+    "subtitle": "Framework moderno de desarrollo web",
+    "description": "LND Boilerplate es un framework completo diseñado para acelerar el desarrollo de aplicaciones web. Construido con TypeScript, Next.js y herramientas modernas, proporciona todo lo que necesitas para construir aplicaciones escalables y mantenibles.",
+    "sections": {
+      "features": {
+        "title": "Características",
+        "items": [
+          "Soporte TypeScript",
+          "Next.js App Router",
+          "Internacionalización",
+          "Componentes UI modernos",
+          "Estructura monorepo"
+        ]
+      },
+      "technologies": {
+        "title": "Tecnologías",
+        "items": [
+          "React 18",
+          "Tailwind CSS",
+          "Radix UI",
+          "Runtime Bun",
+          "Soporte MDX"
+        ]
+      }
+    }
   }
 }

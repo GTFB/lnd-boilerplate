@@ -4,8 +4,8 @@ import React from 'react'
 import { BaseLayout, BaseLayoutProps } from '../base/BaseLayout'
 import { useDesignSystem } from '../../design-systems'
 import { PageTypeName } from '../../types'
-import { Header } from '../../components/layout/Header'
-import { Footer } from '../../components/layout/Footer'
+import { Header } from '../../components/common/Header'
+import { Footer } from '../../components/common/Footer'
 
 export interface SingleColumnLayoutProps extends BaseLayoutProps {
   showHeader?: boolean

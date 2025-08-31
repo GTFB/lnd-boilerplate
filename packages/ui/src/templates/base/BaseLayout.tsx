@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDesignSystem } from '../../design-systems'
 import { LayoutName, PageTypeName } from '../../types'
-import { Header } from '../../components/layout/Header'
-import { Footer } from '../../components/layout/Footer'
+import { Header } from '../../components/common/Header'
+import { Footer } from '../../components/common/Footer'
 
 export interface BaseLayoutProps {
   layout: LayoutName

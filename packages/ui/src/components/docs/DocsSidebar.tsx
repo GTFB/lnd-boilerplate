@@ -1,123 +1,247 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { PanelLeftClose, ChevronUp } from "lucide-react"
+import React, { useState } from 'react'
+import { useDesignSystem } from '../../design-systems'
+import { NavigationItem } from '../../types/navigation'
+import { 
+  BookOpen, 
+  FileText, 
+  Tag, 
+  Calendar, 
+  ChevronRight, 
+  ChevronDown,
+  Search,
+  Filter
+} from 'lucide-react'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Badge } from '../ui/badge'
+import { ScrollArea } from '../ui/scroll-area'
 
 export interface DocsSidebarProps {
-  tree: {
-    children: Array<{
-      $id: string
-      name: string
-      type: "folder" | "page"
-      children?: Array<{
-        $id: string
-        name: string
-        type: "folder" | "page"
-        url: string
-      }>
-      url?: string
-    }>
-  }
-  searchComponent?: React.ReactNode
+  title?: string
+  description?: string
+  items?: NavigationItem[]
+  showSearch?: boolean
+  showFilter?: boolean
+  className?: string
 }
 
-export function DocsSidebar({ tree, searchComponent }: DocsSidebarProps) {
-  const pathname = usePathname()
+export const DocsSidebar: React.FC<DocsSidebarProps> = ({
+  title = 'Documentation',
+  description = 'Navigate through the documentation',
+  items = [],
+  showSearch = true,
+  showFilter = true,
+  className = ''
+}) => {
+  const { currentSystem } = useDesignSystem()
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterCategory, setFilterCategory] = useState<string>('all')
 
-  const isEmpty = !tree?.children || tree.children.length === 0
+  const defaultItems = [
+    {
+      title: 'Getting Started',
+      href: '/docs/getting-started',
+      icon: <BookOpen className="h-4 w-4" />,
+      children: [
+        { title: 'Introduction', href: '/docs/getting-started/introduction' },
+        { title: 'Quick Start', href: '/docs/getting-started/quick-start' },
+        { title: 'Installation', href: '/docs/getting-started/installation' },
+        { title: 'Configuration', href: '/docs/getting-started/configuration' }
+      ]
+    },
+    {
+      title: 'Core Concepts',
+      href: '/docs/core-concepts',
+      icon: <FileText className="h-4 w-4" />,
+      children: [
+        { title: 'Architecture', href: '/docs/core-concepts/architecture' },
+        { title: 'Components', href: '/docs/core-concepts/components' },
+        { title: 'State Management', href: '/docs/core-concepts/state' },
+        { title: 'Routing', href: '/docs/core-concepts/routing' }
+      ]
+    },
+    {
+      title: 'Components',
+      href: '/docs/components',
+      icon: <FileText className="h-4 w-4" />,
+      children: [
+        { title: 'UI Components', href: '/docs/components/ui' },
+        { title: 'Layout Components', href: '/docs/components/layout' },
+        { title: 'Form Components', href: '/docs/components/forms' },
+        { title: 'Data Components', href: '/docs/components/data' }
+      ]
+    },
+    {
+      title: 'API Reference',
+      href: '/docs/api',
+      icon: <FileText className="h-4 w-4" />,
+      badge: 'Updated'
+    },
+    {
+      title: 'Examples',
+      href: '/docs/examples',
+      icon: <FileText className="h-4 w-4" />
+    },
+    {
+      title: 'Blog',
+      href: '/blog',
+      icon: <Tag className="h-4 w-4" />
+    },
+    {
+      title: 'Changelog',
+      href: '/changelog',
+      icon: <Calendar className="h-4 w-4" />
+    }
+  ] as NavigationItem[]
+
+  const sidebarItems = items.length > 0 ? items : defaultItems
+
+  const toggleExpandedItem = (title: string) => {
+    const newExpanded = new Set(expandedItems)
+    if (newExpanded.has(title)) {
+      newExpanded.delete(title)
+    } else {
+      newExpanded.add(title)
+    }
+    setExpandedItems(newExpanded)
+  }
+
+  const filteredItems = sidebarItems.filter(item => {
+    if (filterCategory === 'all') return true
+    if (filterCategory === 'getting-started' && item.title.toLowerCase().includes('getting started')) return true
+    if (filterCategory === 'core' && item.title.toLowerCase().includes('core')) return true
+    if (filterCategory === 'components' && item.title.toLowerCase().includes('components')) return true
+    if (filterCategory === 'api' && item.title.toLowerCase().includes('api')) return true
+    return false
+  })
+
+  const searchFilteredItems = filteredItems.filter(item => {
+    if (!searchQuery) return true
+    const query = searchQuery.toLowerCase()
+    return (
+      item.title.toLowerCase().includes(query) ||
+      item.children?.some(child => child.title.toLowerCase().includes(query))
+    )
+  })
 
   return (
-    <nav className="flex flex-col gap-2 text-sm relative h-full pl-0" aria-label="Documentation Navigation">
-      {/* Search with hide button */}
-      <div className="mb-2 flex items-center gap-2">
-        <div className="flex-1">
-          {searchComponent}
+    <aside className={`bg-sidebar-background rounded-lg border ${className}`}>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
-        <button
-          id="hide-sidebar-btn"
-          title="Hide Sidebar"
-          className="flex-shrink-0"
-          aria-label="Hide navigation sidebar"
-          aria-expanded="true"
-          aria-controls="grid-container"
-        >
-          <PanelLeftClose size={16} className="mobile-hide" />
-          <ChevronUp size={16} className="mobile-show" />
-        </button>
-      </div>
-      
-      <div className="flex-1 overflow-y-auto pl-0">
-        {isEmpty ? (
-          <div className="text-xs text-muted-foreground" role="status" aria-live="polite">
-            No navigation items. Check `_content/docs/navigation.json`.
-          </div>
-        ) : (
-          <div className="space-y-3 -mt-2" role="tree" aria-label="Documentation sections">
-            {tree.children.map((item, index) => {
-              if (item.type === "folder" && item.children) {
-                return (
-                  <div key={item.$id} className="space-y-0" role="group" aria-labelledby={`section-${item.$id}`}>
-                    {/* Section header */}
-                    <div 
-                      id={`section-${item.$id}`}
-                      className="py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors duration-200"
-                      role="heading"
-                      aria-level={2}
-                    >
-                      {item.name}
-                    </div>
-                    {/* Subsections */}
-                    <div role="group" aria-label={`${item.name} pages`}>
-                      {item.children.map((child, childIndex) => {
-                        return (
-                          child.type === "page" && (
-                            <Link
-                              key={`${item.$id}-${childIndex}`}
-                              href={child.url}
-                              className={`
-                                block pl-0 py-2 text-sm transition-all duration-200 mt-0 transform hover:translate-x-1
-                                ${child.url === pathname 
-                                  ? 'bg-accent text-accent-foreground' 
-                                  : 'text-muted-foreground hover:text-foreground'
-                                }
-                              `}
-                              aria-current={child.url === pathname ? 'page' : undefined}
-                              role="treeitem"
-                            >
-                              {child.name}
-                            </Link>
-                          )
-                        )
-                      })}
-                    </div>
-                  </div>
-                )
-              } else if (item.type === "page") {
-                return (
-                  <Link
-                    key={item.$id}
-                    href={item.url || '#'}
-                    className={`
-                      block pl-0 py-2 text-sm transition-all duration-200 transform hover:translate-x-1
-                      ${item.url === pathname 
-                        ? 'bg-accent text-accent-foreground' 
-                        : 'text-muted-foreground hover:text-foreground'
-                      }
-                    `}
-                    aria-current={item.url === pathname ? 'page' : undefined}
-                    role="treeitem"
-                  >
-                    {item.name}
-                  </Link>
-                )
-              }
-              return null
-            })}
+
+        {/* Search */}
+        {showSearch && (
+          <div className="mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search documentation..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
         )}
+
+        {/* Filter */}
+        {showFilter && (
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-2">
+              {['all', 'getting-started', 'core', 'components', 'api'].map((category) => (
+                <Button
+                  key={category}
+                  variant={filterCategory === category ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilterCategory(category)}
+                  className="text-xs capitalize"
+                >
+                  {category === 'all' ? 'All' : category.replace('-', ' ')}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Navigation */}
+        <ScrollArea className="h-[calc(100vh-300px)]">
+          <nav className="space-y-2">
+            {searchFilteredItems.map((item, index) => (
+              <div key={index}>
+                <a
+                  href={item.href}
+                  className="flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                >
+                  {item.icon}
+                  <span className="flex-1">{item.title}</span>
+                  <div className="flex items-center space-x-2">
+                    {item.badge && (
+                      <Badge variant="secondary" className="text-xs">
+                        {item.badge}
+                      </Badge>
+                    )}
+                    {item.children && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          toggleExpandedItem(item.title)
+                        }}
+                      >
+                        {expandedItems.has(item.title) ? (
+                          <ChevronDown className="h-3 w-3" />
+                        ) : (
+                          <ChevronRight className="h-3 w-3" />
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                </a>
+                
+                {/* Nested items */}
+                {item.children && expandedItems.has(item.title) && (
+                  <div className="ml-6 mt-2 space-y-1">
+                    {item.children.map((child, childIndex) => (
+                      <a
+                        key={childIndex}
+                        href={child.href}
+                        className="flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        <span className="flex-1">{child.title}</span>
+                        {child.badge && (
+                          <Badge variant="outline" className="text-xs">
+                            {child.badge}
+                          </Badge>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </nav>
+        </ScrollArea>
+
+        {/* Footer */}
+        <div className="mt-8 pt-6 border-t">
+          <div className="text-xs text-muted-foreground">
+            <p>Need help? Check our</p>
+            <a href="/docs/support" className="text-primary hover:underline">
+              support documentation
+            </a>
+          </div>
+        </div>
       </div>
-    </nav>
+    </aside>
   )
 }
-

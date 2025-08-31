@@ -4,19 +4,19 @@ import { useEffect } from 'react'
 import { useSidebar } from '../../contexts/SidebarContext'
 
 interface TocUpdaterProps {
-  tableOfContents: Array<{
+  headings: Array<{
     id: string
     title: string
     level: number
   }>
 }
 
-export function TocUpdater({ tableOfContents }: TocUpdaterProps) {
+export function TocUpdater({ headings }: TocUpdaterProps) {
   const { setTableOfContents } = useSidebar()
 
   useEffect(() => {
-    setTableOfContents(tableOfContents)
-  }, [tableOfContents, setTableOfContents])
+    setTableOfContents(headings)
+  }, [headings, setTableOfContents])
 
   return null
 }

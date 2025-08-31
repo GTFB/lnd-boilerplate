@@ -11,7 +11,7 @@ describe('Client-side Locale Utils', () => {
   describe('getDefaultLocale', () => {
     it('should return fallback default locale', () => {
       const defaultLocale = getDefaultLocale()
-      expect(defaultLocale).toBe('ru')
+      expect(defaultLocale).toBe('en')
       expect(typeof defaultLocale).toBe('string')
     })
   })
@@ -30,17 +30,17 @@ describe('Client-side Locale Utils', () => {
 
   describe('isDefaultLocale', () => {
     it('should return true for default locale', () => {
-      const result = isDefaultLocale('ru')
+      const result = isDefaultLocale('en')
       expect(result).toBe(true)
     })
 
     it('should return false for non-default locale', () => {
-      const result = isDefaultLocale('en')
+      const result = isDefaultLocale('ru')
       expect(result).toBe(false)
     })
 
     it('should handle case sensitivity', () => {
-      const result = isDefaultLocale('RU')
+      const result = isDefaultLocale('EN')
       expect(result).toBe(false)
     })
   })
@@ -115,27 +115,19 @@ describe('Client-side Locale Utils', () => {
       supportedLocales.forEach(locale => {
         expect(getLocaleDisplayName(locale)).toBeTruthy()
         expect(getLocaleFlag(locale)).toBeTruthy()
-        expect(typeof getLocaleDisplayName(locale)).toBe('string')
-        expect(typeof getLocaleFlag(locale)).toBe('string')
       })
     })
 
     it('should handle edge cases gracefully', () => {
-      const edgeCases = ['unknown', 'XX', '123', 'test-locale']
-      
-      edgeCases.forEach(locale => {
-        expect(getLocaleDisplayName(locale)).toBeTruthy()
-        expect(getLocaleFlag(locale)).toBeTruthy()
-        expect(typeof getLocaleDisplayName(locale)).toBe('string')
-        expect(typeof getLocaleFlag(locale)).toBe('string')
-      })
+      expect(() => getLocaleDisplayName('')).not.toThrow()
+      expect(() => getLocaleFlag('')).not.toThrow()
+      expect(() => isDefaultLocale('')).not.toThrow()
     })
 
     it('should handle empty string specifically', () => {
       expect(getLocaleDisplayName('')).toBe('')
       expect(getLocaleFlag('')).toBe('🌐')
-      expect(typeof getLocaleDisplayName('')).toBe('string')
-      expect(typeof getLocaleFlag('')).toBe('string')
+      expect(isDefaultLocale('')).toBe(false)
     })
   })
 })

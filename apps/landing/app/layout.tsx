@@ -32,7 +32,6 @@ export default function RootLayout({
           storageKey="theme"
           enableSystem={false}
           themes={['light', 'dark']}
-          suppressHydrationWarning
         >
           {children}
         </ThemeProvider>

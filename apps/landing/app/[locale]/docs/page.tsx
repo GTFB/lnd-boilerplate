@@ -1,130 +1,41 @@
-'use client';
+import { getTranslation, SupportedLocale } from '../../../lib/translations'
+import Header from '../../components/Header'
 
-import React from 'react';
-import { PageLayout } from '@lnd/ui/templates';
-import { Button } from '@lnd/ui/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@lnd/ui/components/ui/card';
-import {
-  BookOpen,
-  Code,
-  Palette,
-  Zap,
-  Database,
-  Smartphone,
-} from 'lucide-react';
-
-export default function DocsPage() {
-  const docCategories = [
-    {
-      title: 'Getting Started',
-      description: 'Quick start with LND Boilerplate',
-      icon: Zap,
-      href: '/docs/getting-started',
-      color: 'text-blue-600',
-    },
-    {
-      title: 'Components',
-      description: 'UI component library',
-      icon: Palette,
-      href: '/docs/components',
-      color: 'text-purple-600',
-    },
-    {
-      title: 'Templates',
-      description: 'Ready-to-use page layouts',
-      icon: BookOpen,
-      href: '/docs/templates',
-      color: 'text-green-600',
-    },
-    {
-      title: 'API',
-      description: 'Interfaces and utilities',
-      icon: Code,
-      href: '/docs/api',
-      color: 'text-orange-600',
-    },
-    {
-      title: 'Configuration',
-      description: 'Project setup and configuration',
-      icon: Database,
-      href: '/docs/configuration',
-      color: 'text-red-600',
-    },
-    {
-      title: 'Deployment',
-      description: 'Deploy and host your application',
-      icon: Smartphone,
-      href: '/docs/deployment',
-      color: 'text-indigo-600',
-    },
-  ];
-
+export default function LocalizedDocsPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = (path: string) => getTranslation(locale as SupportedLocale, path)
+  
   return (
-    <PageLayout>
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          LND Boilerplate Documentation
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          Explore all the capabilities of our framework for creating modern
-          landing pages
-        </p>
-      </div>
-      <div className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {docCategories.map(category => {
-            const IconComponent = category.icon;
-            return (
-              <Card
-                key={category.title}
-                className="group hover:shadow-lg transition-all duration-300"
-              >
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <IconComponent className={`w-8 h-8 ${category.color}`} />
-                    <CardTitle className="text-xl">{category.title}</CardTitle>
-                  </div>
-                  <CardDescription className="text-base">
-                    {category.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <a href={category.href} className="block w-full">
-                    <Button className="w-full">Explore</Button>
-                  </a>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
+    <div className="min-h-screen bg-gray-50">
+      <Header locale={locale as SupportedLocale} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-            Need Help?
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
-            If you have questions or need support, contact our team
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {t('navigation.docs')}
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            {t('docs.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact">
-              <Button variant="default">Contact Us</Button>
-            </a>
-            <a
-              href="https://github.com/GTFB/lnd-boilerplate/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="outline">Report an Issue</Button>
-            </a>
+          <div className="space-y-4">
+            <p className="text-lg text-gray-700">
+              {t('docs.description')}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold mb-2">{t('docs.sections.gettingStarted.title')}</h3>
+                <p className="text-gray-600">{t('docs.sections.gettingStarted.description')}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold mb-2">{t('docs.sections.components.title')}</h3>
+                <p className="text-gray-600">{t('docs.sections.components.description')}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold mb-2">{t('docs.sections.apiReference.title')}</h3>
+                <p className="text-gray-600">{t('docs.sections.apiReference.description')}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </PageLayout>
-  );
+    </div>
+  )
 }

@@ -1,30 +1,26 @@
-import { readFileSync, readdirSync, statSync, existsSync } from 'fs'
+import { readFileSync, existsSync, readdirSync } from 'fs'
 import { join, extname } from 'path'
 import matter from 'gray-matter'
+import fs from 'fs/promises'
+import path from 'path'
 
 export interface MDXFile {
   slug: string
-  frontmatter: Record<string, any>
   content: string
-  filePath: string
-}
-
-export interface ExpertData {
-  id: string
-  name: string
-  title: string
-  avatar: string
-  bio: string
-  expertise: string[]
-  social: Record<string, string>
-  location: string
-  joined: string
-}
-
-export interface DocsMeta {
-  [key: string]: string | {
+  frontmatter: {
     title: string
-    pages: Record<string, string>
+    description?: string
+    date?: string
+    author?: string
+    authorId?: string
+    tags?: string[]
+    category?: string
+    image?: string
+    coverImage?: string
+    draft?: boolean
+    featured?: boolean
+    readTime?: string
+    [key: string]: any
   }
 }
 
@@ -32,117 +28,39 @@ export interface DocsMeta {
  * Read MDX file with frontmatter
  */
 export function readMDXFile(filePath: string): MDXFile {
-  try {
-    console.log('readMDXFile: Reading file:', filePath)
-    const fileContent = readFileSync(filePath, 'utf-8')
-    console.log('readMDXFile: File content length:', fileContent.length)
-    
-    const { data: frontmatter, content } = matter(fileContent)
-    console.log('readMDXFile: Frontmatter:', frontmatter)
-    
-    // Extract just the filename without extension
-    const fileName = filePath.split(/[/\\]/).pop() || ''
-    const slug = fileName.replace(/\.mdx?$/, '')
-    
-    return {
-      slug,
-      frontmatter,
-      content,
-      filePath
-    }
-  } catch (error) {
-    console.error('readMDXFile: Error reading file:', error)
-    throw new Error(`Failed to read MDX file ${filePath}: ${error}`)
+  const fileContent = readFileSync(filePath, 'utf-8')
+  const { data: frontmatter, content } = matter(fileContent)
+  const slug = filePath.split('/').pop()?.replace('.mdx', '') || ''
+
+  return {
+    slug,
+    content,
+    frontmatter: frontmatter as MDXFile['frontmatter']
   }
 }
 
 /**
  * Read all MDX files from directory
  */
-export function readMDXDirectory(directoryPath: string): MDXFile[] {
-  if (!existsSync(directoryPath)) {
+export function readMDXDirectory(dirPath: string): MDXFile[] {
+  if (!existsSync(dirPath)) {
     return []
   }
-  
-  const files: MDXFile[] = []
-  const items = readdirSync(directoryPath)
-  
-  for (const item of items) {
-    const itemPath = join(directoryPath, item)
-    const stat = statSync(itemPath)
-    
-    if (stat.isFile() && (extname(item) === '.mdx' || extname(item) === '.md')) {
-      try {
-        const mdxFile = readMDXFile(itemPath)
-        files.push(mdxFile)
-      } catch (error) {
-        console.warn(`Failed to read MDX file ${itemPath}:`, error)
-      }
-    }
-  }
-  
-  return files
+
+  const files = readdirSync(dirPath)
+  const mdxFiles = files.filter(file => extname(file) === '.mdx')
+
+  return mdxFiles.map(file => {
+    const filePath = join(dirPath, file)
+    return readMDXFile(filePath)
+  })
 }
 
 /**
- * Read JSON file
+ * Get content path based on environment
  */
-export function readJSONFile<T>(filePath: string): T {
-  try {
-    const fileContent = readFileSync(filePath, 'utf-8')
-    return JSON.parse(fileContent)
-  } catch (error) {
-    throw new Error(`Failed to read JSON file ${filePath}: ${error}`)
-  }
-}
-
-/**
- * Read all JSON files from directory
- */
-export function readJSONDirectory<T>(directoryPath: string): T[] {
-  if (!existsSync(directoryPath)) {
-    return []
-  }
-  
-  const files: T[] = []
-  const items = readdirSync(directoryPath)
-  
-  for (const item of items) {
-    const itemPath = join(directoryPath, item)
-    const stat = statSync(itemPath)
-    
-    if (stat.isFile() && extname(item) === '.json') {
-      try {
-        const jsonFile = readJSONFile<T>(itemPath)
-        files.push(jsonFile)
-      } catch (error) {
-        console.warn(`Failed to read JSON file ${itemPath}:`, error)
-      }
-    }
-  }
-  
-  return files
-}
-
-/**
- * Get content directory path
- */
-export function getContentPath(): string {
-  // Try different possible paths
-  const possiblePaths = [
-    join(process.cwd(), 'apps', 'landing', '_content'),
-    join(process.cwd(), '_content'),
-    join(__dirname, '..', '..', '..', 'apps', 'landing', '_content')
-  ]
-  
-  for (const path of possiblePaths) {
-    if (existsSync(path)) {
-      return path
-    }
-  }
-  
-  // Fallback to the first path
-  return possiblePaths[0]
+function getContentPath(): string {
+  return join(process.cwd(), 'apps', 'landing', '_content')
 }
 
 /**
@@ -151,12 +69,7 @@ export function getContentPath(): string {
 export async function getBlogPosts(): Promise<MDXFile[]> {
   const contentPath = getContentPath()
   const blogPath = join(contentPath, 'blog')
-  const posts = readMDXDirectory(blogPath).filter(post => !post.frontmatter.draft)
-  
-  // Sort posts by date (newest first) to match API sorting
-  return posts.sort((a, b) => 
-    new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-  )
+  return readMDXDirectory(blogPath)
 }
 
 /**
@@ -175,156 +88,27 @@ export async function getBlogPost(slug: string): Promise<MDXFile | null> {
 }
 
 /**
- * Read experts data
- */
-export async function getExperts(): Promise<ExpertData[]> {
-  const contentPath = getContentPath()
-  const expertsPath = join(contentPath, 'experts')
-  return readJSONDirectory<ExpertData>(expertsPath)
-}
-
-/**
- * Read single expert by ID
- */
-export async function getExpert(id: string): Promise<ExpertData | null> {
-  const contentPath = getContentPath()
-  const expertsPath = join(contentPath, 'experts')
-  const filePath = join(expertsPath, `${id}.json`)
-  
-  if (!existsSync(filePath)) {
-    return null
-  }
-  
-  return readJSONFile<ExpertData>(filePath)
-}
-
-/**
- * Read docs meta
- */
-export async function getDocsMeta(): Promise<DocsMeta> {
-  const contentPath = getContentPath()
-  const docsPath = join(contentPath, 'docs')
-  const metaPath = join(docsPath, '_meta.json')
-  
-  if (!existsSync(metaPath)) {
-    return {}
-  }
-  
-  return readJSONFile<DocsMeta>(metaPath)
-}
-
-/**
- * Convert docs meta to navigation items
- */
-export function docsMetaToNavigation(meta: DocsMeta): Array<{
-  title: string
-  href: string
-  children?: Array<{
-    title: string
-    href: string
-  }>
-}> {
-  const navigationItems: Array<{
-    title: string
-    href: string
-    children?: Array<{
-      title: string
-      href: string
-    }>
-  }> = []
-
-  for (const [key, value] of Object.entries(meta)) {
-    if (typeof value === 'string') {
-      // Simple string entry
-      navigationItems.push({
-        title: value,
-        href: `/docs/${key}`
-      })
-    } else if (typeof value === 'object' && value.title && value.pages) {
-      // Section with subpages
-      const children = Object.entries(value.pages).map(([pageKey, pageTitle]) => ({
-        title: pageTitle,
-        href: `/docs/${key}/${pageKey}`
-      }))
-      
-      navigationItems.push({
-        title: value.title,
-        href: `/docs/${key}`,
-        children
-      })
-    }
-  }
-
-  return navigationItems
-}
-
-/**
- * Read docs pages recursively
+ * Read docs pages
  */
 export async function getDocsPages(): Promise<MDXFile[]> {
   const contentPath = getContentPath()
   const docsPath = join(contentPath, 'docs')
-  
-  function readDocsRecursively(dirPath: string, baseSlug: string = ''): MDXFile[] {
-    const pages: MDXFile[] = []
-    
-    if (!existsSync(dirPath)) {
-      return pages
-    }
-    
-    const items = readdirSync(dirPath)
-    
-    for (const item of items) {
-      const itemPath = join(dirPath, item)
-      const stat = statSync(itemPath)
-      
-      if (stat.isDirectory()) {
-        // Recursively read subdirectories
-        const subPages = readDocsRecursively(itemPath, baseSlug ? `${baseSlug}/${item}` : item)
-        pages.push(...subPages)
-      } else if (item.endsWith('.mdx') && item !== '_meta.mdx') {
-        // Read MDX files
-        const slug = baseSlug ? `${baseSlug}/${item.replace(/\.mdx?$/, '')}` : item.replace(/\.mdx?$/, '')
-        const mdxFile = readMDXFile(itemPath)
-        pages.push({
-          ...mdxFile,
-          slug
-        })
-      }
-    }
-    
-    return pages
-  }
-  
-  return readDocsRecursively(docsPath)
+  return readMDXDirectory(docsPath)
 }
 
 /**
- * Read single docs page by slug (supports subdirectories)
+ * Read single docs page by slug
  */
 export async function getDocsPage(slug: string): Promise<MDXFile | null> {
   const contentPath = getContentPath()
   const docsPath = join(contentPath, 'docs')
   const filePath = join(docsPath, `${slug}.mdx`)
   
-  console.log('getDocsPage debug:', { slug, contentPath, docsPath, filePath, exists: existsSync(filePath) })
-  
   if (!existsSync(filePath)) {
-    console.log('File does not exist:', filePath)
     return null
   }
   
-  try {
-    const mdxFile = readMDXFile(filePath)
-    console.log('Successfully read MDX file:', { slug: mdxFile.slug, title: mdxFile.frontmatter.title })
-    return {
-      ...mdxFile,
-      slug
-    }
-  } catch (error) {
-    console.error('Error reading MDX file:', error)
-    return null
-  }
+  return readMDXFile(filePath)
 }
 
 /**
@@ -349,4 +133,100 @@ export async function getLegalPage(slug: string): Promise<MDXFile | null> {
   }
   
   return readMDXFile(filePath)
+}
+
+// Конфигурация из site.config.json
+const DEFAULT_LOCALE = 'en'
+const CONTENT_ROOT = path.join(process.cwd(), 'apps', 'landing', '_content')
+
+/**
+ * Читает локализованный MDX файл с фолбэком на язык по умолчанию.
+ * @param contentType - Тип контента (e.g., 'blog', 'legal').
+ * @param slug - Слаг документа.
+ * @param locale - Запрошенная локаль.
+ */
+export async function readLocalizedMdx(contentType: string, slug: string, locale: string): Promise<string> {
+  const localizedPath = path.join(CONTENT_ROOT, contentType, `${slug}.${locale}.mdx`)
+  
+  try {
+    // 1. Пытаемся прочитать файл для текущей локали
+    return await fs.readFile(localizedPath, 'utf-8')
+  } catch (error) {
+    // 2. Если не получилось и это не дефолтная локаль, ищем дефолтный файл
+    if (locale !== DEFAULT_LOCALE) {
+      console.warn(`Content for '${slug}' in locale '${locale}' not found. Falling back to '${DEFAULT_LOCALE}'.`)
+      const fallbackPath = path.join(CONTENT_ROOT, contentType, `${slug}.${DEFAULT_LOCALE}.mdx`)
+      try {
+        return await fs.readFile(fallbackPath, 'utf-8')
+      } catch (fallbackError) {
+        throw new Error(`Content not found for slug '${slug}' in locale '${locale}' or fallback '${DEFAULT_LOCALE}'.`)
+      }
+    }
+    // 3. Если искали дефолтный и не нашли, бросаем ошибку
+    throw error
+  }
+}
+
+/**
+ * Читает локализованный JSON файл с фолбэком на язык по умолчанию.
+ * @param contentType - Тип контента (e.g., 'blog', 'legal').
+ * @param slug - Слаг документа.
+ * @param locale - Запрошенная локаль.
+ */
+export async function readLocalizedJson<T = any>(contentType: string, slug: string, locale: string): Promise<T> {
+  const localizedPath = path.join(CONTENT_ROOT, contentType, `${slug}.${locale}.json`)
+  
+  try {
+    // 1. Пытаемся прочитать файл для текущей локали
+    const content = await fs.readFile(localizedPath, 'utf-8')
+    return JSON.parse(content)
+  } catch (error) {
+    // 2. Если не получилось и это не дефолтная локаль, ищем дефолтный файл
+    if (locale !== DEFAULT_LOCALE) {
+      console.warn(`Content for '${slug}' in locale '${locale}' not found. Falling back to '${DEFAULT_LOCALE}'.`)
+      const fallbackPath = path.join(CONTENT_ROOT, contentType, `${slug}.${DEFAULT_LOCALE}.json`)
+      try {
+        const content = await fs.readFile(fallbackPath, 'utf-8')
+        return JSON.parse(content)
+      } catch (fallbackError) {
+        throw new Error(`Content not found for slug '${slug}' in locale '${locale}' or fallback '${DEFAULT_LOCALE}'.`)
+      }
+    }
+    // 3. Если искали дефолтный и не нашли, бросаем ошибку
+    throw error
+  }
+}
+
+/**
+ * Проверяет существование локализованного файла.
+ * @param contentType - Тип контента.
+ * @param slug - Слаг документа.
+ * @param locale - Локаль.
+ */
+export async function fileExists(contentType: string, slug: string, locale: string): Promise<boolean> {
+  const filePath = path.join(CONTENT_ROOT, contentType, `${slug}.${locale}.mdx`)
+  try {
+    await fs.access(filePath)
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Получает список доступных файлов для указанного типа контента и локали.
+ * @param contentType - Тип контента.
+ * @param locale - Локаль.
+ */
+export async function getAvailableFiles(contentType: string, locale: string): Promise<string[]> {
+  const contentTypePath = path.join(CONTENT_ROOT, contentType)
+  
+  try {
+    const files = await fs.readdir(contentTypePath)
+    return files
+      .filter(file => file.endsWith(`.${locale}.mdx`) || file.endsWith(`.${locale}.json`))
+      .map(file => file.replace(`.${locale}.mdx`, '').replace(`.${locale}.json`, ''))
+  } catch (error) {
+    return []
+  }
 }

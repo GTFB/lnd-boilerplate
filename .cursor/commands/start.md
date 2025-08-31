@@ -6,6 +6,7 @@ The .env and database.db files are located in the external storage directory, no
 
 ## Steps
 1.  **Environment Verification (Pre-flight Check)**
+   - Internalize the Unified **[Technical Specification](../../dev/docs/lnd-boilerplate/TECH_SPEC.md)**, focusing on the core architecture, the three-tier component model, and the config-driven, internationalized content engine.
    - Read the external storage path from the `config.json` file (key `storage`). If the file is missing, run to **[create it](../../scripts/project-init.ps1)**.
    - Verify that the directory at this path exists.
    - Verify that the `.env` file and the database file (`.dev-agent.db`) exist within it.
@@ -20,10 +21,12 @@ The .env and database.db files are located in the external storage directory, no
    - **Language:** Code, comments, and documentation are strictly in English. Chat communication is in Russian.
    - **Stack:** Development is done exclusively in TypeScript for the Bun runtime.
    - **Style:** All communication and documentation must be maximally concise, with no redundancy.
-   - **File System:** Upon any file addition or deletion, this change must be immediately reflected in the **[Structure](../../docs/structure.md)** file.
+   - **File System:** Upon any file addition or deletion, this change must be immediately reflected in the **[Structure](../../dev/docs/lnd-boilerplate/1_CONCEPTUAL/STRUCTURE.md)** file.
    - **Tooling:** All terminal operations are performed only through **[Makefile](../../Makefile)**.
    - Do not create new files or folders, and do not delete files or folders without user consent.
    - We are using PowerShell for Windows, so please do not use &&. Instead, use a semicolon (;) for sequential commands and follow other PowerShell syntax rules to ensure correct execution.
+   - Strictly construct all UI by composing shadcn/ui components, styled exclusively and directly with unabstracted Tailwind utility classes.
+
 
 ## Workflow Protocols
 - **[Workspace Synchronization](./workspace-synchronization.md)** - To synchronize your local workspace before starting work.

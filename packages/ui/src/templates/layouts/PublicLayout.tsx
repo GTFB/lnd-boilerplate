@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { Header } from '../../components/layout/Header'
-import { Footer } from '../../components/layout/Footer'
+import { Header } from '../../components/common/Header'
+import { Footer } from '../../components/common/Footer'
 import { DocsSidebar } from '../../components/docs'
 import { useSidebar } from '../../contexts/SidebarContext'
 import { PanelLeftClose, ChevronDown, ChevronRight, Search } from 'lucide-react'
@@ -227,9 +227,8 @@ const PublicLayoutInner: React.FC<PublicLayoutProps> = ({ children }) => {
                 <div className="sticky top-24 rounded-lg p-0 shadow-none">
                   <div className="max-h-[calc(100vh-12rem)] overflow-y-auto  scrollbar-hide">
                     {navigationItems.length > 0 ? (
-                      <DocsSidebar 
-                        tree={sidebarTree} 
-                        searchComponent={searchComponent}
+                      <DocsSidebar
+                        items={navigationItems}
                       />
                     ) : (
                       <div>

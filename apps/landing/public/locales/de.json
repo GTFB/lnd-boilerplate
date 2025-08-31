@@ -11,5 +11,54 @@
     "language": "Sprache",
     "theme": "Thema",
     "getStarted": "Loslegen"
+  },
+  "home": {
+    "title": "LND Boilerplate",
+    "subtitle": "Modernes Web-Entwicklungsframework",
+    "description": "Erstellen Sie skalierbare Webanwendungen mit unserem umfassenden Boilerplate, einschließlich TypeScript, Next.js und moderner Tools."
+  },
+  "docs": {
+    "subtitle": "Lernen Sie, wie man LND Boilerplate verwendet",
+    "description": "Umfassende Dokumentation für die Erstellung skalierbarer Webanwendungen mit unserem Framework.",
+    "sections": {
+      "gettingStarted": {
+        "title": "Erste Schritte",
+        "description": "Schnelle Einrichtungsanleitung für neue Projekte"
+      },
+      "components": {
+        "title": "Komponenten",
+        "description": "UI-Komponenten und ihre Verwendung"
+      },
+      "apiReference": {
+        "title": "API-Referenz",
+        "description": "Vollständige API-Dokumentation"
+      }
+    }
+  },
+  "about": {
+    "subtitle": "Modernes Web-Entwicklungsframework",
+    "description": "LND Boilerplate ist ein umfassendes Framework, das entwickelt wurde, um die Webanwendungsentwicklung zu beschleunigen. Gebaut mit TypeScript, Next.js und modernen Tools bietet es alles, was Sie für skalierbare und wartbare Anwendungen benötigen.",
+    "sections": {
+      "features": {
+        "title": "Funktionen",
+        "items": [
+          "TypeScript-Unterstützung",
+          "Next.js App Router",
+          "Internationalisierung",
+          "Moderne UI-Komponenten",
+          "Monorepo-Struktur"
+        ]
+      },
+      "technologies": {
+        "title": "Technologien",
+        "items": [
+          "React 18",
+          "Tailwind CSS",
+          "Radix UI",
+          "Bun Runtime",
+          "MDX-Unterstützung"
+        ]
+      }
+    }
   }
 }

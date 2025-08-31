@@ -1,61 +1,27 @@
-'use client'
+import NextImage from 'next/image'
+import { ReactNode } from 'react'
 
-import React, { useState } from 'react'
-import { cn } from '@lnd/ui/lib/utils'
-
-export interface ImageProps {
+interface ImageProps {
   src: string
   alt: string
   width?: number
   height?: number
   className?: string
+  children?: ReactNode
   fallbackSrc?: string
-  priority?: boolean
-  loading?: 'lazy' | 'eager'
-  onLoad?: () => void
-  onError?: () => void
 }
 
-export function Image({
-  src,
-  alt,
-  width,
-  height,
-  className,
-  fallbackSrc = '/images/placeholder.jpg',
-  priority = false,
-  loading = 'lazy',
-  onLoad,
-  onError
-}: ImageProps) {
-  const [imgSrc, setImgSrc] = useState(src)
-  const [hasError, setHasError] = useState(false)
-
-  const handleError = () => {
-    if (!hasError && fallbackSrc && imgSrc !== fallbackSrc) {
-      setImgSrc(fallbackSrc)
-      setHasError(true)
-    }
-    onError?.()
-  }
-
-  const handleLoad = () => {
-    onLoad?.()
-  }
-
+export function Image({ src, alt, width = 400, height = 300, className, children, fallbackSrc }: ImageProps) {
   return (
-    <img
-      src={imgSrc}
-      alt={alt}
-      width={width}
-      height={height}
-      className={cn(
-        'object-cover transition-opacity duration-200',
-        className
-      )}
-      loading={priority ? 'eager' : loading}
-      onLoad={handleLoad}
-      onError={handleError}
-    />
+    <div className={`relative overflow-hidden rounded-lg ${className || ''}`}>
+      <NextImage
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="object-cover"
+      />
+      {children}
+    </div>
   )
 }

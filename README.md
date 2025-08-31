@@ -1,121 +1,93 @@
-# LND Boilerplate
+<div align="center">
+  
+  <h1>🚀 LND Boilerplate</h1>
+  
+  <p>
+    <strong>A modern, opinionated boilerplate for building high-performance, multilingual web applications with Next.js.</strong>
+  </p>
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/your-org/lnd-boilerplate)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
+  <!-- Badges -->
+  <a href="https://github.com/GTFB/lnd-boilerplate/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/GTFB/lnd-boilerplate?style=flat-square" alt="License">
+  </a>
+  <a href="https://github.com/GTFB/lnd-boilerplate/pulls">
+    <img src="https://img.shields.io/github/issues-pr/GTFB/lnd-boilerplate?style=flat-square" alt="Pull Requests">
+  </a>
+  <a href="https://github.com/GTFB/lnd-boilerplate/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/GTFB/lnd-boilerplate/ci.yml?branch=main&style=flat-square" alt="CI Status">
+  </a>
+  
+</div>
 
-Modern landing page boilerplate with monorepo architecture built with Next.js, TypeScript, Tailwind CSS, and MDX.
+---
 
-## 🏗️ Architecture
+**LND Boilerplate** is a production-ready foundation designed to accelerate the development of robust, scalable, and internationalized web applications. It leverages a modern tech stack and follows best practices for architecture and developer experience.
 
-- **Monorepo Structure**: Organized packages for UI components and utilities
-- **Next.js 14**: App Router with TypeScript support
-- **Tailwind CSS**: Utility-first CSS framework with design system
-- **MDX**: Markdown with JSX support for content management
-- **Component Library**: Reusable UI components organized in tiers
+## ✨ Features
 
-## 📁 Project Structure
-
-```
-lnd-boilerplate/
-├── packages/
-│   ├── ui/                 # UI component library
-│   │   └── src/
-│   │       ├── components/ # Marketing, Ecommerce, Navigation
-│   │       ├── templates/  # Page layouts
-│   │       ├── primitives/ # Base components
-│   │       └── lib/        # UI utilities
-│   └── utils/              # Utility functions
-│       └── src/
-│           ├── content/    # MDX and content utilities
-│           ├── seo/        # SEO and metadata
-│           ├── search/     # Search functionality
-│           └── formatters/ # Date and currency formatting
-├── apps/
-│   └── landing/           # Next.js landing page application
-└── tsconfig.json          # Global TypeScript configuration
-```
+*   **Internationalization (i18n) by Default:** Built with `next-intl` for seamless, SEO-friendly multilingual support.
+*   **Configuration-Driven UI:** Define page layouts and component structures in a simple JSON file.
+*   **Three-Tier Component Architecture:** A clear and scalable system for UI development (Primitives, Components, Templates).
+*   **Static-First & SEO Optimized:** Prioritizes SSG for top performance and excellent search engine visibility.
+*   **Modern Tech Stack:** Powered by Next.js 14, TypeScript, and the lightning-fast Bun runtime.
+*   **Monorepo Structure:** Organized with Turborepo for efficient code sharing and management.
 
 ## 🚀 Getting Started
 
-### Prerequisites
+Follow these steps to get your local development environment up and running.
 
-- [Bun](https://bun.sh/) (recommended) or Node.js 18+
-- Git
+**Prerequisites:**
+*   [Bun](https://bun.sh/) (v1.0 or higher)
 
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+# 1. Clone the repository
+git clone https://github.com/GTFB/lnd-boilerplate.git
 cd lnd-boilerplate
-```
 
-2. Install dependencies:
-```bash
+# 2. Install dependencies
 bun install
+
+# 3. Run the development server
+bun dev
 ```
 
-3. Start development server:
-```bash
-bun run dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 📦 Available Scripts
-
-- `bun run dev` - Start development server
-- `bun run build` - Build for production
-- `bun run start` - Start production server
-- `bun run lint` - Run ESLint
-- `bun run type-check` - Run TypeScript type checking
-
-## 🎨 Component System
-
-### Tiers
-
-1. **Primitives** - Atomic components (Button, Card, Heading, Text)
-2. **Compositions** - Complex components built from primitives
-3. **Templates** - Page-level layouts
-
-### Available Components
-
-- **Marketing**: Hero, FeatureGrid, PricingTable, Testimonials
-- **Ecommerce**: ProductList, ProductCard, Filters
-- **Navigation**: Header, Footer, TableOfContents
-- **MDX**: MDXProvider, AdBlock, CoverImage
-
-## 🔧 Development
-
-### Adding New Components
-
-1. Create component in appropriate package directory
-2. Export from package index
-3. Update main exports if needed
-
-### Adding New Pages
-
-1. Create page in `apps/landing/app/`
-2. Use appropriate template from UI library
-3. Add content and styling
+The application will be available at **http://localhost:3000**.
 
 ## 📚 Documentation
 
-- [Project Documentation](./dev/docs/lnd-boilerplate/) - Complete project documentation
-- [Deployment Guide](./dev/docs/lnd-boilerplate/DEPLOYMENT.md) - Deployment instructions
-- [Project Structure](./dev/docs/lnd-boilerplate/structure.md) - Detailed project structure
-- [Dev Agent Documentation](./dev/docs/) - Development tools documentation
+For a deep dive into the architecture, component library, and development workflows, please refer to our comprehensive **[Developer Documentation](./dev/docs/boilerplate/README.md)**.
+
+## 🛠 Core Technologies
+
+| Technology | Purpose |
+| :--- | :--- |
+| **Next.js 14** | The React Framework for the Web |
+| **TypeScript** | Static typing for robust code |
+| **Bun** | A fast all-in-one JavaScript toolkit |
+| **Tailwind CSS** | A utility-first CSS framework |
+| **`next-intl`** | Internationalization library |
+| **Turborepo** | High-performance monorepo build system |
+
+## 📁 Project Structure
+
+The project is organized as a monorepo with a clear separation of concerns:
+
+```
+.
+├── apps/
+│   └── landing/          # The main Next.js application
+├── packages/
+│   ├── ui/               # Shared, reusable UI components (the design system)
+│   └── utils/            # Shared utility functions (e.g., content readers)
+└── dev/
+    ├── docs/             # All project-related documentation
+    └── ...               # Internal development and automation tools
+```
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch
-3. Make changes
-4. Run tests and type checking
-5. Submit pull request
+Contributions are welcome! If you have suggestions for improvements or want to contribute to the project, please start by reading the **[Contribution Guide](./dev/docs/boilerplate/CONTRIBUTING.md)** and opening an issue to discuss your ideas.
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the **[LICENSE](./LICENSE.md)** file for details.

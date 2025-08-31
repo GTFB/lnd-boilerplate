@@ -1,0 +1,39 @@
+{
+    "description": "Dev Agent project configuration",
+    "workflow": {
+        "sync_interval": 300,
+        "auto_sync": true
+    },
+    "branches": {
+        "main": "main",
+        "feature_prefix": "feature",
+        "release_prefix": "release",
+        "develop": "develop"
+    },
+    "version": "1.0.0",
+    "storage": {
+        "database": {
+            "path": "X:\\lnd-boilerplate\\database.db"
+        },
+        "config": {
+            "path": "X:\\lnd-boilerplate\\config"
+        },
+        "logs": {
+            "path": "X:\\lnd-boilerplate\\logs"
+        }
+    },
+    "github": {
+        "repo": "lnd-boilerplate",
+        "owner": "GTFB"
+    },
+    "name": "lnd-boilerplate",
+    "last_updated": "2025-08-24T16:49:00.000Z",
+    "goals": {
+        "default_status": "todo",
+        "id_pattern": "^g-[a-z0-9]{6}$"
+    },
+    "validation": {
+        "strict_language": true,
+        "auto_translate": false
+    }
+}

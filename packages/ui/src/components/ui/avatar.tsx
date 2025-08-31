@@ -1,120 +1,62 @@
-'use client'
+import * as React from "react"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "../../lib/utils"
 
-import React from 'react'
-import { cn } from '@lnd/ui/lib/utils'
-import { Image } from './Image'
-
-export interface AvatarProps {
-  src?: string
-  alt: string
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  fallback?: string
-  className?: string
-  fallbackSrc?: string
-}
-
-const sizeClasses = {
-  sm: 'w-8 h-8',
-  md: 'w-12 h-12',
-  lg: 'w-16 h-16',
-  xl: 'w-24 h-24'
-}
-
-const fallbackSizeClasses = {
-  sm: 'text-sm',
-  md: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-2xl'
-}
-
-export function Avatar({
-  src,
-  alt,
-  size = 'md',
-  fallback,
-  className,
-  fallbackSrc = '/images/avatar-placeholder.jpg',
-  children
-}: AvatarProps & { children?: React.ReactNode }) {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
+const avatarVariants = cva(
+  "relative flex shrink-0 overflow-hidden rounded-full",
+  {
+    variants: {
+      size: {
+        sm: "h-8 w-8",
+        default: "h-10 w-10",
+        lg: "h-12 w-12",
+        xl: "h-16 w-16",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
   }
+)
 
-  if (children) {
-    return (
-      <div className={cn('rounded-full overflow-hidden', sizeClasses[size], className)}>
-        {children}
-      </div>
-    )
-  }
+const Avatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & VariantProps<typeof avatarVariants>
+>(({ className, size, ...props }, ref) => (
+  <AvatarPrimitive.Root
+    ref={ref}
+    className={cn(avatarVariants({ size }), className)}
+    {...props}
+  />
+))
+Avatar.displayName = AvatarPrimitive.Root.displayName
 
-  if (!src) {
-    return (
-      <div
-        className={cn(
-          'bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium',
-          sizeClasses[size],
-          className
-        )}
-      >
-        <span className={fallbackSizeClasses[size]}>
-          {fallback || getInitials(alt)}
-        </span>
-      </div>
-    )
-  }
+const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Image
+    ref={ref}
+    className={cn("aspect-square h-full w-full", className)}
+    {...props}
+  />
+))
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
-  return (
-    <div className={cn('rounded-full overflow-hidden', sizeClasses[size], className)}>
-      <Image
-        src={src}
-        alt={alt}
-        fallbackSrc={fallbackSrc}
-        className="w-full h-full object-cover"
-        priority
-      />
-    </div>
-  )
-}
+const AvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      className
+    )}
+    {...props}
+  />
+))
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
-export interface AvatarFallbackProps {
-  children: React.ReactNode
-  className?: string
-}
-
-export function AvatarFallback({ children, className }: AvatarFallbackProps) {
-  return (
-    <div
-      className={cn(
-        'bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium',
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-export interface AvatarImageProps {
-  src: string
-  alt: string
-  className?: string
-  fallbackSrc?: string
-}
-
-export function AvatarImage({ src, alt, className, fallbackSrc = '/images/avatar-placeholder.jpg' }: AvatarImageProps) {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      fallbackSrc={fallbackSrc}
-      className={cn('w-full h-full object-cover', className)}
-      priority
-    />
-  )
-}
+export { Avatar, AvatarImage, AvatarFallback, avatarVariants }
