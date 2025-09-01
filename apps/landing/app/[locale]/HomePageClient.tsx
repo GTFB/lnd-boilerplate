@@ -27,7 +27,44 @@ interface HomePageClientProps {
       badge?: string
     }>
   }>
-  headerConfig: any
+  headerConfig: {
+    layout: {
+      left: string[]
+      center: string[]
+      right: string[]
+    }
+    logo: {
+      enabled: boolean
+      text: string
+      image: string | null
+      href: string
+    }
+    mobileMenu: {
+      enabled: boolean
+    }
+    search: {
+      enabled: boolean
+      placeholder: string
+    }
+    language: {
+      enabled: boolean
+      showFlag: boolean
+      showName: boolean
+    }
+    theme: {
+      enabled: boolean
+      default: string
+    }
+    notifications: {
+      enabled: boolean
+      count: number
+    }
+    userMenu: {
+      enabled: boolean
+      showAvatar: boolean
+      showName: boolean
+    }
+  }
   globalConfig?: {
     maxWidth?: string
     primaryColor?: string

@@ -59,45 +59,45 @@ export default function Header({ locale }: HeaderProps) {
   }
 
   return (
-    <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <header className="header">
+      <div className="header-container">
+        <div className="header-content">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href={getLink('/')} className="text-xl font-bold text-gray-900">
+          <div className="header-logo">
+            <Link href={getLink('/')}>
               LND Boilerplate
             </Link>
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="header-nav">
             <Link 
               href={getLink('/')}
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900"
+              className={`nav-link ${pathname === getLink('/') ? 'active' : ''}`}
             >
               {t('navigation.home')}
             </Link>
             <Link 
               href={getLink('/docs')}
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900"
+              className={`nav-link ${pathname === getLink('/docs') ? 'active' : ''}`}
             >
               {t('navigation.docs')}
             </Link>
             <Link 
               href={getLink('/about')}
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900"
+              className={`nav-link ${pathname === getLink('/about') ? 'active' : ''}`}
             >
               {t('navigation.about')}
             </Link>
           </nav>
 
           {/* Language Switcher */}
-          <div className="flex items-center space-x-4">
+          <div className="header-language-switcher">
             <div className="relative">
               <select
                 value={currentLocale}
                 onChange={(e) => handleLocaleChange(e.target.value as SupportedLocale)}
-                className="bg-white border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="language-select"
               >
                 {supportedLocales.map((loc) => (
                   <option key={loc} value={loc}>
@@ -107,6 +107,7 @@ export default function Header({ locale }: HeaderProps) {
               </select>
             </div>
           </div>
+
         </div>
       </div>
     </header>

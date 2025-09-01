@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import '../styles/blog.css';
 import { Inter, Inter_Tight } from 'next/font/google';
-import { ThemeProvider } from 'next-themes';
+import { Providers } from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,15 +26,9 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <ThemeProvider 
-          attribute="class" 
-          defaultTheme="light"
-          storageKey="theme"
-          enableSystem={false}
-          themes={['light', 'dark']}
-        >
+        <Providers>
           {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

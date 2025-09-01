@@ -1,11 +1,6 @@
 import { getTranslationSync, SupportedLocale } from '@lnd/utils/i18n'
-import { MainHeader } from '@lnd/ui/components/common/MainHeader'
-import { MainFooter } from '@lnd/ui/components/common/MainFooter'
 import { getValidatedSiteConfig } from '@lnd/utils/config/config-validator'
 import configJson from '../../site.config.json'
-import { ArrowRight, Code, Zap, Globe, Shield, Users, Rocket } from 'lucide-react'
-import { Button } from '@lnd/ui/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lnd/ui/components/ui/card'
 import { HomePageClient } from './HomePageClient'
 
 interface PageProps {

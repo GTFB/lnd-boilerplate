@@ -26,7 +26,7 @@ export function SingleColumnLayout({
   const pathname = usePathname();
   const supportedLocales = getSupportedLocales();
   
-  const handleLocaleChange = (newLocale: SupportedLocale) => {
+  const handleLocaleChange = (newLocale: string) => {
     // Get current path without locale prefix
     let currentPath = pathname;
     

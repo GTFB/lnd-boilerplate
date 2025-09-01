@@ -75,6 +75,12 @@
     "secondaryColor": "#2d3748",
     "accentColor": "#3182ce"
   },
+  "theme": {
+    "name": "lora",
+    "options": ["lora", "alisa"],
+    "autoSwitch": false,
+    "default": "lora"
+  },
   "navigation": {
     "main": [
       {
