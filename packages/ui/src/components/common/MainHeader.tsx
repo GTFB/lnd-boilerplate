@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDesignSystem } from '../../design-systems'
 import { NavigationItem } from '../../types/navigation'
+import { usePathname } from 'next/navigation'
 import { 
   Search, 
   Menu, 
@@ -106,9 +107,66 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
   className = ''
 }) => {
   const { currentSystem, switchSystem } = useDesignSystem()
+  const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
+  // Function to check if a navigation item is active
+  const isActivePage = (href: string) => {
+    if (href === '/') {
+      return pathname === '/' || pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`
+    }
+    return pathname === href || pathname === `/${currentLocale}${href}` || pathname.endsWith(href)
+  }
+
+  // Function to handle dropdown open/close with auto-close logic
+  const handleDropdownOpen = (dropdownId: string) => {
+    // Close any other open dropdown first
+    if (openDropdown && openDropdown !== dropdownId) {
+      setOpenDropdown(null)
+      // Small delay to ensure smooth transition
+      setTimeout(() => setOpenDropdown(dropdownId), 50)
+    } else {
+      setOpenDropdown(dropdownId)
+    }
+  }
+
+  const handleDropdownClose = () => {
+    setOpenDropdown(null)
+  }
+
+  // Auto-close dropdowns when clicking outside, pressing Escape, or scrolling
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdown && !(event.target as Element).closest('[data-radix-popper-content-wrapper]')) {
+        handleDropdownClose()
+      }
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && openDropdown) {
+        handleDropdownClose()
+      }
+    }
+
+    const handleScroll = () => {
+      if (openDropdown) {
+        handleDropdownClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscape)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [openDropdown])
+  
   // Default header configuration
   const defaultHeaderConfig = {
     layout: {
@@ -225,24 +283,43 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
         {navItems.map((item, index) => (
           <div key={index} className="relative group">
             {item.children ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-1">
-                    <span>{item.title}</span>
-                    {item.badge && (
-                      <Badge variant="secondary" className="ml-1 text-xs">
-                        {item.badge}
-                      </Badge>
-                    )}
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenu 
+                open={openDropdown === `nav-${index}`}
+                onOpenChange={(open) => {
+                  if (open) {
+                    handleDropdownOpen(`nav-${index}`)
+                  } else {
+                    handleDropdownClose()
+                  }
+                }}
+              >
+                                 <DropdownMenuTrigger asChild>
+                   <Button 
+                     variant="ghost" 
+                     className={`flex items-center space-x-1 ${
+                       isActivePage(item.href)
+                         ? 'text-primary border-b-2 border-primary cursor-default active-page'
+                         : 'dropdown-trigger'
+                     }`}
+                   >
+                     <span>{item.title}</span>
+                     {item.badge && (
+                       <Badge variant="secondary" className="ml-1 text-xs">
+                         {item.badge}
+                       </Badge>
+                     )}
+                     <ChevronDown className="h-3 w-3 transition-transform duration-200 data-[state=open]:rotate-180 chevron-rotate" />
+                   </Button>
+                 </DropdownMenuTrigger>
+                                 <DropdownMenuContent 
+                   align="start" 
+                   className="w-56"
+                 >
                   <DropdownMenuLabel>{item.title}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {item.children.map((child, childIndex) => (
                     <DropdownMenuItem key={childIndex} asChild>
-                      <a href={child.href} className="flex flex-col items-start">
+                      <a href={child.href} className="flex flex-col items-start dropdown-item-hover">
                         <span className="font-medium">{child.title}</span>
                         {child.description && (
                           <span className="text-xs text-muted-foreground">
@@ -259,19 +336,23 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <a
-                href={item.href}
-                className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary"
-              >
-                <span>{item.title}</span>
-                {item.badge && (
-                  <Badge variant="secondary" className="ml-1 text-xs">
-                    {item.badge}
-                  </Badge>
-                )}
-              </a>
-            )}
+                         ) : (
+               <a
+                 href={item.href}
+                 className={`flex items-center space-x-1 text-sm font-medium transition-colors h-8 py-2 ${
+                   isActivePage(item.href)
+                     ? 'text-primary border-b-2 border-primary cursor-default active-page'
+                     : 'hover:text-primary dropdown-trigger'
+                 }`}
+               >
+                 <span>{item.title}</span>
+                 {item.badge && (
+                   <Badge variant="secondary" className="ml-1 text-xs">
+                     {item.badge}
+                   </Badge>
+                 )}
+               </a>
+             )}
           </div>
         ))}
       </nav>
@@ -299,24 +380,38 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
   const renderLanguage = () => {
     if (!config.language.enabled) return null
     return (
-      <DropdownMenu>
+      <DropdownMenu
+        open={openDropdown === 'language'}
+        onOpenChange={(open) => {
+          if (open) {
+            handleDropdownOpen('language')
+          } else {
+            handleDropdownClose()
+          }
+        }}
+      >
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="hidden md:flex">
+          <Button variant="ghost" size="sm" className="hidden md:flex dropdown-trigger">
             {config.language.showName && (
               <span className="text-sm font-medium">{currentLocale.toUpperCase()}</span>
             )}
-            <ChevronDown className="ml-1 h-3 w-3" />
+            <ChevronDown className="ml-1 h-3 w-3 transition-transform duration-200 data-[state=open]:rotate-180 chevron-rotate" />
             <span className="sr-only">Select language</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t('common.selectLanguage')}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuContent 
+          align="end"
+          className=""
+          style={{ paddingBottom: 0 }}
+        >
+          <DropdownMenuLabel style={{ paddingBottom: 0 }}>{t('common.selectLanguage')}</DropdownMenuLabel>
+          <DropdownMenuSeparator style={{ marginBottom: 0 }} />
           {availableLocales.map((locale) => (
             <DropdownMenuItem
               key={locale}
               onClick={() => onLocaleChange?.(locale)}
-              className={locale === currentLocale ? 'bg-accent' : ''}
+              className={`${locale === currentLocale ? 'bg-accent' : ''} dropdown-item-hover`}
+              style={{ paddingBottom: 0 }}
             >
               <span className="text-sm">
                 {locale === 'en' ? 'English' : 
@@ -368,16 +463,29 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
   const renderUserMenu = () => {
     if (!config.userMenu.enabled) return null
     return (
-      <DropdownMenu>
+      <DropdownMenu
+        open={openDropdown === 'user'}
+        onOpenChange={(open) => {
+          if (open) {
+            handleDropdownOpen('user')
+          } else {
+            handleDropdownClose()
+          }
+        }}
+      >
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full dropdown-trigger">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/avatars/user.png" alt="User" />
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent 
+          className="w-56" 
+          align="end" 
+          forceMount
+        >
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">User Name</p>
@@ -388,19 +496,19 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <a href="/profile" className="flex items-center">
+            <a href="/profile" className="flex items-center dropdown-item-hover">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </a>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <a href="/settings" className="flex items-center">
+            <a href="/settings" className="flex items-center dropdown-item-hover">
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </a>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex items-center text-red-600">
+          <DropdownMenuItem className="flex items-center text-red-600 dropdown-item-hover">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>
@@ -547,3 +655,5 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
     </header>
   )
 }
+
+

@@ -221,3 +221,14 @@ unmap-x:
 dev-goals-list-x:
 	@echo "📋 Listing goals using X:\\lnd-boilerplate\\database.db ..."
 	@powershell -NoProfile -Command "$$env:DATABASE_PATH='X:\\lnd-boilerplate\\database.db'; make -C dev dev-goals-list | Out-String | Write-Host"
+
+# External storage verification utilities
+.PHONY: verify-storage storage-list
+
+verify-storage:
+	@echo "🔎 Verifying external storage (DB and .env) ..."
+	@powershell -NoProfile -Command "$$ErrorActionPreference='Stop'; $$cfg = Get-Content 'dev/config.json' -Raw | ConvertFrom-Json; $$db = if ($$env:DATABASE_PATH) { $$env:DATABASE_PATH } else { $$cfg.storage.database.path }; $$dir = Split-Path -Parent $$db; if (-not (Test-Path $$dir)) { Write-Host '❌ Storage directory not found:' $$dir; exit 1 }; $$dbExists = Test-Path $$db; if (-not $$dbExists) { $$alt = Join-Path $$dir '.dev-agent.db'; if (Test-Path $$alt) { Write-Host 'ℹ️ Using alternate DB:' $$alt; $$db = $$alt; $$dbExists = $$true } }; $$envFile = Join-Path $$dir '.env'; $$missing = @(); if (-not $$dbExists) { $$missing += 'database file' }; if (-not (Test-Path $$envFile)) { $$missing += '.env' }; if ($$missing.Count -gt 0) { Write-Host '❌ Missing:' ($$missing -join ', '); exit 2 } else { Write-Host 'Connection to the database and environment established.' }"
+
+storage-list:
+	@echo "📂 Listing X:\\lnd-boilerplate ..."
+	@powershell -NoProfile -Command "Get-ChildItem -Force 'X:\\lnd-boilerplate' | Select-Object Name,Length,LastWriteTime | Format-Table -AutoSize | Out-String | Write-Host"
