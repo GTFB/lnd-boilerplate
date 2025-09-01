@@ -75,12 +75,47 @@
     "secondaryColor": "#2d3748",
     "accentColor": "#3182ce"
   },
-  "theme": {
-    "name": "lora",
-    "options": ["lora", "alisa"],
-    "autoSwitch": false,
-    "default": "lora"
+  "designSystems": {
+    "default": "lora",
+    "available": ["lora", "alisa"],
+    "lora": {
+      "name": "Lora",
+      "description": "Elegant and sophisticated design system",
+      "colors": {
+        "primary": "#3b82f6",
+        "secondary": "#64748b",
+        "accent": "#f59e0b",
+        "background": "#ffffff",
+        "foreground": "#0f172a",
+        "muted": "#f1f5f9",
+        "border": "#e2e8f0"
+      },
+      "animations": {
+        "duration": "300ms",
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "transitions": ["fade", "slide", "scale"]
+      }
+    },
+    "alisa": {
+      "name": "Alisa",
+      "description": "Modern and dynamic design system",
+      "colors": {
+        "primary": "#E3FF04",
+        "secondary": "#0A0C00",
+        "accent": "#FFB539",
+        "background": "#ffffff",
+        "foreground": "#0A0C00",
+        "muted": "#F6F5F3",
+        "border": "#E3E3E3"
+      },
+      "animations": {
+        "duration": "200ms",
+        "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "transitions": ["bounce", "pulse", "wiggle"]
+      }
+    }
   },
+
   "navigation": {
     "main": [
       {
@@ -167,46 +202,6 @@
       "enabled": false,
       "showAvatar": true,
       "showName": true
-    }
-  },
-  "designSystems": {
-    "default": "lora",
-    "available": ["lora", "alisa"],
-    "lora": {
-      "name": "Lora",
-      "description": "Elegant and sophisticated design system",
-      "colors": {
-        "primary": "#1a365d",
-        "secondary": "#2d3748",
-        "accent": "#3182ce",
-        "background": "#ffffff",
-        "foreground": "#1a202c",
-        "muted": "#718096",
-        "border": "#e2e8f0"
-      },
-      "animations": {
-        "duration": "300ms",
-        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
-        "transitions": ["fade", "slide", "scale"]
-      }
-    },
-    "alisa": {
-      "name": "Alisa",
-      "description": "Modern and dynamic design system",
-      "colors": {
-        "primary": "#7c3aed",
-        "secondary": "#4c1d95",
-        "accent": "#f59e0b",
-        "background": "#f8fafc",
-        "foreground": "#0f172a",
-        "muted": "#64748b",
-        "border": "#cbd5e1"
-      },
-      "animations": {
-        "duration": "200ms",
-        "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        "transitions": ["bounce", "pulse", "wiggle"]
-      }
     }
   },
   "layouts": {

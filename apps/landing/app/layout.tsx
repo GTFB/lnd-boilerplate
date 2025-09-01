@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import '../styles/blog.css';
+import '@lnd/ui/styles/design-systems/lora.css';
 import { Inter, Inter_Tight } from 'next/font/google';
 import { Providers } from './providers';
 

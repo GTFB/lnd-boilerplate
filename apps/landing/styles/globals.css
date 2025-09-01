@@ -1,5 +1,15 @@
-/* ===== THEME VARIABLES ===== */
-.theme-lora {
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+:root {
+  /* Main theme colors */
   --color-primary: #3b82f6;
   --color-primary-hover: #2563eb;
   --color-secondary: #64748b;
@@ -10,32 +20,19 @@
   --color-muted-foreground: #64748b;
   --color-border: #e2e8f0;
   --color-ring: #3b82f6;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  
+  /* Additional colors */
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+  --color-input: #e2e8f0;
+  --color-radius: 0.5rem;
 }
 
-.theme-alisa {
-  --color-primary: #E3FF04;
-  --color-primary-hover: #d4f004;
-  --color-secondary: #0A0C00;
-  --color-accent: #FFB539;
-  --color-background: #ffffff;
-  --color-foreground: #0A0C00;
-  --color-muted: #F6F5F3;
-  --color-muted-foreground: #131312;
-  --color-border: #E3E3E3;
-  --color-ring: #E3FF04;
-}
-
-.theme-lora.dark,
-.theme-alisa.dark {
-  --color-background: #0f172a;
-  --color-foreground: #f8fafc;
-  --color-card: #1e293b;
-  --color-border: #334155;
-  --color-muted: #1e293b;
-  --color-muted-foreground: #94a3b8;
-}
-
-/* ===== HEADER STYLES USING THEME VARIABLES ===== */
+/* ===== HEADER STYLES ===== */
 .header {
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -95,4 +92,3 @@
   padding: 0.5rem;
   border-radius: 0.375rem;
 }
-
