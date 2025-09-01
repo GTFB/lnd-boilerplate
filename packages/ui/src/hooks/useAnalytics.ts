@@ -1,32 +1,44 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useCookie } from '../contexts/CookieContext'
+import { useEffect, useState } from 'react';
 
 export function useAnalytics() {
-  const { hasConsent } = useCookie()
+  const [isAnalyticsEnabled, setIsAnalyticsEnabled] = useState(false);
 
   useEffect(() => {
-    // Проверяем согласие на аналитику
-    if (hasConsent('analytics')) {
-      // Загружаем аналитику только при согласии
-      loadAnalytics()
+    // Check analytics consent
+    const analyticsConsent = localStorage.getItem('analytics-consent');
+    if (analyticsConsent === 'true') {
+      setIsAnalyticsEnabled(true);
+      // Load analytics only with consent
+      loadAnalytics();
     }
-  }, [hasConsent])
+  }, []);
 
   const loadAnalytics = () => {
-    // Здесь можно загрузить Google Analytics, Plausible или другую аналитику
-    console.log('Analytics loaded with user consent')
+    // Here you can load Google Analytics, Plausible or other analytics
+    console.log('Loading analytics...');
     
-    // Пример загрузки Google Analytics
-    // if (typeof window !== 'undefined' && window.gtag) {
-    //   window.gtag('consent', 'update', {
-    //     'analytics_storage': 'granted'
-    //   })
-    // }
-  }
+    // Example of loading Google Analytics
+    // const script = document.createElement('script');
+    // script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+    // document.head.appendChild(script);
+  };
+
+  const enableAnalytics = () => {
+    localStorage.setItem('analytics-consent', 'true');
+    setIsAnalyticsEnabled(true);
+    loadAnalytics();
+  };
+
+  const disableAnalytics = () => {
+    localStorage.setItem('analytics-consent', 'false');
+    setIsAnalyticsEnabled(false);
+  };
 
   return {
-    isEnabled: hasConsent('analytics')
-  }
+    isAnalyticsEnabled,
+    enableAnalytics,
+    disableAnalytics
+  };
 }

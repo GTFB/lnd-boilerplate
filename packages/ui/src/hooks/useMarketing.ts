@@ -1,30 +1,44 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useCookie } from '../contexts/CookieContext'
+import { useEffect, useState } from 'react';
 
 export function useMarketing() {
-  const { hasConsent } = useCookie()
+  const [isMarketingEnabled, setIsMarketingEnabled] = useState(false);
 
   useEffect(() => {
-    // Проверяем согласие на маркетинговые куки
-    if (hasConsent('marketing')) {
-      // Загружаем маркетинговые скрипты только при согласии
-      loadMarketingScripts()
+    // Check marketing cookies consent
+    const marketingConsent = localStorage.getItem('marketing-consent');
+    if (marketingConsent === 'true') {
+      setIsMarketingEnabled(true);
+      // Load marketing scripts only with consent
+      loadMarketingScripts();
     }
-  }, [hasConsent])
+  }, []);
 
   const loadMarketingScripts = () => {
-    // Здесь можно загрузить Facebook Pixel, Google Ads и другие маркетинговые скрипты
-    console.log('Marketing scripts loaded with user consent')
+    // Here you can load Facebook Pixel, Google Ads and other marketing scripts
+    console.log('Loading marketing scripts...');
     
-    // Пример загрузки Facebook Pixel
-    // if (typeof window !== 'undefined' && window.fbq) {
-    //   window.fbq('consent', 'grant')
-    // }
-  }
+    // Example of loading Facebook Pixel
+    // const script = document.createElement('script');
+    // script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    // document.head.appendChild(script);
+  };
+
+  const enableMarketing = () => {
+    localStorage.setItem('marketing-consent', 'true');
+    setIsMarketingEnabled(true);
+    loadMarketingScripts();
+  };
+
+  const disableMarketing = () => {
+    localStorage.setItem('marketing-consent', 'false');
+    setIsMarketingEnabled(false);
+  };
 
   return {
-    isEnabled: hasConsent('marketing')
-  }
+    isMarketingEnabled,
+    enableMarketing,
+    disableMarketing
+  };
 }

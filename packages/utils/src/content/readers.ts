@@ -135,7 +135,7 @@ export async function getLegalPage(slug: string): Promise<MDXFile | null> {
   return readMDXFile(filePath)
 }
 
-// Конфигурация из site.config.json
+// Configuration from site.config.json
 const DEFAULT_LOCALE = 'en'
 const CONTENT_ROOT = path.join(process.cwd(), 'apps', 'landing', '_content')
 

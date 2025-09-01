@@ -487,7 +487,6 @@ export const siteConfigSchema = z.object({
   global: globalSchema,
   navigation: navigationSchema,
   header: headerSchema,
-  designSystems: designSystemsSchema,
   layouts: layoutsSchema,
   pageTypes: pageTypesSchema,
   seo: seoSchema,

@@ -9,20 +9,20 @@ export function useTheme() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Загружаем сохраненную тему при инициализации
+    // Load saved theme on initialization
     const savedTheme = localStorage.getItem('selected-theme') as Theme || 'lora';
     applyTheme(savedTheme);
     setIsLoaded(true);
   }, []);
 
   const applyTheme = (theme: Theme) => {
-    // Удаляем все предыдущие темы
+    // Remove all previous themes
     document.documentElement.classList.remove('theme-lora', 'theme-alisa', 'theme-custom');
     
-    // Добавляем новую тему
+    // Add new theme
     document.documentElement.classList.add(`theme-${theme}`);
     
-    // Сохраняем в localStorage
+    // Save to localStorage
     localStorage.setItem('selected-theme', theme);
     setCurrentTheme(theme);
   };
@@ -35,17 +35,17 @@ export function useTheme() {
     const themeInfo = {
       lora: {
         name: 'Lora',
-        description: 'Современная и минималистичная',
+        description: 'Modern and minimalistic',
         colors: ['#3b82f6', '#64748b', '#f59e0b']
       },
       alisa: {
         name: 'Alisa',
-        description: 'Яркая и креативная',
+        description: 'Bright and creative',
         colors: ['#E3FF04', '#0A0C00', '#FFB539']
       },
       custom: {
         name: 'Custom',
-        description: 'Пользовательская тема',
+        description: 'Custom theme',
         colors: ['#8b5cf6', '#6b7280', '#ec4899']
       }
     };
