@@ -119,8 +119,6 @@
 .right-sidebar { grid-area: right-sidebar; }
 
 .content {
-  margin-left: -20px;
-  margin-right: -20px;
   padding-left: 20px;
   padding-right: 20px;
   min-width: 0;
@@ -136,7 +134,7 @@
 
 .grid-container.sidebar-hidden .left-sidebar {
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateX(0);
   pointer-events: none;
   transition: opacity 0.4s, transform 0.4s;
 }
@@ -396,12 +394,14 @@ header {
   min-width: 200px !important;
   width: max-content !important;
   max-width: calc(100vw - 40px) !important;
+  padding-bottom: 0rem !important;
 }
 
 .LanguageSelector [class*="dropdown"] {
   min-width: 200px !important;
   width: max-content !important;
   max-width: calc(100vw - 40px) !important;
+  padding-bottom: 0rem !important;
 }
 
 /* Center language selector dropdown */
@@ -409,12 +409,14 @@ header {
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
+  padding-bottom: 0rem !important;
 }
 
 .LanguageSelector [class*="dropdown"] {
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
+  padding-bottom: 0rem !important;
 }
 
 /* Center language selector dropdown in offcanvas */
@@ -431,9 +433,290 @@ header {
   transform: translateX(-50%) !important;
 }
 
-body.no-scroll, body.modal-open {
+/* Modal and scroll lock styles - prevent content shift */
+body.no-scroll, body.modal-open, body[data-scroll-locked] {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Prevent any scrollbar compensation that might cause content shift */
+body[style*="padding-right"] {
+  padding-right: 0 !important;
+}
+
+/* Override any inline padding-right styles on body */
+body {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  /* Prevent pointer-events from affecting layout */
+  pointer-events: auto !important;
+}
+
+/* Force override any possible margin-right sources */
+body,
+body *,
+body *::before,
+body *::after {
+  margin-right: 0 !important;
+}
+
+/* Specific override for any Tailwind or external CSS */
+body[class*="mr-"],
+body[class*="margin"],
+body[class*="pr-"],
+body[class*="padding"] {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Nuclear option - prevent any possible 13px margin */
+body,
+html {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Override any computed styles that might cause shift */
+body {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+/* Debug styles - prevent any possible shift sources */
+html {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  transform: none !important;
+}
+
+/* Prevent fixed elements from adding any offset */
+[data-radix-portal] {
+  transform: none !important;
+}
+
+/* Additional safeguards */
+* {
+  box-sizing: border-box !important;
+}
+
+/* Simple dropdown animations */
+[data-radix-popper-content-wrapper] {
+  animation: none !important;
+}
+
+/* Smooth chevron rotation */
+.chevron-rotate {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Simple dropdown content animations - only opacity */
+.dropdown-content-enter {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.dropdown-content-enter-active {
+  opacity: 1;
+}
+
+.dropdown-content-exit {
+  opacity: 1;
+  transition: opacity 150ms ease-out;
+}
+
+.dropdown-content-exit-active {
+  opacity: 0;
+}
+
+/* Simple dropdown transitions - only opacity */
+[data-radix-popper-content-wrapper] {
+  transition: opacity 200ms ease-out !important;
+}
+
+/* Simple dropdown appearance - no movement */
+[data-radix-popper-content-wrapper][data-state="open"] {
+  opacity: 1;
+  transform: none;
+}
+
+[data-radix-popper-content-wrapper][data-state="closed"] {
+  opacity: 0;
+  transform: none;
+}
+
+/* Enhanced chevron animations */
+.chevron-rotate {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Chevron rotation states */
+.chevron-rotate[data-state="open"] {
+  transform: rotate(180deg) !important;
+}
+
+.chevron-rotate[data-state="closed"] {
+  transform: rotate(0deg) !important;
+}
+
+/* Override Tailwind rotate classes for chevron */
+.chevron-rotate.data-\[state\=open\]\:rotate-180 {
+  transform: rotate(180deg) !important;
+}
+
+/* Smooth icon transitions */
+.icon-transition {
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Enhanced hover effects */
+.dropdown-trigger {
+  padding-bottom: 0.25rem !important;
+  position: relative;
   overflow: hidden;
-  padding-right: var(--scrollbar-width, 0px) !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.dropdown-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: hsl(var(--primary));
+  border-radius: 1px;
+  transition: left 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-trigger:hover::after {
+  left: 0;
+}
+
+.dropdown-trigger:hover {
+  color: hsl(var(--primary)) !important;
+  background-color: transparent !important;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Active dropdown state */
+.dropdown-trigger[data-state="open"]::after {
+  left: 0;
+}
+
+.dropdown-trigger[data-state="open"] {
+  color: hsl(var(--primary)) !important;
+  background-color: transparent !important;
+}
+
+.dropdown-item-hover {
+  width: -webkit-fill-available;
+  align-items: baseline;
+}
+
+/* Force left alignment for all dropdown content */
+[data-radix-popper-content-wrapper] * {
+  text-align: left !important;
+}
+
+[data-radix-popper-content-wrapper] button,
+[data-radix-popper-content-wrapper] div {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+/* Force remove padding for language selector dropdown items */
+[data-radix-popper-content-wrapper] [role="menuitem"] {
+  padding-bottom: 0 !important;
+}
+
+[data-radix-popper-content-wrapper] [data-radix-dropdown-menu-item] {
+  padding-bottom: 0 !important;
+}
+
+/* Force remove padding for language selector labels */
+[data-radix-popper-content-wrapper] [data-radix-dropdown-menu-label] {
+  padding-bottom: 0 !important;
+}
+
+/* Force remove margin for language selector separators */
+[data-radix-popper-content-wrapper] [data-radix-dropdown-menu-separator] {
+  margin-bottom: 0 !important;
+}
+
+/* Active page styles */
+.active-page {
+  pointer-events: none !important;
+  padding: 0.55rem 0 0.25rem 0 !important;
+  border-radius: 0 !important;
+}
+
+.active-page:hover {
+  background-color: transparent !important;
+  transform: none !important;
+}
+
+.active-page::after {
+  display: none !important;
+}
+
+/* Specific override for language dropdown */
+[data-radix-popper-content-wrapper] .language-dropdown [role="menuitem"],
+[data-radix-popper-content-wrapper] .language-dropdown [data-radix-dropdown-menu-item] {
+  padding-bottom: 0 !important;
+}
+
+/* Force remove all button hover backgrounds */
+.dropdown-trigger:hover,
+.dropdown-trigger:focus,
+.dropdown-trigger:active {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Remove button default styles */
+.dropdown-trigger {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Dropdown backdrop for better UX */
+.dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 49;
+}
+
+/* Simple dropdown switching - no movement */
+.dropdown-switch-enter {
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.dropdown-switch-enter-active {
+  opacity: 1;
+}
+
+.dropdown-switch-exit {
+  opacity: 1;
+  transition: opacity 100ms ease-out;
+}
+
+.dropdown-switch-exit-active {
+  opacity: 0;
 }
 
 [data-cookie-banner], .scroll-progress-container {
@@ -446,7 +729,7 @@ body.no-scroll, body.modal-open {
   transform: none !important;
 }
 [data-cookie-banner] {
-  transition: opacity 0.3s ease, padding-right 0.4s ease-in-out !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .search-modal .max-w-2xl {
